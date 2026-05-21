@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Maths — BTS CIEL Électronique</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #111827;
+    --bg3: #1a2235;
+    --border: rgba(99,179,237,0.15);
+    --border2: rgba(99,179,237,0.35);
+    --accent: #63b3ed;
+    --accent2: #4fd1c5;
+    --accent3: #f6ad55;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --green: #68d391;
+    --green-bg: rgba(104,211,145,0.12);
+    --red: #fc8181;
+    --red-bg: rgba(252,129,129,0.12);
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(99,179,237,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(99,179,237,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+  /* HEADER */
+  header {
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .header-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(99,179,237,0.08);
+    border: 1px solid rgba(99,179,237,0.2);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff;
+    margin-bottom: .5rem;
+  }
+  h1 span { color: var(--accent); }
+  .header-sub {
+    font-size: 15px;
+    color: var(--text2);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
+  /* SCORE DASHBOARD */
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .dash-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+  .dash-label {
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+  }
+  .dash-val {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .dash-val.green { color: var(--green); }
+  .progress-wrap { margin-bottom: 2rem; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text3); margin-bottom: 6px; font-family: var(--mono); }
+  .progress-track { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width .4s ease; }
+
+  /* CHAPTER TABS */
+  .tabs-label { font-size: 11px; font-family: var(--mono); color: var(--text3); text-transform: uppercase; letter-spacing: .1em; margin-bottom: .75rem; }
+  .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 2rem; }
+  .tab {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: .04em;
+  }
+  .tab:hover { border-color: var(--border2); color: var(--text); }
+  .tab.active { background: rgba(99,179,237,0.12); border-color: var(--accent); color: var(--accent); }
+  .tab .dot-ok { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--green); margin-left: 6px; vertical-align: middle; }
+
+  /* CHAPTER HEADER */
+  .chap-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+  .chap-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: rgba(99,179,237,0.1);
+    border: 1px solid rgba(99,179,237,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .chap-name { font-size: 18px; font-weight: 600; color: #fff; }
+  .chap-count { font-size: 13px; color: var(--text3); font-family: var(--mono); margin-left: auto; }
+
+  /* QUESTION CARD */
+  .q-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    transition: border-color .2s;
+  }
+  .q-card:hover { border-color: var(--border2); }
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+  }
+  .q-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(99,179,237,0.08);
+    border: 1px solid rgba(99,179,237,0.15);
+    padding: 3px 9px;
+    border-radius: 4px;
+  }
+  .q-text {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  .q-formula {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent2);
+    background: rgba(79,209,197,0.06);
+    border: 1px solid rgba(79,209,197,0.15);
+    border-left: 3px solid var(--accent2);
+    padding: 10px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 1.25rem;
+  }
+
+  /* CHOICES */
+  .choices { display: flex; flex-direction: column; gap: 8px; }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--sans);
+    text-align: left;
+    transition: all .15s;
+    line-height: 1.5;
+  }
+  .choice:not(.answered):hover { border-color: var(--border2); color: var(--text); background: rgba(255,255,255,0.02); }
+  .choice .letter {
+    font-family: var(--mono);
+    font-size: 11px;
+    width: 22px; height: 22px;
+    border-radius: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--text3);
+    margin-top: 1px;
+    transition: all .15s;
+  }
+  .choice.correct { background: var(--green-bg); border-color: rgba(104,211,145,0.4); color: var(--green); }
+  .choice.correct .letter { background: rgba(104,211,145,0.2); border-color: var(--green); color: var(--green); }
+  .choice.wrong { background: var(--red-bg); border-color: rgba(252,129,129,0.4); color: var(--red); }
+  .choice.wrong .letter { background: rgba(252,129,129,0.2); border-color: var(--red); color: var(--red); }
+  .choice.reveal { background: rgba(104,211,145,0.06); border-color: rgba(104,211,145,0.25); color: rgba(104,211,145,0.7); }
+
+  /* EXPLANATION */
+  .expl {
+    display: none;
+    margin-top: 1rem;
+    padding: 12px 16px;
+    background: var(--bg3);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent);
+  }
+  .expl.show { display: block; }
+  .expl-title { font-size: 12px; font-family: var(--mono); color: var(--accent); margin-bottom: 6px; }
+  .expl-text { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 8px; }
+  .expl-formula { font-family: var(--mono); font-size: 12px; color: var(--accent2); background: rgba(79,209,197,0.06); padding: 6px 10px; border-radius: 4px; display: block; }
+
+  /* NAVIGATION */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .nav-btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+    cursor: pointer;
+    transition: all .15s;
+    letter-spacing: .04em;
+  }
+  .nav-btn:hover { border-color: var(--border2); color: var(--text); }
+  .nav-btn.primary { border-color: rgba(99,179,237,0.4); color: var(--accent); }
+  .nav-btn.primary:hover { background: rgba(99,179,237,0.08); }
+  .dots { display: flex; gap: 5px; flex-wrap: wrap; max-width: 200px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; transition: all .15s; }
+  .dot:hover { border-color: var(--border2); }
+  .dot.current { background: var(--accent); border-color: var(--accent); }
+  .dot.done-ok { background: var(--green); border-color: var(--green); }
+  .dot.done-ko { background: var(--red); border-color: var(--red); }
+
+  /* RESULT SCREEN */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  .result-screen.show { display: block; }
+  .result-big {
+    font-family: var(--mono);
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: .5rem;
+  }
+  .result-big.great { color: var(--green); }
+  .result-big.ok { color: var(--accent3); }
+  .result-big.low { color: var(--red); }
+  .result-msg { font-size: 18px; color: var(--text2); margin-bottom: 2rem; }
+  .restart-btn {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 12px 28px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(99,179,237,0.4);
+    background: rgba(99,179,237,0.08);
+    color: var(--accent);
+    cursor: pointer;
+    transition: all .2s;
+    margin: 0 8px;
+  }
+  .restart-btn:hover { background: rgba(99,179,237,0.15); }
+
+  /* FOOTER */
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text3);
+    font-family: var(--mono);
+  }
+  footer span { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .dashboard { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="header-tag">BTS CIEL · Option Électronique · 2e année</div>
+    <h1>QCM Maths<br><span>Préparation CCF</span></h1>
+    <p class="header-sub">7 chapitres · 31 questions · Formules intégrées</p>
+    <div class="dashboard">
+      <div class="dash-card">
+        <div class="dash-label">Score</div>
+        <div class="dash-val green" id="d-score">0/0</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">Réussite</div>
+        <div class="dash-val" id="d-pct">—</div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-label">Complété</div>
+        <div class="dash-val" id="d-done">0%</div>
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Progression globale</span><span id="prog-label">0 / 31</span></div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </header>
+
+  <div class="tabs-label">Chapitre</div>
+  <div class="tabs" id="tabs"></div>
+
+  <div id="main-area">
+    <div class="chap-header" id="chap-header"></div>
+    <div id="q-area"></div>
+    <div class="nav">
+      <button class="nav-btn" onclick="prevQ()">← Préc.</button>
+      <div class="dots" id="dots"></div>
+      <button class="nav-btn primary" onclick="nextQ()">Suiv. →</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="wrap" style="padding-top:0">
+  <footer>
+    <span>QCM Maths BTS CIEL</span>
+    <span>Complexes · Dérivées · Intégrales · Éq.diff · Laplace · Probas · Suites</span>
+  </footer>
+</div>
+
+<script>
+const LETTERS = ['A','B','C','D'];
+
+const chapters = [
+  {
+    id:"complexes", label:"Complexes", icon:"ℂ",
+    questions:[
+      {q:"Quelle est la forme algébrique d'un nombre complexe ?",formula:"z = ?",choices:["z = a + ib, avec a ∈ ℝ et b ∈ ℝ","z = r·eⁱᶿ uniquement","z = (a ; b) en coordonnées polaires","z = a − ib uniquement"],correct:0,expl:"Un complexe s'écrit z = a + ib où a = Re(z) est la partie réelle et b = Im(z) la partie imaginaire. r·eⁱᶿ est la forme exponentielle.",formula2:"a = Re(z),  b = Im(z),  i² = −1"},
+      {q:"Quel est le module d'un nombre complexe z = a + ib ?",formula:"|z| = ?",choices:["|z| = a + b","|z| = √(a² + b²)","|z| = a² + b²","|z| = √(a − b)"],correct:1,expl:"Le module représente la distance de z à l'origine dans le plan complexe.",formula2:"|z| = √(a² + b²)"},
+      {q:"Quelle est la forme exponentielle d'Euler d'un complexe de module r et d'argument θ ?",formula:"z = ?",choices:["z = r(cos θ + sin θ)","z = r·eⁱᶿ","z = eʳ⁺ⁱᶿ","z = r + eⁱᶿ"],correct:1,expl:"z = r·eⁱᶿ = r(cos θ + i·sin θ). Très utilisée en électronique pour les impédances complexes.",formula2:"z = r·eⁱᶿ = r(cos θ + i sin θ)"},
+      {q:"Comment calcule-t-on le conjugué z̄ de z = a + ib ?",formula:"z̄ = ?",choices:["z̄ = −a − ib","z̄ = a − ib","z̄ = −a + ib","z̄ = |z|"],correct:1,expl:"Le conjugué change le signe de la partie imaginaire. Propriété utile : z·z̄ = |z|².",formula2:"z̄ = a − ib,   z·z̄ = |z|² = a² + b²"},
+      {q:"Formule de Moivre : (r·eⁱᶿ)ⁿ = ?",formula:"(r·eⁱᶿ)ⁿ = ?",choices:["r·eⁱⁿᶿ","rⁿ·eⁱⁿᶿ","rⁿ·eⁱᶿ/ⁿ","n·r·eⁱᶿ"],correct:1,expl:"Pour élever un complexe à n, on élève le module à n et on multiplie l'argument par n.",formula2:"(r·eⁱᶿ)ⁿ = rⁿ·eⁱⁿᶿ = rⁿ(cos nθ + i sin nθ)"},
+      {q:"En électronique, l'impédance d'un condensateur C à la pulsation ω est :",formula:"Z_C = ?",choices:["Z_C = jCω","Z_C = 1/(jCω)","Z_C = jLω","Z_C = R"],correct:1,expl:"L'impédance du condensateur est capacitive. En élec, j remplace i pour éviter la confusion avec le courant.",formula2:"Z_C = 1/(jCω)   —   Z_L = jLω   —   Z_R = R"}
+    ]
+  },
+  {
+    id:"derivees", label:"Dérivées", icon:"f'",
+    questions:[
+      {q:"Dérivée de f(x) = eˣ ?",formula:"(eˣ)' = ?",choices:["eˣ","xeˣ","eˣ⁻¹","1/eˣ"],correct:0,expl:"L'exponentielle est sa propre dérivée. Propriété fondamentale.",formula2:"(eˣ)' = eˣ   —   (eᵘ)' = u'·eᵘ"},
+      {q:"Dérivée de f(x) = ln(x) (pour x > 0) ?",formula:"(ln x)' = ?",choices:["1/x","ln(x)/x","x","1/ln(x)"],correct:0,expl:"La dérivée du logarithme est l'inverse de x.",formula2:"(ln x)' = 1/x   —   (ln u)' = u'/u"},
+      {q:"Dérivée du produit f(x) = u(x)·v(x) ?",formula:"(u·v)' = ?",choices:["u'·v'","u'·v + u·v'","(u'·v)/v'","u·v' − u'·v"],correct:1,expl:"Règle du produit : dériver le premier et garder le second, plus le premier fois la dérivée du second.",formula2:"(u·v)' = u'v + uv'"},
+      {q:"Dérivée de sin(x) ?",formula:"(sin x)' = ?",choices:["−cos x","cos x","sin x","−sin x"],correct:1,expl:"Dérivées trigonométriques fondamentales à connaître par cœur.",formula2:"(sin x)' = cos x   —   (cos x)' = −sin x   —   (tan x)' = 1/cos²x"},
+      {q:"Dérivée de 1/u (règle simplifiée) ?",formula:"(1/u)' = ?",choices:["1/u'","−u'/u²","u'/u²","−1/u²"],correct:1,expl:"Cas particulier de la règle du quotient avec numérateur = 1.",formula2:"(1/u)' = −u'/u²   —   (u/v)' = (u'v − uv')/v²"}
+    ]
+  },
+  {
+    id:"integrales", label:"Intégrales", icon:"∫",
+    questions:[
+      {q:"Primitive de f(x) = xⁿ (n ≠ −1) ?",formula:"∫ xⁿ dx = ?",choices:["nxⁿ⁻¹ + C","xⁿ⁺¹/(n+1) + C","xⁿ/n + C","n·xⁿ + C"],correct:1,expl:"On augmente l'exposant de 1 et on divise par ce nouvel exposant.",formula2:"∫ xⁿ dx = xⁿ⁺¹/(n+1) + C   (n ≠ −1)"},
+      {q:"Primitive de f(x) = 1/x ?",formula:"∫ 1/x dx = ?",choices:["−1/x² + C","ln|x| + C","1/x² + C","eˣ + C"],correct:1,expl:"Cas particulier n = −1 : la primitive est le logarithme en valeur absolue.",formula2:"∫ 1/x dx = ln|x| + C"},
+      {q:"Calculer ∫₀¹ 2x dx",formula:"∫₀¹ 2x dx = ?",choices:["2","1","4","0"],correct:1,expl:"Primitive de 2x est x². On calcule [x²]₀¹ = 1² − 0² = 1.",formula2:"[x²]₀¹ = 1² − 0² = 1"},
+      {q:"Primitive de f(x) = eˣ ?",formula:"∫ eˣ dx = ?",choices:["eˣ/x + C","xeˣ + C","eˣ + C","eˣ⁻¹ + C"],correct:2,expl:"L'exponentielle est aussi sa propre primitive.",formula2:"∫ eˣ dx = eˣ + C   —   ∫ eᵃˣ dx = eᵃˣ/a + C"},
+      {q:"La valeur moyenne d'une fonction f sur [a;b] est :",formula:"f̄ = ?",choices:["∫ₐᵇ f(x) dx","(f(a)+f(b))/2","1/(b−a) · ∫ₐᵇ f(x) dx","f((a+b)/2)"],correct:2,expl:"La valeur moyenne est l'intégrale divisée par la longueur de l'intervalle.",formula2:"f̄ = 1/(b−a) · ∫ₐᵇ f(x) dx"}
+    ]
+  },
+  {
+    id:"eqdiff", label:"Éq. diff.", icon:"y'",
+    questions:[
+      {q:"Solution générale de y' + ay = 0 ?",formula:"y' + ay = 0",choices:["y = A·eᵃˣ","y = A·e⁻ᵃˣ","y = A·cos(ax)","y = A + eˣ"],correct:1,expl:"Équation du 1er ordre homogène. Solution : exponentielle décroissante si a > 0.",formula2:"y = A·e⁻ᵃˣ   (A constante quelconque)"},
+      {q:"Solution générale de y'' + ω²y = 0 (racines imaginaires pures r = ±jω) ?",formula:"r² + ω² = 0  →  r = ±jω",choices:["y = Aeˣ + Beˣ","y = A·cos(ωx) + B·sin(ωx)","y = (A+Bx)eˣ","y = Aeʷˣ"],correct:1,expl:"Quand le discriminant est négatif (racines complexes), la solution est une combinaison de cos et sin.",formula2:"y = A·cos(ωx) + B·sin(ωx)"},
+      {q:"Dans un circuit RC série, la constante de temps τ est :",formula:"τ = ?",choices:["τ = R/C","τ = RC","τ = R+C","τ = C/R"],correct:1,expl:"τ = RC caractérise la vitesse de charge/décharge du condensateur. À t = 5τ, le régime est considéré établi.",formula2:"τ = RC   —   u(t) = U₀·e^(−t/τ)"}
+    ]
+  },
+  {
+    id:"laplace", label:"Laplace", icon:"ℒ",
+    questions:[
+      {q:"Transformée de Laplace de la fonction échelon u(t) = 1 (t ≥ 0) ?",formula:"L{1} = ?",choices:["1/p","1/p²","p","e⁻ᵖ"],correct:0,expl:"La transformée de Laplace convertit les fonctions du temps en fonctions de la variable complexe p.",formula2:"L{1} = 1/p   —   L{t} = 1/p²   —   L{tⁿ} = n!/pⁿ⁺¹"},
+      {q:"Transformée de Laplace de f(t) = eᵃᵗ ?",formula:"L{eᵃᵗ} = ?",choices:["1/(p−a)","1/(p+a)","a/p","p/(p−a)"],correct:0,expl:"Propriété de translation : L{eᵃᵗ·f(t)} = F(p−a).",formula2:"L{eᵃᵗ} = 1/(p−a)   (p > a)"},
+      {q:"Transformée de Laplace de la dérivée f'(t) ?",formula:"L{f'(t)} = ?",choices:["p·F(p)","p·F(p) − f(0)","F(p)/p","p²·F(p)"],correct:1,expl:"Théorème de dérivation de Laplace : permet de convertir une équation différentielle en équation algébrique.",formula2:"L{f'(t)} = p·F(p) − f(0⁺)"},
+      {q:"La fonction de transfert H(p) est définie par :",formula:"H(p) = ?",choices:["H(p) = Entrée(p)/Sortie(p)","H(p) = Sortie(p)/Entrée(p)","H(p) = p·Entrée(p)","H(p) = |Z(p)|"],correct:1,expl:"H(p) est le rapport de la transformée de la sortie sur celle de l'entrée (conditions initiales nulles).",formula2:"H(p) = S(p)/E(p)"},
+      {q:"Transformée de Laplace de sin(ωt) ?",formula:"L{sin(ωt)} = ?",choices:["p/(p²+ω²)","ω/(p²+ω²)","ω/(p²−ω²)","1/(p+ω)"],correct:1,expl:"Transformées des fonctions trigonométriques pour l'analyse des signaux sinusoïdaux.",formula2:"L{sin(ωt)} = ω/(p²+ω²)   —   L{cos(ωt)} = p/(p²+ω²)"}
+    ]
+  },
+  {
+    id:"probas", label:"Probas", icon:"P",
+    questions:[
+      {q:"Formule de la probabilité conditionnelle P(A|B) ?",formula:"P(A|B) = ?",choices:["P(A∩B)/P(A)","P(A∩B)/P(B)","P(A)·P(B)","P(A)+P(B)"],correct:1,expl:"P(A|B) est la probabilité de A sachant que B est réalisé.",formula2:"P(A|B) = P(A∩B)/P(B)   avec P(B) > 0"},
+      {q:"Pour une loi binomiale B(n, p), l'espérance E(X) est :",formula:"E(X) = ?",choices:["n/p","np","np(1−p)","√(np(1−p))"],correct:1,expl:"L'espérance d'une loi binomiale est np. La variance est np(1−p).",formula2:"E(X) = np   —   V(X) = np(1−p)   —   σ = √(np(1−p))"},
+      {q:"Pour une loi normale N(μ, σ²), P(μ−σ ≤ X ≤ μ+σ) ≈ ?",formula:"",choices:["50%","68%","95%","99,7%"],correct:1,expl:"Règle des 3 sigma : 68% à 1σ, 95% à 2σ, 99,7% à 3σ. Utilisé pour les tolérances de fabrication.",formula2:"P(μ−σ ≤ X ≤ μ+σ) ≈ 68%   |   P(μ±2σ) ≈ 95%   |   P(μ±3σ) ≈ 99,7%"},
+      {q:"Formule des probabilités totales avec {B₁, B₂} partition de Ω ?",formula:"P(A) = ?",choices:["P(A|B₁)+P(A|B₂)","P(A∩B₁)+P(A∩B₂)","P(B₁|A)·P(A)+P(B₂|A)","P(A)·P(B₁+B₂)"],correct:1,expl:"On décompose P(A) sur une partition de l'espace. P(A∩Bᵢ) = P(A|Bᵢ)·P(Bᵢ).",formula2:"P(A) = P(A|B₁)·P(B₁) + P(A|B₂)·P(B₂)"}
+    ]
+  },
+  {
+    id:"suites", label:"Suites", icon:"uₙ",
+    questions:[
+      {q:"Terme général d'une suite géométrique de premier terme u₀ et de raison q ?",formula:"uₙ = ?",choices:["u₀ + n·q","u₀·qⁿ","n·u₀·q","u₀ⁿ·q"],correct:1,expl:"Chaque terme = terme initial multiplié par la raison élevée à la puissance n.",formula2:"uₙ = u₀·qⁿ"},
+      {q:"Somme des n premiers termes d'une suite géométrique de raison q ≠ 1 ?",formula:"S = u₀ + u₁ + ... + uₙ₋₁ = ?",choices:["n·u₀","u₀·(1−qⁿ)/(1−q)","u₀·qⁿ","u₀·n·q"],correct:1,expl:"Formule fondamentale pour les suites géométriques, utile pour les filtres numériques et séries.",formula2:"S = u₀·(1−qⁿ)/(1−q)   (q ≠ 1)"},
+      {q:"Somme des n premiers termes d'une suite arithmétique (premier terme u₀, raison r) ?",formula:"S = ?",choices:["n·u₀","n·(u₀+uₙ₋₁)/2","u₀·rⁿ","(n+1)·r"],correct:1,expl:"Somme = nombre de termes × moyenne du premier et du dernier terme.",formula2:"S = n·(u₀ + uₙ₋₁)/2   —   uₙ = u₀ + n·r"}
+    ]
+  }
+];
+
+const TOTAL = chapters.reduce((s,c)=>s+c.questions.length,0);
+let currentChap = 0;
+let currentQ = 0;
+let answers = {};
+
+function key(ci,qi){ return ci+'-'+qi; }
+
+function totalAnswered(){
+  return Object.keys(answers).length;
+}
+function totalCorrect(){
+  return Object.values(answers).filter(v=>v.correct).length;
+}
+
+function updateDash(){
+  const ans = totalAnswered();
+  const cor = totalCorrect();
+  const pct = ans>0 ? Math.round(cor/ans*100) : 0;
+  const done = Math.round(ans/TOTAL*100);
+  document.getElementById('d-score').textContent = cor+'/'+ans;
+  document.getElementById('d-pct').textContent = ans>0 ? pct+'%' : '—';
+  document.getElementById('d-done').textContent = done+'%';
+  document.getElementById('prog-fill').style.width = done+'%';
+  document.getElementById('prog-label').textContent = ans+' / '+TOTAL;
+}
+
+function renderTabs(){
+  const el = document.getElementById('tabs');
+  el.innerHTML = chapters.map((c,i)=>{
+    const done = c.questions.every((_,qi)=>answers[key(i,qi)]!==undefined);
+    return `<button class="tab ${i===currentChap?'active':''}" onclick="switchChap(${i})">${c.icon} ${c.label}${done?'<span class="dot-ok"></span>':''}</button>`;
+  }).join('');
+}
+
+function renderDots(){
+  const qs = chapters[currentChap].questions;
+  document.getElementById('dots').innerHTML = qs.map((_,i)=>{
+    const k = key(currentChap,i);
+    let cls='dot';
+    if(i===currentQ) cls+=' current';
+    else if(answers[k]!==undefined) cls += answers[k].correct?' done-ok':' done-ko';
+    return `<div class="${cls}" onclick="jumpQ(${i})" title="Q${i+1}"></div>`;
+  }).join('');
+}
+
+function renderChapHeader(){
+  const c = chapters[currentChap];
+  const qs = c.questions;
+  const answered = qs.filter((_,qi)=>answers[key(currentChap,qi)]!==undefined).length;
+  document.getElementById('chap-header').innerHTML = `
+    <div class="chap-icon">${c.icon}</div>
+    <div class="chap-name">${c.label}</div>
+    <div class="chap-count">${answered}/${qs.length} répondues</div>
+  `;
+}
+
+function renderQ(){
+  const q = chapters[currentChap].questions[currentQ];
+  const k = key(currentChap, currentQ);
+  const ans = answers[k];
+  const answered = ans !== undefined;
+
+  const choicesHtml = q.choices.map((c,i)=>{
+    let cls = 'choice'+(answered?' answered':'');
+    let letter = LETTERS[i];
+    if(answered){
+      if(i===q.correct) cls+=' correct';
+      else if(i===ans.chosen && i!==q.correct) cls+=' wrong';
+      else if(i!==ans.chosen && i===q.correct) cls+=' reveal';
+    }
+    return `<button class="${cls}" onclick="answer(${i})"><span class="letter">${letter}</span>${c}</button>`;
+  }).join('');
+
+  const explShow = answered ? 'show' : '';
+  const explTitle = answered ? (ans.correct ? '✓ Correct !' : '✗ Incorrect') : '';
+
+  document.getElementById('q-area').innerHTML = `
+    <div class="q-card">
+      <div class="q-meta">
+        <span class="q-num">Q${currentQ+1}/${chapters[currentChap].questions.length}</span>
+      </div>
+      <div class="q-text">${q.q}</div>
+      ${q.formula ? `<div class="q-formula">${q.formula}</div>` : ''}
+      <div class="choices">${choicesHtml}</div>
+      <div class="expl ${explShow}">
+        <div class="expl-title">${explTitle}</div>
+        <div class="expl-text">${q.expl}</div>
+        <span class="expl-formula">${q.formula2}</span>
+      </div>
+    </div>
+  `;
+
+  renderDots();
+  renderChapHeader();
+  renderTabs();
+  updateDash();
+}
+
+function answer(i){
+  const k = key(currentChap, currentQ);
+  if(answers[k] !== undefined) return;
+  const q = chapters[currentChap].questions[currentQ];
+  answers[k] = { chosen: i, correct: i === q.correct };
+  renderQ();
+}
+
+function switchChap(i){
+  currentChap = i;
+  currentQ = 0;
+  renderQ();
+}
+
+function nextQ(){
+  const qs = chapters[currentChap].questions;
+  if(currentQ < qs.length-1){ currentQ++; renderQ(); }
+  else if(currentChap < chapters.length-1){ currentChap++; currentQ=0; renderTabs(); renderQ(); }
+}
+
+function prevQ(){
+  if(currentQ > 0){ currentQ--; renderQ(); }
+  else if(currentChap > 0){ currentChap--; currentQ=chapters[currentChap].questions.length-1; renderTabs(); renderQ(); }
+}
+
+function jumpQ(i){ currentQ=i; renderQ(); }
+
+// Init
+renderTabs();
+renderQ();
+updateDash();
+</script>
+</body>
+</html>
