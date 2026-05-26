@@ -3,240 +3,279 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QCM Maths — BTS CIEL Électronique</title>
+<title>QCM + Flashcards Maths — BTS CIEL Électronique</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#060810;--bg2:#0d1117;--bg3:#161b27;--bg4:#1e2535;
-  --cyan:#00e5ff;--cyan2:#00b4cc;--green:#00ff9d;--green2:#00cc7a;
-  --amber:#ffd166;--red:#ff4d6d;--purple:#b388ff;
+  --cyan:#00e5ff;--green:#00ff9d;--amber:#ffd166;--red:#ff4d6d;--purple:#b388ff;--pink:#f472b6;
   --text:#e8eaf0;--text2:#8892a4;--text3:#4a5568;
-  --border:rgba(0,229,255,0.08);--border2:rgba(0,229,255,0.25);
+  --border:rgba(0,229,255,0.08);--border2:rgba(0,229,255,0.28);
   --mono:'JetBrains Mono',monospace;--display:'Syne',sans-serif;
   --r:10px;--r2:16px;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--display);min-height:100vh;overflow-x:hidden;cursor:none}
-
-/* Custom cursor */
-#cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,background .2s;mix-blend-mode:screen}
-#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(0,229,255,0.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .15s ease,width .2s,height .2s}
-
-/* Animated grid bg */
-.grid-bg{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:50px 50px;animation:gridDrift 20s linear infinite}
-@keyframes gridDrift{0%{background-position:0 0}100%{background-position:50px 50px}}
-
-/* Glowing orbs */
-.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbFloat 8s ease-in-out infinite}
-.orb1{width:400px;height:400px;background:rgba(0,229,255,0.06);top:-100px;right:-100px;animation-delay:0s}
-.orb2{width:300px;height:300px;background:rgba(0,255,157,0.04);bottom:-50px;left:-50px;animation-delay:4s}
-@keyframes orbFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(20px,-20px)}}
-
-/* SCANLINE effect */
-body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:1000}
-
-.wrap{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:0 1.5rem 6rem}
-
-/* ===== SCREENS ===== */
-.screen{display:none;animation:fadeIn .4s ease}
+#cursor{position:fixed;width:10px;height:10px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform .08s}
+#cursor-ring{position:fixed;width:28px;height:28px;border:1px solid rgba(0,229,255,0.35);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .12s,top .12s,width .2s,height .2s}
+.grid-bg{position:fixed;inset:0;z-index:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:50px 50px;animation:gridDrift 25s linear infinite}
+@keyframes gridDrift{100%{background-position:50px 50px}}
+.orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0;animation:orbF 10s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:rgba(0,229,255,0.05);top:-150px;right:-150px}
+.orb2{width:350px;height:350px;background:rgba(0,255,157,0.04);bottom:-100px;left:-100px;animation-delay:5s}
+.orb3{width:200px;height:200px;background:rgba(179,136,255,0.04);top:40%;left:40%;animation-delay:2.5s}
+@keyframes orbF{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-15px)}}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:1000}
+.wrap{position:relative;z-index:2;max-width:920px;margin:0 auto;padding:0 1.5rem 6rem}
+.screen{display:none;animation:fadeUp .35s ease}
 .screen.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== LANDING ===== */
-#screen-landing{text-align:center;padding:4rem 0}
-.landing-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,229,255,0.2);padding:6px 16px;border-radius:4px;margin-bottom:2rem;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0.2)}50%{box-shadow:0 0 0 8px rgba(0,229,255,0)}}
-.landing-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1s step-end infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.landing-title{font-size:clamp(2.5rem,7vw,5rem);font-weight:800;line-height:1.05;color:#fff;margin-bottom:1rem;letter-spacing:-0.02em}
-.landing-title .accent{color:var(--cyan);position:relative;display:inline-block}
-.landing-title .accent::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:1px}
-.landing-sub{font-size:16px;color:var(--text2);margin-bottom:3rem;font-weight:400;max-width:500px;margin-left:auto;margin-right:auto;margin-bottom:3rem}
-.name-form{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:2rem}
-.name-label{font-family:var(--mono);font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
-.name-input{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:14px 20px;color:#fff;font-family:var(--display);font-size:16px;font-weight:600;text-align:center;width:280px;outline:none;transition:all .2s}
+/* ── NAV BAR ── */
+.topnav{position:sticky;top:0;z-index:500;background:rgba(6,8,16,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:10px 1.5rem;margin-bottom:0}
+.topnav-brand{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyan);margin-right:auto}
+.topnav-btn{font-family:var(--mono);font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.topnav-btn:hover{border-color:var(--border2);color:var(--text)}
+.topnav-btn.active-nav{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan)}
+
+/* ── LANDING ── */
+#screen-landing{padding:3rem 0}
+.landing-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,229,255,0.2);padding:5px 14px;border-radius:4px;margin-bottom:1.5rem;animation:pulseGlow 2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,0.2)}50%{box-shadow:0 0 0 8px rgba(0,229,255,0)}}
+.ldot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.landing-title{font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;line-height:1.05;color:#fff;margin-bottom:.75rem;letter-spacing:-.02em}
+.landing-title .acc{color:var(--cyan);position:relative}
+.landing-title .acc::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:1px}
+.landing-sub{font-size:15px;color:var(--text2);margin-bottom:2.5rem;max-width:520px}
+.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:600px;margin-bottom:2rem}
+.mode-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1rem;cursor:pointer;transition:all .2s;text-align:left}
+.mode-card:hover,.mode-card.sel{border-color:var(--cyan);background:rgba(0,229,255,0.05);box-shadow:0 0 16px rgba(0,229,255,0.08)}
+.mode-icon{font-size:1.6rem;margin-bottom:.4rem}
+.mode-name{font-size:14px;font-weight:700;color:#fff}
+.mode-desc{font-size:10px;color:var(--text2);font-family:var(--mono);margin-top:2px}
+.name-row{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem}
+.name-label{font-family:var(--mono);font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap}
+.name-input{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:11px 16px;color:#fff;font-family:var(--display);font-size:15px;font-weight:600;width:220px;outline:none;transition:all .2s}
+.name-input:focus{border-color:var(--cyan);box-shadow:0 0 16px rgba(0,229,255,0.08)}
 .name-input::placeholder{color:var(--text3)}
-.name-input:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,229,255,0.1)}
-.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px;margin:0 auto 2rem}
-.mode-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1.25rem;cursor:pointer;transition:all .2s;text-align:left}
-.mode-card:hover,.mode-card.selected{border-color:var(--cyan);background:rgba(0,229,255,0.05)}
-.mode-card.selected{box-shadow:0 0 20px rgba(0,229,255,0.1)}
-.mode-icon{font-size:1.8rem;margin-bottom:.5rem}
-.mode-name{font-size:15px;font-weight:700;color:#fff;margin-bottom:.25rem}
-.mode-desc{font-size:12px;color:var(--text2);font-family:var(--mono)}
-.start-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--cyan),var(--green));color:#000;font-family:var(--display);font-size:16px;font-weight:700;padding:16px 40px;border-radius:var(--r);border:none;cursor:pointer;transition:all .2s;letter-spacing:.02em}
-.start-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,255,0.3)}
-.start-btn:active{transform:translateY(0)}
-.start-btn .arrow{transition:transform .2s}
-.start-btn:hover .arrow{transform:translateX(4px)}
-.leaderboard-preview{margin-top:3rem;border-top:1px solid var(--border);padding-top:2rem}
-.section-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);margin-bottom:1rem}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:3rem}
+.cta-btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-size:15px;font-weight:700;padding:14px 32px;border-radius:var(--r);border:none;cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.cta-primary{background:linear-gradient(135deg,var(--cyan),var(--green));color:#000}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,229,255,0.3)}
+.cta-secondary{background:transparent;border:1px solid var(--border2);color:var(--text)}
+.cta-secondary:hover{background:var(--bg2)}
+.lb-mini{border-top:1px solid var(--border);padding-top:2rem}
+.section-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--text3);margin-bottom:.75rem}
 
-/* ===== QUIZ SCREEN ===== */
+/* ── QUIZ ── */
 #screen-quiz{padding:2rem 0}
-.quiz-topbar{display:flex;align-items:center;gap:16px;margin-bottom:2rem;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
-.quiz-chap{font-family:var(--mono);font-size:12px;color:var(--cyan);flex:1}
-.timer-wrap{display:flex;align-items:center;gap:8px}
-.timer-icon{font-size:14px}
-.timer-val{font-family:var(--mono);font-size:18px;font-weight:700;color:#fff;min-width:52px;text-align:right;transition:color .3s}
-.timer-val.warn{color:var(--amber);animation:timerWarn .5s ease-in-out infinite}
-.timer-val.danger{color:var(--red);animation:timerWarn .3s ease-in-out infinite}
-@keyframes timerWarn{0%,100%{opacity:1}50%{opacity:.5}}
-.qprogress-bar{height:3px;background:var(--bg3);border-radius:2px;margin-bottom:2rem;overflow:hidden}
-.qprogress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:2px;transition:width .4s ease}
-
-/* Chapter tabs */
-.chap-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
-.ctab{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.quiz-topbar{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;padding:10px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)}
+.quiz-chap-lbl{font-family:var(--mono);font-size:12px;color:var(--cyan);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.timer-wrap{display:flex;align-items:center;gap:6px}
+.timer-val{font-family:var(--mono);font-size:17px;font-weight:700;color:#fff;min-width:48px;text-align:right;transition:color .3s}
+.timer-val.warn{color:var(--amber);animation:tw .5s ease-in-out infinite}
+.timer-val.danger{color:var(--red);animation:tw .25s ease-in-out infinite}
+@keyframes tw{50%{opacity:.4}}
+.qprog-bar{height:3px;background:var(--bg3);border-radius:2px;margin-bottom:1.5rem;overflow:hidden}
+.qprog-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:2px;transition:width .4s ease}
+.ctabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1.25rem}
+.ctab{font-family:var(--mono);font-size:10px;padding:4px 10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;letter-spacing:.04em}
 .ctab:hover{border-color:var(--border2);color:var(--text2)}
-.ctab.active{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan)}
-.ctab.done{border-color:rgba(0,255,157,0.3);color:var(--green2)}
-
-/* Question card */
-.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;transition:border-color .3s}
-.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--green));opacity:0;transition:opacity .3s}
-.q-card.answering::before{opacity:1}
-.q-card.correct-card{border-color:rgba(0,255,157,0.4)}
-.q-card.wrong-card{border-color:rgba(255,77,109,0.4)}
-.q-header{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
-.q-num{font-family:var(--mono);font-size:11px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);color:var(--cyan);padding:4px 10px;border-radius:4px}
-.q-pts{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto}
-.q-text{font-size:17px;font-weight:600;color:#fff;line-height:1.5;margin-bottom:1.25rem}
-.q-formula{font-family:var(--mono);font-size:13px;color:var(--green);background:rgba(0,255,157,0.05);border:1px solid rgba(0,255,157,0.12);border-left:3px solid var(--green);padding:12px 16px;border-radius:0 var(--r) var(--r) 0;margin-bottom:1.5rem}
-
-/* Choices */
-.choices{display:flex;flex-direction:column;gap:10px}
-.choice{display:flex;align-items:flex-start;gap:14px;padding:14px 18px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:14px;font-family:var(--display);text-align:left;transition:all .2s;line-height:1.5;position:relative;overflow:hidden;width:100%}
-.choice::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(0,229,255,0.03));opacity:0;transition:opacity .2s}
-.choice:not(.answered):hover{border-color:var(--border2);color:var(--text);transform:translateX(4px)}
-.choice:not(.answered):hover::before{opacity:1}
-.choice-letter{font-family:var(--mono);font-size:11px;width:24px;height:24px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text3);margin-top:1px;transition:all .2s}
-.choice.correct-ans{background:rgba(0,255,157,0.08);border-color:rgba(0,255,157,0.5);color:var(--green);animation:correctPop .4s ease}
-.choice.correct-ans .choice-letter{background:rgba(0,255,157,0.15);border-color:var(--green);color:var(--green)}
-.choice.wrong-ans{background:rgba(255,77,109,0.08);border-color:rgba(255,77,109,0.5);color:var(--red);animation:wrongShake .4s ease}
-.choice.reveal-ans{background:rgba(0,255,157,0.04);border-color:rgba(0,255,157,0.25);color:rgba(0,255,157,0.6)}
-@keyframes correctPop{0%{transform:scale(1)}30%{transform:scale(1.02)}100%{transform:scale(1)}}
-@keyframes wrongShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-
-/* Explanation */
-.expl{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s}
-.expl.open{max-height:200px;padding:14px 18px;background:var(--bg3);border-radius:var(--r);border-left:3px solid var(--cyan);margin-top:12px}
-.expl-head{font-family:var(--mono);font-size:11px;margin-bottom:6px}
-.expl-head.ok{color:var(--green)}
-.expl-head.ko{color:var(--red)}
-.expl-body{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:8px}
-.expl-formula{font-family:var(--mono);font-size:12px;color:var(--cyan);background:rgba(0,229,255,0.05);padding:8px 12px;border-radius:6px;display:block}
-
-/* Points popup */
-.pts-popup{position:fixed;pointer-events:none;font-family:var(--mono);font-size:20px;font-weight:700;color:var(--green);z-index:500;transform:translate(-50%,-50%);animation:ptsFloat 1.2s ease forwards}
-.pts-popup.negative{color:var(--red)}
-@keyframes ptsFloat{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-120%) scale(.8)}}
-
-/* Navigation */
-.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem}
-.nav-btn{font-family:var(--mono);font-size:12px;padding:10px 22px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .2s;letter-spacing:.04em}
+.ctab.act{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan)}
+.ctab.done{border-color:rgba(0,255,157,0.3);color:var(--green)}
+.q-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:1.75rem;margin-bottom:1.25rem;position:relative;overflow:hidden;transition:border-color .25s}
+.q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--green));opacity:0;transition:opacity .25s}
+.q-card.live::before{opacity:1}
+.q-card.ok-card{border-color:rgba(0,255,157,0.4)}
+.q-card.ko-card{border-color:rgba(255,77,109,0.4)}
+.q-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.q-num{font-family:var(--mono);font-size:11px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);color:var(--cyan);padding:3px 9px;border-radius:4px}
+.q-pts-tag{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto}
+.q-text{font-size:16px;font-weight:600;color:#fff;line-height:1.55;margin-bottom:1rem}
+.q-formula{font-family:var(--mono);font-size:13px;color:var(--green);background:rgba(0,255,157,0.04);border:1px solid rgba(0,255,157,0.1);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 var(--r) var(--r) 0;margin-bottom:1.25rem}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:13px;font-family:var(--display);text-align:left;transition:all .18s;line-height:1.5;width:100%;position:relative;overflow:hidden}
+.choice:not(.answered):hover{border-color:var(--border2);color:var(--text);transform:translateX(3px)}
+.cletter{font-family:var(--mono);font-size:10px;width:22px;height:22px;border-radius:5px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text3);margin-top:1px;transition:all .18s}
+.choice.c-ok{background:rgba(0,255,157,0.07);border-color:rgba(0,255,157,0.45);color:var(--green);animation:cPop .35s ease}
+.choice.c-ok .cletter{background:rgba(0,255,157,0.15);border-color:var(--green);color:var(--green)}
+.choice.c-ko{background:rgba(255,77,109,0.07);border-color:rgba(255,77,109,0.45);color:var(--red);animation:cShake .4s ease}
+.choice.c-ko .cletter{background:rgba(255,77,109,0.15);border-color:var(--red);color:var(--red)}
+.choice.c-reveal{background:rgba(0,255,157,0.03);border-color:rgba(0,255,157,0.2);color:rgba(0,255,157,0.55)}
+@keyframes cPop{0%{transform:scale(1)}30%{transform:scale(1.015)}100%{transform:scale(1)}}
+@keyframes cShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.expl{max-height:0;overflow:hidden;transition:max-height .4s ease,margin .3s}
+.expl.open{max-height:220px;margin-top:10px}
+.expl-inner{padding:12px 16px;background:var(--bg3);border-radius:var(--r);border-left:3px solid var(--cyan)}
+.expl-head{font-family:var(--mono);font-size:11px;margin-bottom:5px}
+.expl-head.ok{color:var(--green)}.expl-head.ko{color:var(--red)}
+.expl-body{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:7px}
+.expl-f{font-family:var(--mono);font-size:11px;color:var(--cyan);background:rgba(0,229,255,0.05);padding:7px 10px;border-radius:5px;display:block}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem}
+.nav-btn{font-family:var(--mono);font-size:12px;padding:9px 20px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;letter-spacing:.04em}
 .nav-btn:hover{border-color:var(--border2);color:var(--text)}
-.nav-btn.primary{border-color:rgba(0,229,255,0.4);color:var(--cyan)}
-.nav-btn.primary:hover{background:rgba(0,229,255,0.08)}
-.q-dots{display:flex;gap:5px;flex-wrap:wrap;max-width:220px}
-.qdot{width:9px;height:9px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);cursor:pointer;transition:all .2s}
+.nav-btn.prim{border-color:rgba(0,229,255,0.4);color:var(--cyan)}
+.nav-btn.prim:hover{background:rgba(0,229,255,0.07)}
+.qdots{display:flex;gap:5px;flex-wrap:wrap;max-width:200px}
+.qdot{width:8px;height:8px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);cursor:pointer;transition:all .18s}
 .qdot:hover{border-color:var(--border2)}
-.qdot.cur{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 8px rgba(0,229,255,0.5)}
+.qdot.cur{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 6px rgba(0,229,255,0.5)}
 .qdot.ok{background:var(--green);border-color:var(--green)}
 .qdot.ko{background:var(--red);border-color:var(--red)}
 
-/* ===== RESULT SCREEN ===== */
-#screen-result{padding:3rem 0}
-.result-header{text-align:center;margin-bottom:3rem}
+/* ── SCORE FLOATER ── */
+.score-fl{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:200;background:rgba(13,17,23,0.9);border:1px solid var(--border2);border-radius:40px;padding:9px 22px;display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:12px;backdrop-filter:blur(10px)}
+.sf-v{font-size:15px;font-weight:700}
+.sf-sep{width:1px;height:18px;background:var(--border)}
+
+/* ── COMBO ── */
+.combo-pill{position:fixed;top:70px;right:20px;z-index:200;font-family:var(--mono);font-size:13px;font-weight:700;padding:7px 14px;background:var(--bg2);border:1px solid rgba(255,209,102,0.3);border-radius:var(--r);opacity:0;transform:translateX(20px);transition:all .3s}
+.combo-pill.show{opacity:1;transform:translateX(0)}
+.combo-n{color:var(--amber)}
+
+/* ── FLASH ── */
+.streak-flash{position:fixed;inset:0;z-index:800;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0}
+.streak-flash.gf{animation:flashG .5s ease forwards}
+.streak-flash.rf{animation:flashR .5s ease forwards}
+@keyframes flashG{20%{opacity:1;background:rgba(0,255,157,0.05)}100%{opacity:0}}
+@keyframes flashR{20%{opacity:1;background:rgba(255,77,109,0.05)}100%{opacity:0}}
+.streak-txt{font-family:var(--mono);font-size:clamp(1.5rem,4vw,2.8rem);font-weight:700;animation:stkPop .45s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes stkPop{from{transform:scale(0)}to{transform:scale(1)}}
+
+/* ── PTS POPUP ── */
+.pts-pop{position:fixed;pointer-events:none;font-family:var(--mono);font-size:18px;font-weight:700;color:var(--green);z-index:600;transform:translate(-50%,-50%);animation:ptsFl 1.1s ease forwards}
+.pts-pop.neg{color:var(--red)}
+@keyframes ptsFl{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-130%) scale(.75)}}
+
+/* ── RESULT ── */
+#screen-result{padding:2.5rem 0}
+.result-header{text-align:center;margin-bottom:2.5rem}
 .result-grade{font-family:var(--mono);font-size:7rem;font-weight:700;line-height:1;animation:gradeIn .6s cubic-bezier(.175,.885,.32,1.275)}
-@keyframes gradeIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes gradeIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
 .result-grade.S{color:var(--cyan);text-shadow:0 0 40px rgba(0,229,255,0.4)}
 .result-grade.A{color:var(--green);text-shadow:0 0 40px rgba(0,255,157,0.4)}
 .result-grade.B{color:var(--amber)}
 .result-grade.C{color:var(--red)}
-.result-rank-label{font-size:18px;color:var(--text2);margin-top:.5rem}
-.result-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
-.rstat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1rem;text-align:center}
-.rstat-val{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:#fff}
-.rstat-val.green{color:var(--green)}
-.rstat-val.cyan{color:var(--cyan)}
-.rstat-label{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem}
-.save-score-form{display:flex;flex-direction:column;align-items:center;gap:12px;padding:2rem;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:2rem;text-align:center}
-.save-title{font-size:18px;font-weight:700;color:#fff}
-.save-sub{font-size:13px;color:var(--text2);font-family:var(--mono)}
-.save-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--cyan),var(--green));color:#000;font-family:var(--display);font-size:14px;font-weight:700;padding:12px 28px;border-radius:var(--r);border:none;cursor:pointer;transition:all .2s}
-.save-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,229,255,0.3)}
-.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:2rem}
-.action-btn{font-family:var(--mono);font-size:13px;padding:12px 24px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text);cursor:pointer;transition:all .2s}
-.action-btn:hover{background:var(--bg2)}
-.action-btn.primary-action{border-color:rgba(0,229,255,0.4);color:var(--cyan)}
+.result-lbl{font-size:16px;color:var(--text2);margin-top:.4rem}
+.res-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:2rem}
+.rstat{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:.9rem;text-align:center}
+.rstat-v{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:#fff}
+.rstat-v.c{color:var(--cyan)}.rstat-v.g{color:var(--green)}.rstat-v.a{color:var(--amber)}.rstat-v.p{color:var(--purple)}
+.rstat-l{font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-top:.2rem}
+.save-box{display:flex;flex-direction:column;align-items:center;gap:12px;padding:1.75rem;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r2);margin-bottom:1.5rem;text-align:center}
+.save-box .save-title{font-size:17px;font-weight:700;color:#fff}
+.save-box .save-sub{font-size:12px;color:var(--text2);font-family:var(--mono)}
+.res-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.raction{font-family:var(--mono);font-size:12px;padding:10px 22px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text);cursor:pointer;transition:all .18s}
+.raction:hover{background:var(--bg2)}
+.raction.prim{border-color:rgba(0,229,255,0.4);color:var(--cyan)}
+/* wrong answers review */
+.review-section{margin-top:2rem;border-top:1px solid var(--border);padding-top:1.5rem}
+.review-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:8px}
+.review-item{background:var(--bg2);border:1px solid rgba(255,77,109,0.2);border-radius:var(--r);padding:1rem;margin-bottom:8px}
+.review-q{font-size:13px;color:var(--text);margin-bottom:.5rem}
+.review-your{font-size:12px;color:var(--red);font-family:var(--mono);margin-bottom:.25rem}
+.review-correct{font-size:12px;color:var(--green);font-family:var(--mono);margin-bottom:.5rem}
+.review-f{font-size:11px;color:var(--cyan);font-family:var(--mono);background:rgba(0,229,255,0.05);padding:5px 8px;border-radius:4px}
 
-/* ===== LEADERBOARD ===== */
+/* ── LEADERBOARD ── */
 #screen-leaderboard{padding:2rem 0}
-.lb-header{display:flex;align-items:center;gap:16px;margin-bottom:2rem}
-.lb-title{font-size:2rem;font-weight:800;color:#fff}
-.lb-back{font-family:var(--mono);font-size:12px;padding:8px 16px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;margin-left:auto;transition:all .2s}
-.lb-back:hover{border-color:var(--border2);color:var(--text)}
-.lb-tabs{display:flex;gap:8px;margin-bottom:1.5rem}
-.lb-tab{font-family:var(--mono);font-size:12px;padding:7px 16px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s}
-.lb-tab.active{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan)}
-.lb-list{display:flex;flex-direction:column;gap:8px}
-.lb-row{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);transition:all .2s;animation:slideIn .3s ease both}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.lb-header{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem}
+.lb-title{font-size:1.8rem;font-weight:800;color:#fff}
+.lb-tabs{display:flex;gap:7px;margin-bottom:1.25rem;flex-wrap:wrap}
+.lb-tab{font-family:var(--mono);font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s}
+.lb-tab.act{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan)}
+.lb-list{display:flex;flex-direction:column;gap:7px}
+.lb-row{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);transition:all .18s;animation:slideIn .3s ease both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
 .lb-row:hover{border-color:var(--border2)}
-.lb-row.top1{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.04)}
-.lb-row.top2{border-color:rgba(0,255,157,0.3);background:rgba(0,255,157,0.03)}
-.lb-row.top3{border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.03)}
-.lb-rank{font-family:var(--mono);font-size:18px;font-weight:700;width:40px;text-align:center}
-.lb-rank.r1{color:var(--cyan)}
-.lb-rank.r2{color:var(--green)}
-.lb-rank.r3{color:var(--amber)}
-.lb-rank.rn{color:var(--text3);font-size:14px}
-.lb-name{font-size:15px;font-weight:700;color:#fff;flex:1}
-.lb-mode{font-family:var(--mono);font-size:10px;color:var(--text3);background:var(--bg3);padding:2px 8px;border-radius:4px}
-.lb-score-wrap{text-align:right}
-.lb-score{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--cyan)}
-.lb-time{font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:2px}
-.lb-grade{font-family:var(--mono);font-size:16px;font-weight:700;width:32px;text-align:center}
-.lb-grade.S{color:var(--cyan)}
-.lb-grade.A{color:var(--green)}
-.lb-grade.B{color:var(--amber)}
-.lb-grade.C{color:var(--red)}
-.lb-empty{text-align:center;padding:3rem;color:var(--text3);font-family:var(--mono);font-size:14px}
-.clear-btn{font-family:var(--mono);font-size:11px;padding:6px 14px;border-radius:6px;border:1px solid rgba(255,77,109,0.3);background:transparent;color:rgba(255,77,109,0.7);cursor:pointer;transition:all .2s;margin-top:1rem}
-.clear-btn:hover{background:rgba(255,77,109,0.08)}
+.lb-row.t1{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.03)}
+.lb-row.t2{border-color:rgba(0,255,157,0.3);background:rgba(0,255,157,0.025)}
+.lb-row.t3{border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.025)}
+.lb-rank{font-family:var(--mono);font-size:16px;font-weight:700;width:36px;text-align:center}
+.lb-rank.r1{color:var(--cyan)}.lb-rank.r2{color:var(--green)}.lb-rank.r3{color:var(--amber)}.lb-rank.rn{color:var(--text3);font-size:12px}
+.lb-name{font-size:14px;font-weight:700;color:#fff;flex:1}
+.lb-mode-tag{font-family:var(--mono);font-size:9px;color:var(--text3);background:var(--bg3);padding:2px 7px;border-radius:3px}
+.lb-sc{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--cyan);text-align:right}
+.lb-meta{font-family:var(--mono);font-size:10px;color:var(--text3);text-align:right}
+.lb-g{font-family:var(--mono);font-size:14px;font-weight:700;width:26px;text-align:center}
+.lb-g.S{color:var(--cyan)}.lb-g.A{color:var(--green)}.lb-g.B{color:var(--amber)}.lb-g.C{color:var(--red)}
+.lb-empty{text-align:center;padding:2.5rem;color:var(--text3);font-family:var(--mono);font-size:13px}
+.clear-btn{font-family:var(--mono);font-size:11px;padding:6px 13px;border-radius:6px;border:1px solid rgba(255,77,109,0.25);background:transparent;color:rgba(255,77,109,0.6);cursor:pointer;margin-top:.75rem}
 
-/* Combo counter */
-.combo-bar{position:fixed;top:20px;right:20px;z-index:100;font-family:var(--mono);font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);transition:all .3s;opacity:0;transform:translateX(20px)}
-.combo-bar.show{opacity:1;transform:translateX(0)}
-.combo-fire{animation:fireAnim .3s ease-in-out infinite alternate}
-@keyframes fireAnim{from{transform:scale(1)}to{transform:scale(1.2)}}
-.combo-num{color:var(--amber)}
+/* ── FLASHCARDS ── */
+#screen-flash{padding:2rem 0}
+.flash-header{margin-bottom:2rem}
+.flash-title{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:.5rem}
+.flash-sub{font-size:14px;color:var(--text2)}
+.flash-chap-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem}
+.flash-ctab{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s}
+.flash-ctab:hover{border-color:var(--border2);color:var(--text2)}
+.flash-ctab.act{background:rgba(0,229,255,0.1);border-color:var(--cyan);color:var(--cyan)}
+.flash-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:1.5rem}
+/* 3D flip card */
+.fc-wrap{perspective:900px;cursor:pointer;height:200px}
+.fc-wrap:hover .fc-inner{box-shadow:0 8px 32px rgba(0,229,255,0.1)}
+.fc-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1),box-shadow .2s;transform-style:preserve-3d;border-radius:var(--r2)}
+.fc-inner.flipped{transform:rotateY(180deg)}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:var(--r2);backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;padding:1.25rem 1.5rem;border:1px solid var(--border)}
+.fc-front{background:var(--bg2)}
+.fc-back{background:var(--bg3);transform:rotateY(180deg);border-color:var(--border2)}
+.fc-tag{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;display:flex;align-items:center;gap:6px}
+.fc-tag-dot{width:5px;height:5px;border-radius:50%}
+.fc-question{font-size:14px;font-weight:600;color:#fff;line-height:1.45;margin-bottom:.75rem}
+.fc-formula-front{font-family:var(--mono);font-size:12px;color:var(--cyan);background:rgba(0,229,255,0.05);padding:6px 10px;border-radius:5px;border-left:2px solid var(--cyan)}
+.fc-hint{font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:auto}
+.fc-answer{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:.75rem}
+.fc-formula-back{font-family:var(--mono);font-size:12px;color:var(--green);background:rgba(0,255,157,0.05);padding:7px 10px;border-radius:5px;border-left:2px solid var(--green)}
+.fc-actions{display:flex;gap:8px;margin-top:.75rem}
+.fc-action-btn{flex:1;font-family:var(--mono);font-size:10px;padding:5px 0;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s}
+.fc-action-btn.yes{border-color:rgba(0,255,157,0.3);color:var(--green)}
+.fc-action-btn.yes:hover{background:rgba(0,255,157,0.07)}
+.fc-action-btn.no{border-color:rgba(255,77,109,0.3);color:var(--red)}
+.fc-action-btn.no:hover{background:rgba(255,77,109,0.07)}
+.flash-progress{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;display:flex;align-items:center;gap:16px;margin-bottom:1.5rem}
+.fp-label{font-family:var(--mono);font-size:12px;color:var(--text2)}
+.fp-bar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.fp-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:3px;transition:width .4s ease}
+.fp-count{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cyan)}
+.fc-known{border-color:rgba(0,255,157,0.3);opacity:.6}
+.flash-study-btn{font-family:var(--mono);font-size:12px;padding:9px 20px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text);cursor:pointer;transition:all .2s;margin-right:8px}
+.flash-study-btn:hover{background:var(--bg2)}
+.flash-study-btn.active-mode{background:rgba(0,229,255,0.08);border-color:var(--cyan);color:var(--cyan)}
 
-/* Streak indicator */
-.streak-flash{position:fixed;inset:0;z-index:999;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0}
-.streak-flash.green-flash{animation:flashGreen .5s ease forwards}
-.streak-flash.red-flash{animation:flashRed .5s ease forwards}
-@keyframes flashGreen{0%{opacity:0}20%{opacity:1;background:rgba(0,255,157,0.06)}100%{opacity:0}}
-@keyframes flashRed{0%{opacity:0}20%{opacity:1;background:rgba(255,77,109,0.06)}100%{opacity:0}}
-.streak-text{font-family:var(--mono);font-size:clamp(1.5rem,4vw,3rem);font-weight:700;animation:streakPop .5s cubic-bezier(.175,.885,.32,1.275)}
-@keyframes streakPop{from{transform:scale(0)}to{transform:scale(1)}}
-
-/* Score floater */
-.score-floater{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100;background:var(--bg2);border:1px solid var(--border2);border-radius:40px;padding:10px 24px;display:flex;align-items:center;gap:20px;font-family:var(--mono);font-size:13px;backdrop-filter:blur(10px)}
-.sf-item{display:flex;align-items:center;gap:6px}
-.sf-val{font-size:16px;font-weight:700}
-.sf-val.c{color:var(--cyan)}
-.sf-val.g{color:var(--green)}
-.sf-val.a{color:var(--amber)}
-.sf-sep{width:1px;height:20px;background:var(--border)}
+/* STUDY MODE (single card) */
+.study-modal{position:fixed;inset:0;z-index:700;background:rgba(6,8,16,0.9);backdrop-filter:blur(8px);display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem}
+.study-modal.open{display:flex}
+.study-card-wrap{perspective:1000px;width:100%;max-width:480px;height:300px;cursor:pointer;margin-bottom:1.5rem}
+.study-card-inner{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d;border-radius:var(--r2)}
+.study-card-inner.flipped{transform:rotateY(180deg)}
+.study-f,.study-b{position:absolute;inset:0;border-radius:var(--r2);backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center;padding:2rem;border:1px solid var(--border2)}
+.study-f{background:var(--bg2)}
+.study-b{background:var(--bg3);transform:rotateY(180deg)}
+.study-q{font-size:18px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:.75rem}
+.study-ff{font-family:var(--mono);font-size:14px;color:var(--cyan);background:rgba(0,229,255,0.06);padding:8px 12px;border-radius:6px}
+.study-hint{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:auto}
+.study-ans{font-size:15px;color:var(--text);line-height:1.5;margin-bottom:.75rem}
+.study-fb{font-family:var(--mono);font-size:13px;color:var(--green);background:rgba(0,255,157,0.06);padding:8px 12px;border-radius:6px}
+.study-nav{display:flex;gap:12px;align-items:center}
+.study-nav-btn{font-family:var(--mono);font-size:13px;padding:10px 24px;border-radius:var(--r);border:1px solid var(--border2);background:transparent;color:var(--text);cursor:pointer;transition:all .2s}
+.study-nav-btn.ok{border-color:rgba(0,255,157,0.4);color:var(--green)}
+.study-nav-btn.ok:hover{background:rgba(0,255,157,0.07)}
+.study-nav-btn.ko{border-color:rgba(255,77,109,0.4);color:var(--red)}
+.study-nav-btn.ko:hover{background:rgba(255,77,109,0.07)}
+.study-progress{font-family:var(--mono);font-size:12px;color:var(--text2);margin-bottom:.75rem}
+.study-close{position:absolute;top:20px;right:20px;font-family:var(--mono);font-size:12px;padding:6px 14px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer}
 
 @media(max-width:600px){
-  .result-stats{grid-template-columns:1fr 1fr}
-  .mode-cards{grid-template-columns:1fr}
-  .score-floater{font-size:11px;padding:8px 16px;gap:12px}
-  .lb-row{flex-wrap:wrap}
+  .mode-grid{grid-template-columns:1fr 1fr}
+  .res-stats{grid-template-columns:1fr 1fr}
+  .flash-grid{grid-template-columns:1fr}
+  .score-fl{font-size:10px;padding:7px 14px;gap:10px}
+  .topnav{padding:8px 1rem;gap:5px}
+  .topnav-btn{font-size:10px;padding:5px 9px}
 }
 </style>
 </head>
@@ -244,542 +283,658 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 <div class="grid-bg"></div>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
 <div id="streak-flash" class="streak-flash"></div>
-<div id="combo-bar" class="combo-bar"><span class="combo-fire">🔥</span> Combo <span id="combo-num" class="combo-num">×2</span></div>
+<div id="combo-pill" class="combo-pill">🔥 Combo <span id="combo-n" class="combo-n">×2</span></div>
+
+<div class="topnav">
+  <div class="topnav-brand">BTS CIEL · Maths</div>
+  <button class="topnav-btn" id="tnav-home" onclick="goHome()">⌂ Accueil</button>
+  <button class="topnav-btn" id="tnav-qcm" onclick="goToQCMSetup()">🎯 QCM</button>
+  <button class="topnav-btn" id="tnav-flash" onclick="showFlash()">🃏 Flashcards</button>
+  <button class="topnav-btn" id="tnav-lb" onclick="showLeaderboard()">🏆 Classement</button>
+</div>
 
 <div class="wrap">
 
-<!-- ===== LANDING ===== -->
+<!-- ══ LANDING ══ -->
 <div id="screen-landing" class="screen active">
-  <div style="padding:4rem 0;text-align:center">
-    <div class="landing-badge"><span class="landing-dot"></span> BTS CIEL · Option Électronique</div>
-    <h1 class="landing-title">QCM <span class="accent">Maths</span><br>Préparation CCF</h1>
-    <p class="landing-sub">7 chapitres · 31 questions · Timer · Classement · Formules intégrées</p>
-    <div class="name-form">
-      <div class="name-label">Ton pseudo</div>
-      <input class="name-input" id="player-name" type="text" placeholder="ex: ismooro" maxlength="20">
+  <div style="padding:2.5rem 0">
+    <div class="landing-badge"><span class="ldot"></span> BTS CIEL · Option Électronique · 2ᵉ année</div>
+    <h1 class="landing-title">QCM + Flashcards<br><span class="acc">Maths CCF</span></h1>
+    <p class="landing-sub">9 chapitres · 50 questions QCM · 80+ flashcards · Timer · Classement · Séries de Fourier · Laplace · Transform. en Z</p>
+    <div class="name-row">
+      <span class="name-label">Pseudo</span>
+      <input class="name-input" id="player-name" type="text" placeholder="ismooro" maxlength="20">
     </div>
     <div style="margin-bottom:1.5rem">
-      <div class="section-label" style="text-align:center;margin-bottom:1rem">Mode de jeu</div>
-      <div class="mode-cards">
-        <div class="mode-card selected" data-mode="normal" onclick="selectMode('normal')">
-          <div class="mode-icon">🎯</div>
-          <div class="mode-name">Normal</div>
-          <div class="mode-desc">90s / question<br>+10pts correct</div>
-        </div>
-        <div class="mode-card" data-mode="speed" onclick="selectMode('speed')">
-          <div class="mode-icon">⚡</div>
-          <div class="mode-name">Speed</div>
-          <div class="mode-desc">30s / question<br>Bonus rapidité</div>
-        </div>
-        <div class="mode-card" data-mode="zen" onclick="selectMode('zen')">
-          <div class="mode-icon">🧘</div>
-          <div class="mode-name">Zen</div>
-          <div class="mode-desc">Sans timer<br>Focus formules</div>
-        </div>
-        <div class="mode-card" data-mode="exam" onclick="selectMode('exam')">
-          <div class="mode-icon">📋</div>
-          <div class="mode-name">Exam</div>
-          <div class="mode-desc">60s · pas d'expl<br>Simulation CCF</div>
-        </div>
+      <div class="section-label">Mode QCM</div>
+      <div class="mode-grid">
+        <div class="mode-card sel" data-mode="normal" onclick="selMode('normal')"><div class="mode-icon">🎯</div><div class="mode-name">Normal</div><div class="mode-desc">90s · +10pts</div></div>
+        <div class="mode-card" data-mode="speed" onclick="selMode('speed')"><div class="mode-icon">⚡</div><div class="mode-name">Speed</div><div class="mode-desc">30s · bonus</div></div>
+        <div class="mode-card" data-mode="zen" onclick="selMode('zen')"><div class="mode-icon">🧘</div><div class="mode-name">Zen</div><div class="mode-desc">Sans timer</div></div>
+        <div class="mode-card" data-mode="exam" onclick="selMode('exam')"><div class="mode-icon">📋</div><div class="mode-name">Exam</div><div class="mode-desc">60s · CCF</div></div>
       </div>
     </div>
-    <button class="start-btn" onclick="startQuiz()">Démarrer <span class="arrow">→</span></button>
-
-    <div class="leaderboard-preview" id="lb-preview">
-      <div class="section-label">🏆 Top classement</div>
-      <div id="lb-preview-list"></div>
-      <div style="margin-top:1rem">
-        <button class="action-btn" onclick="showLeaderboard()">Voir le classement complet →</button>
-      </div>
+    <div class="cta-row">
+      <button class="cta-btn cta-primary" onclick="startQuiz()">Démarrer le QCM →</button>
+      <button class="cta-btn cta-secondary" onclick="showFlash()">🃏 Flashcards</button>
+    </div>
+    <div class="lb-mini">
+      <div class="section-label">🏆 Top 5 classement</div>
+      <div id="lb-preview"></div>
+      <div style="margin-top:.75rem"><button class="raction" onclick="showLeaderboard()">Voir tout →</button></div>
     </div>
   </div>
 </div>
 
-<!-- ===== QUIZ ===== -->
+<!-- ══ QUIZ ══ -->
 <div id="screen-quiz" class="screen">
   <div class="quiz-topbar">
-    <div class="quiz-chap" id="quiz-chap-label">—</div>
-    <div class="timer-wrap">
-      <span class="timer-icon">⏱</span>
-      <span class="timer-val" id="timer-display">—</span>
-    </div>
+    <div class="quiz-chap-lbl" id="quiz-chap-lbl">—</div>
+    <div class="timer-wrap"><span>⏱</span><span class="timer-val" id="timer-disp">—</span></div>
   </div>
-  <div class="qprogress-bar"><div class="qprogress-fill" id="qprog-fill" style="width:0%"></div></div>
-  <div class="chap-tabs" id="chap-tabs"></div>
+  <div class="qprog-bar"><div class="qprog-fill" id="qprog-fill" style="width:0%"></div></div>
+  <div class="ctabs" id="ctabs"></div>
   <div id="q-area"></div>
   <div class="q-nav">
     <button class="nav-btn" onclick="prevQ()">← Préc.</button>
-    <div class="q-dots" id="q-dots"></div>
-    <button class="nav-btn primary" id="next-btn" onclick="nextOrFinish()">Suiv. →</button>
+    <div class="qdots" id="qdots"></div>
+    <button class="nav-btn prim" id="next-btn" onclick="nextOrFinish()">Suiv. →</button>
   </div>
 </div>
 
-<!-- ===== RESULT ===== -->
+<!-- ══ RESULT ══ -->
 <div id="screen-result" class="screen">
   <div class="result-header">
-    <div class="result-grade" id="result-grade">S</div>
-    <div class="result-rank-label" id="result-label">EXCELLENT</div>
+    <div class="result-grade" id="res-grade">S</div>
+    <div class="result-lbl" id="res-lbl">EXCELLENT</div>
   </div>
-  <div class="result-stats" id="result-stats"></div>
-  <div class="save-score-form" id="save-form">
+  <div class="res-stats" id="res-stats"></div>
+  <div class="save-box" id="save-box">
     <div class="save-title">💾 Enregistrer ton score</div>
-    <div class="save-sub" id="save-sub-text">—</div>
-    <button class="save-btn" onclick="saveScore()">Sauvegarder au classement 🏆</button>
+    <div class="save-sub" id="save-sub">—</div>
+    <button class="cta-btn cta-primary" onclick="doSaveScore()">Sauvegarder 🏆</button>
   </div>
-  <div class="result-actions">
-    <button class="action-btn primary-action" onclick="showLeaderboard()">🏆 Classement</button>
-    <button class="action-btn" onclick="restartSameMode()">↺ Rejouer</button>
-    <button class="action-btn" onclick="goHome()">⌂ Accueil</button>
+  <div class="res-actions">
+    <button class="raction prim" onclick="showLeaderboard()">🏆 Classement</button>
+    <button class="raction" onclick="restartQuiz()">↺ Rejouer</button>
+    <button class="raction" onclick="showFlash()">🃏 Flashcards</button>
+    <button class="raction" onclick="goHome()">⌂ Accueil</button>
   </div>
+  <div class="review-section" id="review-section"></div>
 </div>
 
-<!-- ===== LEADERBOARD ===== -->
+<!-- ══ LEADERBOARD ══ -->
 <div id="screen-leaderboard" class="screen">
   <div class="lb-header">
     <div style="font-size:2rem">🏆</div>
     <div class="lb-title">Classement</div>
-    <button class="lb-back" onclick="goHome()">← Retour</button>
   </div>
-  <div class="lb-tabs">
-    <button class="lb-tab active" onclick="filterLb('all',this)">Tous</button>
+  <div class="lb-tabs" id="lb-tabs">
+    <button class="lb-tab act" onclick="filterLb('all',this)">Tous</button>
     <button class="lb-tab" onclick="filterLb('normal',this)">Normal</button>
     <button class="lb-tab" onclick="filterLb('speed',this)">Speed</button>
     <button class="lb-tab" onclick="filterLb('zen',this)">Zen</button>
     <button class="lb-tab" onclick="filterLb('exam',this)">Exam</button>
   </div>
   <div class="lb-list" id="lb-list"></div>
-  <div style="text-align:center">
-    <button class="clear-btn" onclick="clearLb()">🗑 Effacer le classement</button>
+  <div style="text-align:center"><button class="clear-btn" onclick="clearLb()">🗑 Effacer</button></div>
+</div>
+
+<!-- ══ FLASHCARDS ══ -->
+<div id="screen-flash" class="screen">
+  <div class="flash-header">
+    <div class="flash-title">🃏 Flashcards</div>
+    <div class="flash-sub">Clique sur une carte pour révéler la réponse · 80+ formules · BTS CIEL Groupement A</div>
   </div>
+  <div class="flash-progress">
+    <div class="fp-label">Mémorisées</div>
+    <div class="fp-bar"><div class="fp-fill" id="fp-fill" style="width:0%"></div></div>
+    <div class="fp-count" id="fp-count">0 / 0</div>
+    <button class="flash-study-btn" onclick="startStudyMode()" id="study-mode-btn">Mode étude ▶</button>
+    <button class="flash-study-btn" onclick="resetFlashProgress()">↺ Reset</button>
+  </div>
+  <div class="flash-chap-tabs" id="flash-ctabs"></div>
+  <div class="flash-grid" id="flash-grid"></div>
 </div>
 
 </div><!-- /wrap -->
 
 <!-- Score floater -->
-<div class="score-floater" id="score-floater" style="display:none">
-  <div class="sf-item"><span>Score</span><span class="sf-val c" id="sf-score">0</span></div>
+<div class="score-fl" id="score-fl" style="display:none">
+  <div>Score <span class="sf-v" style="color:var(--cyan)" id="sf-sc">0</span></div>
   <div class="sf-sep"></div>
-  <div class="sf-item"><span>✓</span><span class="sf-val g" id="sf-correct">0</span></div>
+  <div>✓ <span class="sf-v" style="color:var(--green)" id="sf-ok">0</span></div>
   <div class="sf-sep"></div>
-  <div class="sf-item"><span>🔥</span><span class="sf-val a" id="sf-streak">0</span></div>
+  <div>🔥 <span class="sf-v" style="color:var(--amber)" id="sf-combo">0</span></div>
+</div>
+
+<!-- Study Mode Modal -->
+<div class="study-modal" id="study-modal">
+  <button class="study-close" onclick="closeStudy()">✕ Fermer</button>
+  <div class="study-progress" id="study-prog">Carte 1 / 10</div>
+  <div class="study-card-wrap" onclick="flipStudyCard()">
+    <div class="study-card-inner" id="study-inner">
+      <div class="study-f" id="study-front"></div>
+      <div class="study-b" id="study-back"></div>
+    </div>
+  </div>
+  <div class="study-nav">
+    <button class="study-nav-btn ko" onclick="studyAnswer(false)">✗ À revoir</button>
+    <button class="study-nav-btn" onclick="flipStudyCard()">↻ Retourner</button>
+    <button class="study-nav-btn ok" onclick="studyAnswer(true)">✓ Connu</button>
+  </div>
 </div>
 
 <script>
-// ===== DATA =====
-const CHAPTERS = [
-  {id:"complexes",label:"Complexes",icon:"ℂ",questions:[
-    {q:"Quelle est la forme algébrique d'un nombre complexe ?",f:"z = ?",choices:["z = a + ib,  a ∈ ℝ, b ∈ ℝ","z = r·eⁱᶿ uniquement","z = (a ; b) polaire seulement","z = a − ib uniquement"],c:0,expl:"Un complexe s'écrit z = a + ib où a = Re(z) est la partie réelle et b = Im(z) la partie imaginaire.",f2:"a = Re(z), b = Im(z), i² = −1"},
-    {q:"Quel est le module d'un nombre complexe z = a + ib ?",f:"|z| = ?",choices:["|z| = a + b","|z| = √(a² + b²)","|z| = a² + b²","|z| = |a| + |b|"],c:1,expl:"Le module représente la distance de z à l'origine dans le plan complexe.",f2:"|z| = √(a² + b²)"},
-    {q:"Forme exponentielle d'Euler : un complexe de module r et d'argument θ s'écrit ?",f:"z = ?",choices:["r(cos θ + sin θ)","r·eⁱᶿ = r(cos θ + i sin θ)","eʳ⁺ⁱᶿ","r + eⁱᶿ"],c:1,expl:"La forme exponentielle z = r·eⁱᶿ est essentielle en électronique pour les impédances et les déphasages.",f2:"z = r·eⁱᶿ = r(cos θ + i sin θ)"},
-    {q:"Le conjugué z̄ de z = a + ib est :",f:"z̄ = ?",choices:["−a − ib","a − ib","−a + ib","|z|"],c:1,expl:"Le conjugué change le signe de la partie imaginaire. Propriété clé : z·z̄ = |z|² = a² + b².",f2:"z̄ = a − ib  ⟹  z·z̄ = |z|²"},
-    {q:"Formule de Moivre : comment élever un complexe à la puissance n ?",f:"(r·eⁱᶿ)ⁿ = ?",choices:["r·eⁱⁿᶿ","rⁿ·eⁱⁿᶿ","rⁿ·eⁱᶿ/ⁿ","n·r·eⁱᶿ"],c:1,expl:"On élève le module à n et on multiplie l'argument par n. Très utile pour calculer des puissances de complexes.",f2:"(r·eⁱᶿ)ⁿ = rⁿ·eⁱⁿᶿ = rⁿ(cos nθ + i sin nθ)"},
-    {q:"En électronique (j = √−1), l'impédance d'un condensateur C à la pulsation ω est :",f:"Z_C = ?",choices:["jCω","1/(jCω)","jLω","R"],c:1,expl:"L'impédance capacitive est l'inverse de jCω. Elle diminue quand ω augmente (condensateur passant en HF).",f2:"Z_C = 1/(jCω)  —  Z_L = jLω  —  Z_R = R"}
+// ══════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════
+const LETTERS=['A','B','C','D'];
+
+// ─── QCM DATA ───
+const CHAPTERS=[
+  {id:'complexes',label:'Complexes',icon:'ℂ',color:'var(--cyan)',questions:[
+    {q:"Forme algébrique d'un nombre complexe ?",f:"z = ?",choices:["z = a + ib  (a,b ∈ ℝ)","z = r·eⁱᶿ uniquement","z = (r ; θ) polaire","z = a − ib uniquement"],c:0,expl:"z = a+ib avec a = Re(z) partie réelle et b = Im(z) partie imaginaire. i² = −1.",f2:"z = a+ib  —  i²=−1  —  Re(z)=a, Im(z)=b"},
+    {q:"Module d'un nombre complexe z = a + ib ?",f:"|z| = ?",choices:["|z| = a+b","|z| = √(a²+b²)","|z| = a²+b²","|z| = |a|+|b|"],c:1,expl:"Le module représente la distance de z à l'origine dans le plan de Gauss.",f2:"|z| = √(a²+b²)"},
+    {q:"Argument θ d'un complexe z = a + ib (forme trigonométrique) ?",f:"z = r(cosθ + i sinθ)",choices:["θ = arctan(a/b)","θ = arctan(b/a) (avec signe de a)","θ = |b/a|","θ = a/r"],c:1,expl:"L'argument θ ∈ ]−π ; π] est l'angle du vecteur OM. On tient compte du quadrant pour la détermination.",f2:"cos θ = a/r,  sin θ = b/r,  r = |z|"},
+    {q:"Forme exponentielle (Euler) d'un complexe de module r, argument θ ?",f:"z = ?",choices:["r(cosθ + sinθ)","r·eⁱᶿ","eʳ⁺ⁱᶿ","r + eⁱᶿ"],c:1,expl:"La forme exponentielle z = r·eⁱᶿ est la plus compacte. Indispensable en électronique pour les impédances.",f2:"z = r·eⁱᶿ = r(cosθ + i sinθ)"},
+    {q:"Conjugué z̄ de z = a + ib et propriété z·z̄ = ?",f:"z̄ = ?",choices:["−a − ib","a − ib","−a + ib","|z|"],c:1,expl:"Le conjugué change le signe de Im(z). Propriété clé : z·z̄ = |z|² = a²+b². Utilisé pour diviser des complexes.",f2:"z̄ = a−ib  ⟹  z·z̄ = |z|² = a²+b²"},
+    {q:"Formule de Moivre : (r·eⁱᶿ)ⁿ = ?",f:"(r·eⁱᶿ)ⁿ",choices:["r·eⁱⁿᶿ","rⁿ·eⁱⁿᶿ","rⁿ·eⁱᶿ/ⁿ","n·r·eⁱᶿ"],c:1,expl:"On élève le module à n et on multiplie l'argument par n. Très utile pour calculer des racines nèmes.",f2:"(r·eⁱᶿ)ⁿ = rⁿ·eⁱⁿᶿ = rⁿ(cos nθ + i sin nθ)"},
+    {q:"En électronique (j = √−1), impédances complexes : Z_L et Z_C à la pulsation ω ?",f:"",choices:["Z_L = jω/L,  Z_C = jωC","Z_L = jLω,  Z_C = 1/(jCω)","Z_L = L/jω,  Z_C = jCω","Z_L = jLω,  Z_C = jCω"],c:1,expl:"Z_L = jLω (inductance) est purement imaginaire positive. Z_C = 1/(jCω) est négative : le condensateur déphasage de −90°.",f2:"Z_R=R  —  Z_L=jLω  —  Z_C=1/(jCω)"}
   ]},
-  {id:"derivees",label:"Dérivées",icon:"f'",questions:[
-    {q:"Quelle est la dérivée de f(x) = eˣ ?",f:"(eˣ)' = ?",choices:["eˣ","xeˣ","eˣ⁻¹","1/eˣ"],c:0,expl:"L'exponentielle est sa propre dérivée : dériver ou intégrer eˣ donne eˣ.",f2:"(eˣ)' = eˣ  —  (eᵘ)' = u'·eᵘ"},
-    {q:"Quelle est la dérivée de f(x) = ln(x) pour x > 0 ?",f:"(ln x)' = ?",choices:["1/x","ln(x)/x","x","1/ln(x)"],c:0,expl:"La dérivée du logarithme est l'inverse de son argument.",f2:"(ln x)' = 1/x  —  (ln u)' = u'/u"},
-    {q:"Quelle est la dérivée du produit (u·v)' ?",f:"(uv)' = ?",choices:["u'·v'","u'v + uv'","(u'v)/v'","uv' − u'v"],c:1,expl:"Règle du produit : (première dérivée × deuxième) + (première × deuxième dérivée).",f2:"(u·v)' = u'v + uv'"},
-    {q:"Dérivée de sin(x) ?",f:"(sin x)' = ?",choices:["−cos x","cos x","sin x","−sin x"],c:1,expl:"Les dérivées trigonométriques forment un cycle : sin → cos → −sin → −cos → sin…",f2:"(sin x)' = cos x  —  (cos x)' = −sin x  —  (tan x)' = 1/cos²x"},
-    {q:"Quelle est la dérivée du quotient (u/v)' ?",f:"(u/v)' = ?",choices:["u'/v'","(u'v − uv')/v²","(u'v + uv')/v²","u'/v − u/v²"],c:1,expl:"Règle du quotient : (dérivée du numérateur × dénominateur − numérateur × dérivée du dénominateur) / dénominateur².",f2:"(u/v)' = (u'v − uv') / v²"}
+  {id:'derivees',label:'Dérivées',icon:"f'",color:'var(--purple)',questions:[
+    {q:"Dérivée de f(x) = eˣ ?",f:"(eˣ)' = ?",choices:["eˣ","xeˣ","eˣ⁻¹","1/eˣ"],c:0,expl:"L'exponentielle est sa propre dérivée. Propriété fondamentale de exp.",f2:"(eˣ)' = eˣ  —  (eᵘ)' = u'·eᵘ"},
+    {q:"Dérivée de f(x) = ln(x) pour x > 0 ?",f:"(ln x)' = ?",choices:["1/x","ln(x)/x","x","1/ln(x)"],c:0,expl:"La dérivée du logarithme naturel est l'inverse de x.",f2:"(ln x)' = 1/x  —  (ln u)' = u'/u"},
+    {q:"Dérivée du produit (u·v)' ?",f:"",choices:["u'·v'","u'v + uv'","(u'v)/v'","uv' − u'v"],c:1,expl:"Règle du produit : dériver le premier × garder le second, plus le premier × dériver le second.",f2:"(u·v)' = u'v + uv'"},
+    {q:"Dérivée du quotient (u/v)' ?",f:"",choices:["u'/v'","(u'v − uv')/v²","(u'v + uv')/v","u'/(v²)"],c:1,expl:"Numérateur : (dérivée du haut × bas) − (haut × dérivée du bas). Dénominateur : bas au carré.",f2:"(u/v)' = (u'v − uv') / v²"},
+    {q:"Dérivées de sin(x) et cos(x) ?",f:"",choices:["(sin)' = −cos, (cos)' = sin","(sin)' = cos, (cos)' = −sin","(sin)' = sin, (cos)' = cos","(sin)' = −cos, (cos)' = −sin"],c:1,expl:"Elles forment un cycle : sin → cos → −sin → −cos → sin. La dérivée de tan(x) = 1/cos²(x) = 1+tan²(x).",f2:"(sin x)' = cos x  —  (cos x)' = −sin x  —  (tan x)' = 1/cos²x"},
+    {q:"Dérivée de f(x) = xⁿ (règle de puissance) ?",f:"(xⁿ)' = ?",choices:["xⁿ⁻¹","n·xⁿ⁻¹","nxⁿ","(n−1)xⁿ⁻¹"],c:1,expl:"On multiplie par l'exposant et on diminue l'exposant de 1.",f2:"(xⁿ)' = n·xⁿ⁻¹  —  (uⁿ)' = n·u'·uⁿ⁻¹"},
+    {q:"Tableau de variation : f est croissante sur I si et seulement si ?",f:"",choices:["f(x) > 0 sur I","f'(x) ≥ 0 sur I","f'(x) = 0 sur I","f''(x) > 0 sur I"],c:1,expl:"Le signe de la dérivée détermine le sens de variation. f'(x) > 0 ⟹ strictement croissante.",f2:"f'(x) > 0 ⟹ croissante  —  f'(x) < 0 ⟹ décroissante  —  f'(x₀) = 0 ⟹ extremum possible"}
   ]},
-  {id:"integrales",label:"Intégrales",icon:"∫",questions:[
-    {q:"Primitive de f(x) = xⁿ avec n ≠ −1 ?",f:"∫ xⁿ dx = ?",choices:["nxⁿ⁻¹ + C","xⁿ⁺¹/(n+1) + C","xⁿ/n + C","n·xⁿ⁺¹ + C"],c:1,expl:"On augmente l'exposant de 1 et on divise par ce nouvel exposant. Valable pour tout n ≠ −1.",f2:"∫ xⁿ dx = xⁿ⁺¹/(n+1) + C"},
-    {q:"Quelle est la primitive de 1/x ?",f:"∫ (1/x) dx = ?",choices:["−1/x² + C","ln|x| + C","1/x² + C","x·ln(x) + C"],c:1,expl:"Cas spécial n = −1 : la primitive est le logarithme. On garde la valeur absolue pour x ≠ 0.",f2:"∫ (1/x) dx = ln|x| + C"},
-    {q:"Calculer ∫₀¹ 2x dx",f:"∫₀¹ 2x dx = ?",choices:["2","1","4","0"],c:1,expl:"Primitive de 2x est x². On évalue [x²]₀¹ = 1² − 0² = 1.",f2:"[x²]₀¹ = 1 − 0 = 1"},
-    {q:"Primitive de f(x) = eˣ ?",f:"∫ eˣ dx = ?",choices:["eˣ/x + C","xeˣ + C","eˣ + C","eˣ⁻¹ + C"],c:2,expl:"L'exponentielle est aussi sa propre primitive : intégrer eˣ donne eˣ.",f2:"∫ eˣ dx = eˣ + C  —  ∫ eᵃˣ dx = eᵃˣ/a + C"},
-    {q:"La valeur moyenne d'une fonction f sur [a ; b] est :",f:"f̄ = ?",choices:["∫ₐᵇ f(x) dx","(f(a)+f(b))/2","1/(b−a) · ∫ₐᵇ f(x) dx","f((a+b)/2)"],c:2,expl:"La valeur moyenne est l'intégrale de la fonction divisée par la longueur de l'intervalle.",f2:"f̄ = 1/(b−a) · ∫ₐᵇ f(x) dx"}
+  {id:'integrales',label:'Intégrales',icon:'∫',color:'var(--green)',questions:[
+    {q:"Primitive de f(x) = xⁿ (n ≠ −1) ?",f:"∫ xⁿ dx = ?",choices:["n·xⁿ⁻¹ + C","xⁿ⁺¹/(n+1) + C","xⁿ/n + C","n·xⁿ⁺¹ + C"],c:1,expl:"On augmente l'exposant de 1 et on divise par le nouvel exposant.",f2:"∫ xⁿ dx = xⁿ⁺¹/(n+1) + C  (n ≠ −1)"},
+    {q:"Primitive de 1/x et de eˣ ?",f:"",choices:["x²/2 + C et eˣ + C","ln|x| + C et eˣ + C","1/x² + C et xeˣ + C","ln(x²) + C et eˣ/x + C"],c:1,expl:"∫(1/x)dx = ln|x|+C (cas n=−1). ∫eˣdx = eˣ+C (l'exponentielle est sa propre primitive).",f2:"∫(1/x)dx = ln|x|+C  —  ∫eˣdx = eˣ+C  —  ∫eᵃˣdx = eᵃˣ/a + C"},
+    {q:"Primitives de sin(x) et cos(x) ?",f:"",choices:["∫sin = cos + C,  ∫cos = −sin + C","∫sin = −cos + C,  ∫cos = sin + C","∫sin = −sin + C,  ∫cos = cos + C","∫sin = cos + C,  ∫cos = sin + C"],c:1,expl:"Attention au signe : la primitive de sin est −cos (l'opposé), celle de cos est sin.",f2:"∫sin x dx = −cos x + C  —  ∫cos x dx = sin x + C"},
+    {q:"Valeur de ∫₀² (3x² + 2) dx ?",f:"",choices:["10","12","14","8"],c:1,expl:"Primitive : x³+2x. On évalue [x³+2x]₀² = (8+4)−(0+0) = 12.",f2:"[x³+2x]₀² = 12 − 0 = 12"},
+    {q:"Valeur moyenne d'une fonction f sur [a ; b] ?",f:"f̄ = ?",choices:["∫ₐᵇ f(x) dx","(f(a)+f(b))/2","(1/(b−a))·∫ₐᵇ f(x) dx","f((a+b)/2)"],c:2,expl:"La valeur moyenne est l'intégrale divisée par la longueur de l'intervalle.",f2:"f̄ = 1/(b−a) · ∫ₐᵇ f(x) dx"},
+    {q:"Intégration par parties : ∫u·v' dx = ?",f:"",choices:["∫u'·v dx","u·v − ∫u'·v dx","u'·v − ∫u·v' dx","u·v + ∫u'·v dx"],c:1,expl:"IPP : on choisit u et v', on calcule u' et v = ∫v'. Très utile pour ∫x·eˣ dx, ∫x·sin(x) dx, etc.",f2:"∫u·v' dx = [u·v] − ∫u'·v dx"}
   ]},
-  {id:"eqdiff",label:"Éq. diff.",icon:"y'",questions:[
-    {q:"Solution générale de l'équation différentielle y' + ay = 0 ?",f:"y' + ay = 0",choices:["y = A·eᵃˣ","y = A·e⁻ᵃˣ","y = A·cos(ax)","y = A + e⁻ˣ"],c:1,expl:"Équation du 1er ordre homogène. La solution est une exponentielle décroissante si a > 0.",f2:"y = A·e⁻ᵃˣ  (A ∈ ℝ quelconque)"},
-    {q:"Solution générale de y'' + ω²y = 0 avec racines r = ±jω ?",f:"r² + ω² = 0",choices:["y = Aeˣ + Be⁻ˣ","y = A cos(ωx) + B sin(ωx)","y = (A+Bx)eˣ","y = Aeʷˣ"],c:1,expl:"Quand le discriminant est négatif (racines complexes conjuguées ±jω), la solution est une oscillation sinusoïdale.",f2:"y = A cos(ωx) + B sin(ωx)"},
-    {q:"Dans un circuit RC série, la constante de temps τ est :",f:"Circuit RC",choices:["τ = R/C","τ = RC","τ = √(RC)","τ = C/R"],c:1,expl:"τ = RC caractérise la vitesse de charge/décharge. À t = 5τ, le régime transitoire est terminé à 99%.",f2:"τ = RC  —  u_C(t) = U₀(1 − e^(−t/τ))"},
-    {q:"Équation différentielle du 2e ordre : si le discriminant Δ > 0, la solution est de la forme :",f:"Δ = r₁ · r₂ > 0",choices:["y = A cos(r₁x) + B sin(r₂x)","y = Ae^(r₁x) + Be^(r₂x)","y = (A+Bx)e^(r₁x)","y = Ae^(r₁x) cos(r₂x)"],c:1,expl:"Deux racines réelles distinctes r₁ et r₂ → solution générale = combinaison de deux exponentielles.",f2:"y = Ae^(r₁x) + Be^(r₂x)"}
+  {id:'eqdiff',label:'Éq. diff.',icon:"y'",color:'var(--amber)',questions:[
+    {q:"Solution générale de y' + ay = 0 (1er ordre, homogène) ?",f:"",choices:["y = A·eᵃˣ","y = A·e⁻ᵃˣ","y = A·cos(ax)","y = A+eˣ"],c:1,expl:"L'équation caractéristique est r + a = 0 ⟹ r = −a. Solution : exponentielle décroissante si a > 0.",f2:"y = A·e⁻ᵃˣ  (A ∈ ℝ)"},
+    {q:"Solution particulière de y' + ay = b (1er ordre, avec second membre constant) ?",f:"",choices:["yₚ = a/b","yₚ = b/a","yₚ = b","yₚ = ab"],c:1,expl:"On cherche y constante : ay = b ⟹ y = b/a. La solution générale est alors : y = A·e⁻ᵃˣ + b/a.",f2:"yₚ = b/a  ⟹  y_gén = A·e⁻ᵃˣ + b/a"},
+    {q:"Équation du 2e ordre : si Δ > 0, racines r₁ ≠ r₂ réelles, solution générale ?",f:"r² + br + c = 0, Δ > 0",choices:["A·cos(r₁x) + B·sin(r₂x)","Ae^(r₁x) + Be^(r₂x)","(A+Bx)·e^(r₁x)","A·e^(r₁x)·cos(r₂x)"],c:1,expl:"Deux racines réelles distinctes → combinaison de deux exponentielles.",f2:"y = A·e^(r₁x) + B·e^(r₂x)"},
+    {q:"Équation du 2e ordre : si Δ = 0, racine double r₁ = r₂ = r, solution générale ?",f:"",choices:["A·eʳˣ","(A+Bx)·eʳˣ","Ae^(r₁x) + Be^(r₂x)","A·cos(rx)"],c:1,expl:"Racine double → on multiplie la deuxième exponentielle par x.",f2:"y = (A + Bx)·eʳˣ"},
+    {q:"Équation du 2e ordre : si Δ < 0, racines complexes r = α ± jβ, solution générale ?",f:"",choices:["Ae^(αx) + Be^(−αx)","eᵅˣ(A·cos(βx) + B·sin(βx))","A·cos(αx) + B·sin(βx)","eᵝˣ(A·cos(αx) + B)"],c:1,expl:"Racines complexes conjuguées → oscillation amortie (si α < 0). Très fréquent en électronique pour les circuits RLC.",f2:"y = eᵅˣ(A·cos(βx) + B·sin(βx))"},
+    {q:"Dans un circuit RC série, la constante de temps τ et la solution u_C(t) pour une charge depuis 0 ?",f:"",choices:["τ=R/C,  u_C = U₀(1−e^(t/τ))","τ=RC,  u_C = U₀(1−e^(−t/τ))","τ=RC,  u_C = U₀·e^(−t/τ)","τ=√(RC),  u_C = U₀·sin(t/τ)"],c:1,expl:"τ = RC est la constante de temps. À t = τ, le condensateur est chargé à 63%. À t = 5τ, pratiquement plein.",f2:"τ = RC  —  u_C(t) = U₀(1−e^(−t/τ))"},
+    {q:"Dans un circuit RLC série, la pulsation propre ω₀ et le coefficient d'amortissement m ?",f:"",choices:["ω₀ = √(LC),  m = R/(2L)·ω₀","ω₀ = 1/√(LC),  m = R/(2Lω₀)","ω₀ = R/L,  m = 1/(RC)","ω₀ = 1/(RC),  m = R/L"],c:1,expl:"ω₀ est la pulsation de résonance. m < 1 : oscillations amorties. m = 1 : apériodique critique. m > 1 : apériodique.",f2:"ω₀ = 1/√(LC)  —  m = R/(2Lω₀)  —  Q = 1/(2m)"}
   ]},
-  {id:"laplace",label:"Laplace",icon:"ℒ",questions:[
-    {q:"Transformée de Laplace de l'échelon unité u(t) = 1 (t ≥ 0) ?",f:"ℒ{1} = ?",choices:["1/p","1/p²","p","e⁻ᵖ"],c:0,expl:"C'est la transformée la plus fondamentale. Elle permet d'analyser la réponse d'un système à un échelon.",f2:"ℒ{1} = 1/p  —  ℒ{t} = 1/p²  —  ℒ{tⁿ} = n!/pⁿ⁺¹"},
-    {q:"Transformée de Laplace de f(t) = eᵃᵗ ?",f:"ℒ{eᵃᵗ} = ?",choices:["1/(p−a)","1/(p+a)","a/p","p/(p−a)"],c:0,expl:"Propriété de translation dans le domaine de Laplace : décaler en fréquence correspond à multiplier par une exponentielle.",f2:"ℒ{eᵃᵗ} = 1/(p−a)  (p > a)"},
-    {q:"Théorème de dérivation : ℒ{f'(t)} = ?",f:"ℒ{f'(t)} = ?",choices:["p·F(p)","p·F(p) − f(0⁺)","F(p)/p","p²·F(p) − f(0)"],c:1,expl:"Ce théorème est la raison d'utiliser Laplace : il transforme une dérivée en multiplication par p, simplifiant les équations différentielles.",f2:"ℒ{f'(t)} = p·F(p) − f(0⁺)"},
-    {q:"La fonction de transfert H(p) d'un système linéaire est :",f:"H(p) = ?",choices:["Entrée(p)/Sortie(p)","Sortie(p)/Entrée(p)","p·Entrée(p)","1/Z(p)"],c:1,expl:"H(p) caractérise entièrement un système linéaire en régime variable. On suppose les conditions initiales nulles.",f2:"H(p) = S(p)/E(p)  (conditions initiales nulles)"},
-    {q:"ℒ{sin(ωt)} = ?",f:"ℒ{sin(ωt)} = ?",choices:["p/(p²+ω²)","ω/(p²+ω²)","ω/(p²−ω²)","1/(p+ω)"],c:1,expl:"Transformées des sinusoïdes, indispensables pour analyser les circuits en régime sinusoïdal.",f2:"ℒ{sin ωt} = ω/(p²+ω²)  —  ℒ{cos ωt} = p/(p²+ω²)"}
+  {id:'fourier',label:'Fourier',icon:'~',color:'var(--pink)',questions:[
+    {q:"Qu'est-ce qu'une série de Fourier d'une fonction T-périodique ?",f:"f(t) = ?",choices:["f(t) = A₀ + Σ Aₙcos(nω₀t) + Bₙsin(nω₀t)","f(t) = Σ Aₙeⁱⁿᵗ uniquement","f(t) = Σ cos(nω₀t) / n","f(t) = A₀ · Π cos(nω₀t)"],c:0,expl:"Une série de Fourier décompose un signal périodique en harmoniques. ω₀ = 2π/T est la pulsation fondamentale.",f2:"f(t) = a₀ + Σₙ[aₙcos(nω₀t) + bₙsin(nω₀t)]"},
+    {q:"Coefficient a₀ d'une série de Fourier (valeur moyenne) ?",f:"a₀ = ?",choices:["∫₀ᵀ f(t) dt","(1/T)·∫₀ᵀ f(t) dt","(2/T)·∫₀ᵀ f(t) cos(0) dt","f(0)"],c:1,expl:"a₀ est la composante continue (valeur moyenne) du signal. Elle est nulle pour un signal alternatif centré.",f2:"a₀ = (1/T)·∫₀ᵀ f(t) dt"},
+    {q:"Coefficients aₙ et bₙ d'une série de Fourier (n ≥ 1) ?",f:"",choices:["aₙ=(1/T)∫f·cos(nω₀t)dt, bₙ idem sin","aₙ=(2/T)∫₀ᵀ f·cos(nω₀t)dt, bₙ=(2/T)∫₀ᵀ f·sin(nω₀t)dt","aₙ=∫f·cos dt, bₙ=∫f·sin dt","aₙ=2∫f·cos(nt)dt, bₙ pareil"],c:1,expl:"Formules des coefficients de Fourier. On intègre le produit du signal par le cosinus ou sinus harmonique sur une période.",f2:"aₙ=(2/T)∫₀ᵀf(t)cos(nω₀t)dt  —  bₙ=(2/T)∫₀ᵀf(t)sin(nω₀t)dt"},
+    {q:"Si f(t) est une fonction PAIRE, que se simplifie la série de Fourier ?",f:"f(−t) = f(t)",choices:["Seulement des sinus","Seulement des cosinus + a₀","Seulement a₀","Ni sinus ni cosinus"],c:1,expl:"Fonction paire → bₙ = 0 pour tout n. La série ne contient que des cosinus (et la constante a₀).",f2:"f paire ⟹ bₙ=0  —  f impaire ⟹ aₙ=0 (et a₀=0)"},
+    {q:"Théorème de Parseval pour une série de Fourier ?",f:"",choices:["Σ|cₙ| = ∫|f|dt","(1/T)∫|f(t)|² dt = a₀² + (1/2)Σ(aₙ²+bₙ²)","∫f²dt = Σaₙ²","T·Σaₙ² = ∫f² dt"],c:1,expl:"Parseval exprime la conservation de l'énergie : la puissance du signal = somme des puissances de ses harmoniques.",f2:"P = (1/T)∫₀ᵀ|f|²dt = a₀² + (1/2)Σ(aₙ²+bₙ²)"}
   ]},
-  {id:"probas",label:"Probas",icon:"P",questions:[
-    {q:"Formule de la probabilité conditionnelle P(A|B) ?",f:"P(A|B) = ?",choices:["P(A∩B)/P(A)","P(A∩B)/P(B)","P(A)·P(B)","P(A)+P(B)"],c:1,expl:"P(A|B) se lit 'probabilité de A sachant B'. On restreint l'univers à B.",f2:"P(A|B) = P(A∩B)/P(B)  avec P(B) > 0"},
-    {q:"Pour une loi binomiale B(n, p), l'espérance E(X) et la variance V(X) sont :",f:"E(X) = ?  V(X) = ?",choices:["E=p, V=np","E=np, V=np(1−p)","E=np, V=np²","E=n/p, V=np"],c:1,expl:"La loi binomiale modélise n tirages indépendants avec probabilité p de succès à chaque tirage.",f2:"E(X) = np  —  V(X) = np(1−p)  —  σ = √(np(1−p))"},
-    {q:"Pour N(μ, σ²), P(μ−σ ≤ X ≤ μ+σ) est environ :",f:"",choices:["50%","68%","95%","99,7%"],c:1,expl:"Règle des 3 sigma : à 1σ on couvre 68%, à 2σ 95%, à 3σ 99,7% des valeurs.",f2:"P(|X−μ| ≤ σ) ≈ 68%  |  P(|X−μ| ≤ 2σ) ≈ 95%  |  P(|X−μ| ≤ 3σ) ≈ 99,7%"},
-    {q:"Formule des probabilités totales (B₁, B₂ partition de Ω) ?",f:"P(A) = ?",choices:["P(A|B₁)+P(A|B₂)","P(A∩B₁)+P(A∩B₂)","P(A)·(P(B₁)+P(B₂))","P(B₁)·P(B₂)"],c:1,expl:"On décompose A selon la partition : P(A∩Bᵢ) = P(A|Bᵢ)·P(Bᵢ) pour chaque Bᵢ.",f2:"P(A) = P(A|B₁)P(B₁) + P(A|B₂)P(B₂)"}
+  {id:'laplace',label:'Laplace',icon:'ℒ',color:'var(--cyan)',questions:[
+    {q:"ℒ{1} = ? (échelon unité, t ≥ 0)",f:"",choices:["1/p","1/p²","p","e⁻ᵖ"],c:0,expl:"Transformée de Laplace de la constante 1. Base de toutes les transformées.",f2:"ℒ{1} = 1/p  —  ℒ{t} = 1/p²  —  ℒ{tⁿ} = n!/pⁿ⁺¹"},
+    {q:"ℒ{eᵃᵗ} = ?",f:"",choices:["1/(p−a)","1/(p+a)","a/p","p/(p−a)"],c:0,expl:"Propriété de translation en fréquence. Très utilisé pour les fonctions exponentielles amorties.",f2:"ℒ{eᵃᵗ} = 1/(p−a)  (p > a)"},
+    {q:"ℒ{f'(t)} = ? (théorème de la dérivation)",f:"",choices:["p·F(p)","p·F(p) − f(0⁺)","F(p)/p","p²·F(p) − f(0)"],c:1,expl:"C'est la clé de Laplace : une dérivée devient une multiplication par p, permettant de résoudre les équations différentielles algébriquement.",f2:"ℒ{f'(t)} = p·F(p) − f(0⁺)  —  ℒ{f''(t)} = p²F(p)−pf(0⁺)−f'(0⁺)"},
+    {q:"ℒ{sin(ωt)} et ℒ{cos(ωt)} ?",f:"",choices:["p/(p²+ω²) et ω/(p²+ω²)","ω/(p²+ω²) et p/(p²+ω²)","1/(p+ω) et 1/(p+ω)","ω/p² et p/p²"],c:1,expl:"Transformées des fonctions sinusoïdales. Fondamentales pour l'analyse des régimes harmoniques.",f2:"ℒ{sin ωt} = ω/(p²+ω²)  —  ℒ{cos ωt} = p/(p²+ω²)"},
+    {q:"Fonction de transfert H(p) = S(p)/E(p). Théorème de la valeur finale : lim f(t) quand t→∞ = ?",f:"t → ∞",choices:["lim p→∞  p·F(p)","lim p→0  p·F(p)","lim p→0  F(p)","lim p→∞  F(p)"],c:1,expl:"Le théorème de la valeur finale permet de trouver la valeur en régime permanent sans inverser la transformée.",f2:"lim(t→∞) f(t) = lim(p→0) p·F(p)  (si la limite existe)"},
+    {q:"ℒ{∫₀ᵗ f(τ)dτ} = ? (théorème de l'intégration)",f:"",choices:["p·F(p)","F(p)/p","p²·F(p)","F(p)·p²"],c:1,expl:"L'intégration en temps correspond à la division par p dans le domaine de Laplace. Dual de la dérivation.",f2:"ℒ{∫₀ᵗ f(τ)dτ} = F(p)/p"}
   ]},
-  {id:"suites",label:"Suites",icon:"uₙ",questions:[
-    {q:"Terme général d'une suite géométrique de premier terme u₀ et de raison q ?",f:"uₙ = ?",choices:["u₀ + n·q","u₀·qⁿ","n·u₀·q","u₀ⁿ"],c:1,expl:"Chaque terme est le terme initial multiplié par la raison élevée à la puissance du rang.",f2:"uₙ = u₀·qⁿ"},
-    {q:"Somme des n premiers termes d'une suite géométrique (q ≠ 1) ?",f:"Sₙ = u₀+u₁+…+uₙ₋₁ = ?",choices:["n·u₀","u₀·(1−qⁿ)/(1−q)","u₀·qⁿ","u₀/(1−q)"],c:1,expl:"Formule fondamentale pour les suites géométriques, utilisée en traitement du signal pour les filtres récursifs.",f2:"Sₙ = u₀·(1−qⁿ)/(1−q)  (q ≠ 1)"},
-    {q:"Terme général d'une suite arithmétique de premier terme u₀ et de raison r ?",f:"uₙ = ?",choices:["u₀·rⁿ","u₀ + n·r","n·u₀ + r","u₀ · n + r"],c:1,expl:"On ajoute r à chaque terme. Contrairement à la géométrique où on multiplie.",f2:"uₙ = u₀ + n·r  —  S = n·(u₀+uₙ₋₁)/2"}
+  {id:'transfoZ',label:'Transform. Z',icon:'Z',color:'var(--amber)',questions:[
+    {q:"Définition de la transformée en Z d'une suite xₙ (n ≥ 0) ?",f:"X(z) = ?",choices:["X(z) = Σₙ xₙ·zⁿ","X(z) = Σₙ xₙ·z⁻ⁿ","X(z) = ∫x(t)·z⁻ᵗdt","X(z) = Σₙ xₙ/n"],c:1,expl:"La transformée en Z est l'analogue discret de la transformée de Laplace. Elle convertit une suite en fraction rationnelle de z.",f2:"X(z) = Σₙ₌₀^∞ xₙ·z⁻ⁿ"},
+    {q:"Z{δₙ} = ? (impulsion unité : δ₀=1, δₙ=0 si n≠0)",f:"",choices:["1/z","1","z","1/(z−1)"],c:1,expl:"L'impulsion unité est le neutre de la convolution discrète. Sa transformée en Z vaut 1.",f2:"Z{δₙ} = 1"},
+    {q:"Z{uₙ} = ? (échelon unité : uₙ=1 pour n≥0)",f:"",choices:["1/(z−1)","z/(z−1)","1/z","z"],c:1,expl:"L'échelon discret est l'analogue de l'échelon de Heaviside. Sa transformée est z/(z−1).",f2:"Z{uₙ} = z/(z−1)  pour |z| > 1"},
+    {q:"Propriété de retard : Z{xₙ₋ₖ} = ?",f:"",choices:["z^k · X(z)","z^(−k) · X(z)","X(z)/k","X(z)·e^(−jkω)"],c:1,expl:"Un retard de k échantillons correspond à une multiplication par z⁻ᵏ. C'est l'analogue discret du théorème de la dérivation.",f2:"Z{xₙ₋ₖ} = z⁻ᵏ · X(z)  (conditions initiales nulles)"},
+    {q:"Z{aⁿ·uₙ} = ?",f:"",choices:["z/(z+a)","z/(z−a)","1/(z−a)","a/(z−a)"],c:1,expl:"Transformée d'une suite géométrique. Analogue discret de ℒ{eᵃᵗ} = 1/(p−a).",f2:"Z{aⁿ·uₙ} = z/(z−a)  pour |z| > |a|"}
+  ]},
+  {id:'probas',label:'Probas & Stats',icon:'P',color:'var(--green)',questions:[
+    {q:"Formule de la probabilité conditionnelle P(A|B) ?",f:"",choices:["P(A∩B)/P(A)","P(A∩B)/P(B)","P(A)·P(B)","P(A)+P(B)"],c:1,expl:"P(A|B) = probabilité de A sachant que B est réalisé. On restreint l'univers à B.",f2:"P(A|B) = P(A∩B)/P(B)  avec P(B) > 0"},
+    {q:"Formule des probabilités totales avec partition {B₁, B₂} de Ω ?",f:"",choices:["P(A|B₁)+P(A|B₂)","P(A∩B₁)+P(A∩B₂)","P(A)·(P(B₁)+P(B₂))","P(B₁)·P(B₂)·P(A)"],c:1,expl:"On décompose P(A) sur la partition : P(A∩Bᵢ) = P(A|Bᵢ)·P(Bᵢ).",f2:"P(A) = P(A|B₁)P(B₁) + P(A|B₂)P(B₂)"},
+    {q:"Loi binomiale B(n,p) : formule P(X=k), espérance et variance ?",f:"",choices:["P=pᵏ, E=p, V=p(1-p)","P=Cₙᵏpᵏ(1-p)ⁿ⁻ᵏ, E=np, V=np(1-p)","P=Cₙᵏpᵏ, E=np, V=np²","P=pᵏqⁿ, E=n/p, V=npq"],c:1,expl:"n tirages indépendants, probabilité p de succès. Cₙᵏ = n!/(k!(n−k)!).",f2:"P(X=k)=Cₙᵏpᵏ(1−p)ⁿ⁻ᵏ  —  E(X)=np  —  V(X)=np(1−p)"},
+    {q:"Loi normale N(μ,σ²) : règle des 3σ ?",f:"",choices:["P(|X−μ|≤σ)≈50%, ≤2σ≈75%, ≤3σ≈90%","P(|X−μ|≤σ)≈68%, ≤2σ≈95%, ≤3σ≈99.7%","P(|X−μ|≤σ)≈95%, ≤2σ≈99.7%, ≤3σ≈100%","P(|X−μ|≤σ)≈34%, ≤2σ≈68%, ≤3σ≈95%"],c:1,expl:"Règle empirique fondamentale. Utilisée pour les tolérances de fabrication en électronique.",f2:"±1σ : 68% — ±2σ : 95% — ±3σ : 99,7%"},
+    {q:"Espérance d'une variable aléatoire discrète X ?",f:"E(X) = ?",choices:["Σ xᵢ","Σ xᵢ·P(X=xᵢ)","(max + min)/2","Σ P(X=xᵢ)"],c:1,expl:"L'espérance est la moyenne pondérée par les probabilités. C'est la valeur 'attendue en moyenne'.",f2:"E(X) = Σ xᵢ·P(X=xᵢ)  —  V(X) = E(X²) − [E(X)]²"},
+    {q:"Intervalle de confiance à 95% pour une proportion p estimée sur n mesures ?",f:"",choices:["p̂ ± 1/n","p̂ ± 1/√n","p̂ ± 2√(p̂(1−p̂)/n) (approx.)", "p̂ ± σ/n"],c:2,expl:"Pour estimer une proportion avec une précision donnée. Le '2' correspond à 1,96 ≈ 2 pour 95% de confiance.",f2:"IC95% ≈ [p̂ − 2√(p̂q̂/n) ; p̂ + 2√(p̂q̂/n)]"}
+  ]},
+  {id:'suites',label:'Suites & Séries',icon:'uₙ',color:'var(--purple)',questions:[
+    {q:"Terme général d'une suite géométrique (u₀, raison q) ?",f:"",choices:["u₀ + n·q","u₀·qⁿ","n·u₀·q","u₀^(qⁿ)"],c:1,expl:"Suite géométrique : on multiplie par q à chaque rang.",f2:"uₙ = u₀·qⁿ"},
+    {q:"Somme des n premiers termes d'une suite géométrique (q ≠ 1) ?",f:"S = u₀+u₁+…+uₙ₋₁",choices:["n·u₀","u₀(1−qⁿ)/(1−q)","u₀·qⁿ","u₀/(1−q)"],c:1,expl:"Très utilisée en traitement du signal pour les filtres récursifs (IIR).",f2:"Sₙ = u₀·(1−qⁿ)/(1−q)  (q≠1)  —  Si |q|<1, S∞=u₀/(1−q)"},
+    {q:"Somme des n premiers termes d'une suite arithmétique (u₀, raison r) ?",f:"",choices:["n·u₀","n·(u₀+uₙ₋₁)/2","u₀·rⁿ","(n+1)·r"],c:1,expl:"Somme = nombre de termes × moyenne du premier et du dernier. uₙ = u₀ + n·r.",f2:"Sₙ = n·(u₀ + uₙ₋₁)/2  —  uₙ = u₀ + n·r"},
+    {q:"Convergence d'une série géométrique Σqⁿ ?",f:"Σₙ₌₀^∞ qⁿ = ?",choices:["Toujours convergente","Converge si |q|<1, somme = 1/(1−q)","Converge si q<1","Diverge toujours"],c:1,expl:"Critère fondamental : si |q| < 1 la série converge. Si |q| ≥ 1 elle diverge.",f2:"Σqⁿ = 1/(1−q)  si |q|<1  —  diverge si |q|≥1"}
   ]}
 ];
-const TOTAL_Q = CHAPTERS.reduce((s,c)=>s+c.questions.length,0);
-const LETTERS = ['A','B','C','D'];
-const MODE_TIME = {normal:90,speed:30,zen:0,exam:60};
-const MODE_PTS = {normal:10,speed:10,zen:10,exam:10};
+const TOTAL_Q=CHAPTERS.reduce((s,c)=>s+c.questions.length,0);
 
-// ===== STATE =====
-let playerName='Joueur';
-let gameMode='normal';
-let currentChap=0,currentQ=0;
+// ─── FLASHCARD DATA ───
+const FLASH_CHAPTERS=[
+  {id:'fc_complexes',label:'Complexes',color:'var(--cyan)',cards:[
+    {q:"Module et argument d'un complexe ?",hint:"Forme trigonométrique",formula_q:"|z| et arg(z) = ?",answer:"Le module r = √(a²+b²) mesure la longueur. L'argument θ = arctan(b/a) est l'angle.",formula_a:"r=|z|=√(a²+b²)  —  cosθ=a/r, sinθ=b/r"},
+    {q:"Formule d'Euler fondamentale ?",hint:"Lien exponentielle et trig",formula_q:"eⁱᶿ = ?",answer:"eⁱᶿ = cos θ + i·sin θ. Pour θ = π : eⁱᵖ = −1 (identité d'Euler).",formula_a:"eⁱᶿ = cosθ + i·sinθ  —  eⁱᵖ + 1 = 0"},
+    {q:"Formules de cos et sin en fonction des exponentielles ?",hint:"Déduites d'Euler",formula_q:"cos θ = ?  sin θ = ?",answer:"On combine eⁱᶿ et e⁻ⁱᶿ pour exprimer les fonctions trigonométriques.",formula_a:"cosθ = (eⁱᶿ+e⁻ⁱᶿ)/2  —  sinθ = (eⁱᶿ−e⁻ⁱᶿ)/(2i)"},
+    {q:"Comment diviser deux complexes en forme algébrique ?",hint:"Utiliser le conjugué",formula_q:"z₁/z₂ = ?",answer:"On multiplie numérateur et dénominateur par le conjugué du dénominateur pour obtenir un dénominateur réel.",formula_a:"z₁/z₂ = (z₁·z̄₂)/(|z₂|²)"},
+    {q:"Racines nèmes d'un complexe z₀ = r·eⁱᶿ ?",hint:"Formule de Moivre",formula_q:"zₖ = ?",answer:"Il y a n racines régulièrement espacées de 2π/n sur un cercle de rayon r^(1/n).",formula_a:"zₖ = r^(1/n)·eⁱ⁽ᶿ⁺²ᵏᵖ⁾/ⁿ  pour k=0,1,…,n−1"},
+    {q:"Impédance complexe d'un circuit série RLC ?",hint:"Électronique",formula_q:"Z = ?",answer:"On additionne les impédances en série. La partie réelle est R, la partie imaginaire dépend de ω.",formula_a:"Z = R + j(Lω − 1/(Cω))  —  |Z|=√(R²+(Lω−1/(Cω))²)"},
+    {q:"Condition de résonance d'un circuit RLC ?",hint:"Im(Z) = 0",formula_q:"ω₀ = ?",answer:"La résonance a lieu quand Z est purement réelle, c'est-à-dire quand la réactance inductance = réactance capacitive.",formula_a:"Lω₀ = 1/(Cω₀)  ⟹  ω₀ = 1/√(LC)"}
+  ]},
+  {id:'fc_derivees',label:'Dérivées',color:'var(--purple)',cards:[
+    {q:"Définition de la dérivée f'(x₀) ?",hint:"Taux de variation",formula_q:"f'(x₀) = ?",answer:"La dérivée est la limite du taux de variation moyen quand l'incrément tend vers 0. C'est la pente de la tangente.",formula_a:"f'(x₀) = lim(h→0) [f(x₀+h)−f(x₀)]/h"},
+    {q:"Dérivées des fonctions usuelles : xⁿ, eˣ, ln x, sin x, cos x ?",hint:"À connaître par cœur",formula_q:"",answer:"Ces dérivées sont fondamentales et doivent être connues sans hésitation.",formula_a:"(xⁿ)'=nxⁿ⁻¹  (eˣ)'=eˣ  (ln x)'=1/x  (sin x)'=cos x  (cos x)'=−sin x"},
+    {q:"Dérivée de la composée f(g(x)) (règle de la chaîne) ?",hint:"Règle de dérivation en chaîne",formula_q:"[f(g(x))]' = ?",answer:"On dérive la fonction extérieure en laissant l'intérieure intacte, puis on multiplie par la dérivée de l'intérieure.",formula_a:"[f(g(x))]' = g'(x)·f'(g(x))  —  ex: (sin(x²))' = 2x·cos(x²)"},
+    {q:"Dérivées de arcsin, arccos, arctan ?",hint:"Fonctions réciproques",formula_q:"",answer:"Les dérivées des fonctions trigonométriques réciproques font intervenir des racines carrées.",formula_a:"(arcsin x)' = 1/√(1−x²)  —  (arctan x)' = 1/(1+x²)  —  (arccos x)' = −1/√(1−x²)"},
+    {q:"Développement de Taylor-Young à l'ordre 1 ?",hint:"Approximation linéaire",formula_q:"f(x) ≈ ?  au voisinage de x₀",answer:"Approximation affine d'une fonction au voisinage d'un point. Correspond à l'équation de la tangente.",formula_a:"f(x) ≈ f(x₀) + f'(x₀)·(x−x₀)  —  ex: eˣ ≈ 1+x au voisinage de 0"}
+  ]},
+  {id:'fc_integrales',label:'Intégrales',color:'var(--green)',cards:[
+    {q:"Primitives usuelles : xⁿ, 1/x, eˣ, sin, cos ?",hint:"À mémoriser absolument",formula_q:"",answer:"Les primitives sont les 'inverses' des dérivées. Chacune admet une constante d'intégration C.",formula_a:"∫xⁿdx=xⁿ⁺¹/(n+1)  ∫(1/x)dx=ln|x|  ∫eˣdx=eˣ  ∫sin dx=−cos  ∫cos dx=sin  (tous +C)"},
+    {q:"Théorème fondamental du calcul intégral ?",hint:"Lien intégrale/primitive",formula_q:"∫ₐᵇ f(x)dx = ?",answer:"L'intégrale définie d'une fonction est la différence des valeurs d'une primitive aux bornes.",formula_a:"∫ₐᵇ f(x)dx = [F(x)]ₐᵇ = F(b) − F(a)  où F'=f"},
+    {q:"Intégration par changement de variable ?",hint:"Substitution u=g(x)",formula_q:"∫f(g(x))·g'(x)dx = ?",answer:"On pose u=g(x), du=g'(x)dx. On substitue et on intègre par rapport à u, puis on revient en x.",formula_a:"∫f(g(x))·g'(x)dx = ∫f(u)du  —  ex: ∫2x·sin(x²)dx = −cos(x²)+C"},
+    {q:"Intégration par parties ?",hint:"IPP : choisir u et v'",formula_q:"∫u·v' dx = ?",answer:"On choisit judicieusement u (à dériver) et v' (à intégrer). Utile pour les produits xⁿ·eˣ, xⁿ·sin(x), etc.",formula_a:"∫u·v' dx = [u·v] − ∫u'·v dx"},
+    {q:"Valeur efficace d'un signal périodique u(t) ?",hint:"Application en électronique",formula_q:"U_eff = ?",answer:"La valeur efficace est la racine carré de la valeur moyenne du carré du signal (RMS en anglais).",formula_a:"U_eff = √((1/T)·∫₀ᵀ u²(t)dt)  —  Pour sin: U_eff = U_max/√2"}
+  ]},
+  {id:'fc_eqdiff',label:'Éq. diff.',color:'var(--amber)',cards:[
+    {q:"Méthode de résolution d'une éq. diff. du 1er ordre y' + ay = b ?",hint:"3 étapes",formula_q:"",answer:"1. Résoudre l'homogène : y_h = A·e⁻ᵃˣ. 2. Trouver une solution particulière y_p. 3. y = y_h + y_p.",formula_a:"y_gén = A·e⁻ᵃˣ + b/a  —  Déterminer A avec la condition initiale y(0)"},
+    {q:"Méthode de résolution d'une éq. diff. du 2e ordre : équation caractéristique ?",hint:"Discriminant Δ = b²−4c",formula_q:"y'' + by' + cy = 0  →  r² + br + c = 0",answer:"On résout l'équation caractéristique. Le signe de Δ détermine la forme de la solution.",formula_a:"Δ>0: y=Ae^(r₁x)+Be^(r₂x)  —  Δ=0: y=(A+Bx)eʳˣ  —  Δ<0: y=eᵅˣ(Acos βx+Bsin βx)"},
+    {q:"Réponse temporelle d'un système du 1er ordre (gain K, τ) à un échelon E ?",hint:"Circuit RC, RL",formula_q:"s(t) = ?",answer:"La réponse est une exponentielle qui tend vers la valeur finale K·E avec une constante de temps τ.",formula_a:"s(t) = K·E·(1−e^(−t/τ))  —  À t=τ : 63% — À t=5τ : 99% (régime établi)"},
+    {q:"Conditions de stabilité d'un système du 2e ordre ?",hint:"Racines de l'éq. caract.",formula_q:"",answer:"Un système est stable si toutes les racines de l'équation caractéristique ont une partie réelle strictement négative.",formula_a:"Stable ⟺ Re(rᵢ) < 0 pour toutes les racines  —  m>0 ⟺ stable pour 2e ordre"},
+    {q:"Constante de temps τ et pulsation propre ω₀ d'un circuit RL ?",hint:"Circuit RL série",formula_q:"τ = ?",answer:"Pour un circuit RL, la constante de temps est L/R. La réponse est une exponentielle similaire au circuit RC.",formula_a:"τ = L/R  —  i(t) = I_max(1−e^(−t/τ))  —  ω₀ = R/L"}
+  ]},
+  {id:'fc_fourier',label:'Séries de Fourier',color:'var(--pink)',cards:[
+    {q:"Décomposition en série de Fourier : formule générale ?",hint:"Signal périodique T",formula_q:"f(t) = ?",answer:"Tout signal périodique régulier se décompose en harmoniques sinusoïdales de fréquences multiples de la fondamentale.",formula_a:"f(t) = a₀ + Σₙ≥₁ [aₙcos(nω₀t) + bₙsin(nω₀t)]  avec ω₀=2π/T"},
+    {q:"Signification physique des coefficients de Fourier aₙ et bₙ ?",hint:"Spectre",formula_q:"",answer:"Chaque harmonique n a une amplitude Cₙ = √(aₙ²+bₙ²) et un déphasage φₙ. Le spectre représente ces amplitudes.",formula_a:"Cₙ = √(aₙ²+bₙ²)  —  φₙ = −arctan(bₙ/aₙ)  —  f(t) = a₀+ΣCₙcos(nω₀t+φₙ)"},
+    {q:"Propriétés de symétrie : que devient la série si f est paire ? impaire ?",hint:"Simplifie les calculs",formula_q:"",answer:"La symétrie réduit le calcul : une fonction paire n'a que des cosinus, une impaire n'a que des sinus.",formula_a:"f paire ⟹ bₙ=0 (seulement cosinus + a₀)  —  f impaire ⟹ aₙ=0 et a₀=0 (seulement sinus)"},
+    {q:"Puissance d'un signal périodique et théorème de Parseval ?",hint:"Conservation de l'énergie",formula_q:"P = ?",answer:"La puissance totale est la somme des puissances de chaque harmonique. Parseval garantit la conservation.",formula_a:"P = a₀² + (1/2)Σ(aₙ²+bₙ²) = a₀² + (1/2)ΣCₙ²"},
+    {q:"Taux de distorsion harmonique (THD) ?",hint:"Qualité du signal",formula_q:"THD = ?",answer:"Le THD mesure la déformation d'un signal par rapport à une sinusoïde pure. Plus il est faible, meilleur est le signal.",formula_a:"THD = √(Σₙ≥₂ Cₙ²) / C₁  × 100%"}
+  ]},
+  {id:'fc_laplace',label:'Transformée de Laplace',color:'var(--cyan)',cards:[
+    {q:"Définition de la transformée de Laplace ?",hint:"Transformée de Laplace bilatérale",formula_q:"F(p) = ℒ{f(t)} = ?",answer:"La transformée de Laplace convertit une fonction du temps en une fonction de la variable complexe p.",formula_a:"F(p) = ∫₀^∞ f(t)·e^(−pt) dt  (transformée unilatérale causale)"},
+    {q:"Table des transformées usuelles : 1, t, tⁿ, eᵃᵗ, sin ωt, cos ωt ?",hint:"À connaître par cœur",formula_q:"",answer:"Ces transformées sont la base de l'analyse des systèmes linéaires. Il faut les connaître dans les deux sens.",formula_a:"ℒ{1}=1/p  ℒ{t}=1/p²  ℒ{tⁿ}=n!/pⁿ⁺¹  ℒ{eᵃᵗ}=1/(p−a)  ℒ{sinωt}=ω/(p²+ω²)  ℒ{cosωt}=p/(p²+ω²)"},
+    {q:"Théorème du retard (décalage temporel) : ℒ{f(t−τ)·u(t−τ)} = ?",hint:"Signal retardé de τ",formula_q:"",answer:"Un retard de τ dans le temps correspond à une multiplication par e^(−pτ) dans le domaine de Laplace.",formula_a:"ℒ{f(t−τ)·u(t−τ)} = e^(−pτ)·F(p)"},
+    {q:"Théorème de la valeur initiale ?",hint:"f(0⁺) sans inverser",formula_q:"f(0⁺) = ?",answer:"On peut trouver la valeur initiale d'un signal à partir de sa transformée sans calculer la transformée inverse.",formula_a:"f(0⁺) = lim(p→∞) p·F(p)"},
+    {q:"Décomposition en éléments simples : pourquoi et comment ?",hint:"Pour inverser ℒ",formula_q:"",answer:"On décompose F(p) en somme de fractions simples dont les transformées inverses sont connues (table).",formula_a:"F(p)=A/(p+a)+B/(p+b)+…  ⟹  f(t)=A·e^(−at)+B·e^(−bt)+…  (par table)"},
+    {q:"Relation entre H(p) et la réponse impulsionnelle h(t) ?",hint:"Systèmes LTI",formula_q:"",answer:"La réponse impulsionnelle h(t) est la transformée de Laplace inverse de H(p). La sortie est la convolution entrée * h.",formula_a:"H(p) = ℒ{h(t)}  —  s(t) = e(t)*h(t)  ⟺  S(p) = E(p)·H(p)"}
+  ]},
+  {id:'fc_transfoZ',label:'Transformée en Z',color:'var(--amber)',cards:[
+    {q:"Définition et domaine d'utilisation de la transformée en Z ?",hint:"Signaux discrets",formula_q:"X(z) = ?",answer:"La transformée en Z est l'outil fondamental pour l'analyse des signaux et systèmes en temps discret (filtres numériques).",formula_a:"X(z) = Σₙ₌₀^∞ xₙ·z⁻ⁿ  —  Analogue discret de Laplace"},
+    {q:"Table des transformées en Z usuelles : δₙ, uₙ, aⁿuₙ, n·uₙ ?",hint:"À mémoriser",formula_q:"",answer:"Ces transformées sont la base des filtres numériques RII (à réponse impulsionnelle infinie).",formula_a:"Z{δₙ}=1  Z{uₙ}=z/(z−1)  Z{aⁿuₙ}=z/(z−a)  Z{n·uₙ}=z/(z−1)²"},
+    {q:"Équation aux différences et transmittance en Z H(z) = S(z)/E(z) ?",hint:"Filtre numérique",formula_q:"",answer:"H(z) caractérise un filtre numérique. Les pôles (racines du dénominateur) déterminent la stabilité.",formula_a:"H(z) = S(z)/E(z) = (b₀+b₁z⁻¹+…)/(1+a₁z⁻¹+…)"},
+    {q:"Condition de stabilité d'un filtre numérique en Z ?",hint:"Position des pôles",formula_q:"",answer:"Un système discret est stable si tous ses pôles (racines du dénominateur de H(z)) sont à l'intérieur du cercle unité.",formula_a:"Stable ⟺ |pôles| < 1  (cercle unité dans le plan complexe z)"},
+    {q:"Propriété de convolution discrète et son équivalent en Z ?",hint:"Filtrage",formula_q:"",answer:"La convolution dans le domaine temporel discret correspond à une multiplication dans le domaine en Z.",formula_a:"yₙ = xₙ * hₙ = Σₖ xₖ·hₙ₋ₖ  ⟺  Y(z) = X(z)·H(z)"}
+  ]},
+  {id:'fc_probas',label:'Probas & Stats',color:'var(--green)',cards:[
+    {q:"Axiomes des probabilités (Kolmogorov) ?",hint:"Base de la théorie",formula_q:"",answer:"Trois axiomes fondent toute la théorie : positivité, normalisation, et additivité pour les événements disjoints.",formula_a:"P(A)≥0  —  P(Ω)=1  —  P(A∪B)=P(A)+P(B) si A∩B=∅"},
+    {q:"Loi de Poisson P(λ) : formule et espérance ?",hint:"Événements rares",formula_q:"P(X=k) = ?",answer:"La loi de Poisson modélise le nombre d'événements rares dans un intervalle donné (pannes, arrivées de clients, etc.).",formula_a:"P(X=k) = e^(−λ)·λᵏ/k!  —  E(X) = λ  —  V(X) = λ"},
+    {q:"Loi exponentielle Exp(λ) : densité, espérance, propriété sans mémoire ?",hint:"Durée de vie",formula_q:"",answer:"La loi exponentielle modélise les durées de vie et les temps d'attente. Elle est sans mémoire : P(X>t+s|X>t) = P(X>s).",formula_a:"f(x)=λe^(−λx)  —  E(X)=1/λ  —  V(X)=1/λ²  —  F(x)=1−e^(−λx)"},
+    {q:"Coefficient de corrélation linéaire r ?",hint:"Statistiques bivariées",formula_q:"r = ?",answer:"r mesure l'intensité de la liaison linéaire entre deux variables. |r| proche de 1 : forte corrélation.",formula_a:"r = Cov(X,Y)/(σₓ·σᵧ)  —  −1≤r≤1  —  |r|>0.8 : forte corrélation"},
+    {q:"Loi des grands nombres et théorème central limite ?",hint:"Convergence",formula_q:"",answer:"La LGN dit que la moyenne empirique converge vers E(X). Le TCL dit que la somme de n variables tend vers une loi normale.",formula_a:"x̄ₙ →(n→∞) E(X)  —  (Sₙ−nμ)/(σ√n) → N(0,1) en loi"}
+  ]},
+  {id:'fc_suites',label:'Suites & Séries',color:'var(--purple)',cards:[
+    {q:"Suites arithmétiques : terme général, somme, convergence ?",hint:"Progression linéaire",formula_q:"",answer:"Suite arithmétique : on ajoute r à chaque terme. La somme de n termes = n fois la moyenne du premier et du dernier.",formula_a:"uₙ=u₀+nr  —  Sₙ=n(u₀+uₙ₋₁)/2  —  Diverge si r≠0, converge seulement si r=0"},
+    {q:"Suites géométriques : terme général, somme finie, somme infinie ?",hint:"Progression multiplicative",formula_q:"",answer:"Suite géométrique : on multiplie par q à chaque terme. Converge vers 0 si |q|<1.",formula_a:"uₙ=u₀qⁿ  —  Sₙ=u₀(1−qⁿ)/(1−q)  —  S∞=u₀/(1−q) si |q|<1"},
+    {q:"Critère de convergence d'une série Σuₙ : condition nécessaire ?",hint:"Condition nécessaire",formula_q:"",answer:"Si la série Σuₙ converge, alors uₙ → 0. Attention : c'est nécessaire mais pas suffisant (contre-exemple : Σ1/n).",formula_a:"Σuₙ converge ⟹ uₙ → 0  —  Réciproque FAUSSE : uₙ=1/n → 0 mais Σ1/n diverge"},
+    {q:"Suites récurrentes uₙ₊₁ = f(uₙ) : point fixe et convergence ?",hint:"Méthode graphique",formula_q:"",answer:"Un point fixe vérifie f(l) = l. Si |f'(l)| < 1, la suite converge vers l (théorème du point fixe).",formula_a:"f(ℓ)=ℓ ⟹ ℓ point fixe  —  |f'(ℓ)|<1 ⟹ convergence locale vers ℓ"}
+  ]}
+];
+
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+let playerName='Joueur',gameMode='normal';
+let curChap=0,curQ=0;
 let answers={};
 let score=0,combo=0,maxCombo=0,correctCount=0;
-let timerInterval=null,timeLeft=0,timeElapsed=0;
-let totalTime=0;
-let scoreSaved=false;
+let timerInt=null,timeLeft=0,totalTime=0,scoreSaved=false;
 
-// ===== CURSOR =====
-const cur=document.getElementById('cursor');
-const curRing=document.getElementById('cursor-ring');
-document.addEventListener('mousemove',e=>{
-  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
-  curRing.style.left=e.clientX+'px';curRing.style.top=e.clientY+'px';
-});
-document.addEventListener('mousedown',()=>{cur.style.transform='translate(-50%,-50%) scale(.6)';curRing.style.transform='translate(-50%,-50%) scale(1.4)'});
-document.addEventListener('mouseup',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curRing.style.transform='translate(-50%,-50%) scale(1)'});
+let flashChap=0,flashKnown={},flashStudyQueue=[],flashStudyIdx=0,flashStudyFlipped=false;
 
-// ===== UTILS =====
+// ══════════════════════════════════════════════════════
+// CURSOR
+// ══════════════════════════════════════════════════════
+const cur=document.getElementById('cursor'),curR=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+setInterval(()=>{rx+=(mx-rx)*.2;ry+=(my-ry)*.2;curR.style.left=rx+'px';curR.style.top=ry+'px'},16);
+document.addEventListener('mousedown',()=>{cur.style.transform='translate(-50%,-50%) scale(.5)';curR.style.width='40px';curR.style.height='40px'});
+document.addEventListener('mouseup',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';curR.style.width='28px';curR.style.height='28px'});
+
+// ══════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
+  // nav highlight
+  ['tnav-home','tnav-qcm','tnav-flash','tnav-lb'].forEach(n=>document.getElementById(n).classList.remove('active-nav'));
+  if(id==='landing')document.getElementById('tnav-home').classList.add('active-nav');
+  if(id==='quiz')document.getElementById('tnav-qcm').classList.add('active-nav');
+  if(id==='flash')document.getElementById('tnav-flash').classList.add('active-nav');
+  if(id==='leaderboard')document.getElementById('tnav-lb').classList.add('active-nav');
 }
-function key(ci,qi){return ci+'-'+qi}
 function fmtTime(s){const m=Math.floor(s/60),sec=s%60;return m>0?m+'m '+String(sec).padStart(2,'0')+'s':sec+'s'}
-function grade(pct){if(pct>=90)return'S';if(pct>=70)return'A';if(pct>=50)return'B';return'C'}
+function grade(pct){return pct>=90?'S':pct>=70?'A':pct>=50?'B':'C'}
+function key(ci,qi){return ci+'-'+qi}
 
-// ===== LEADERBOARD =====
-function getLb(){try{return JSON.parse(localStorage.getItem('bts_ciel_lb')||'[]')}catch{return[]}}
-function saveLb(lb){localStorage.setItem('bts_ciel_lb',JSON.stringify(lb))}
-function saveScore(){
+// ══════════════════════════════════════════════════════
+// LEADERBOARD
+// ══════════════════════════════════════════════════════
+function getLb(){try{return JSON.parse(localStorage.getItem('bts_ciel_v2')||'[]')}catch{return[]}}
+function saveLb(lb){localStorage.setItem('bts_ciel_v2',JSON.stringify(lb))}
+function doSaveScore(){
   if(scoreSaved)return;
-  const pct=Math.round(correctCount/TOTAL_Q*100);
-  const g=grade(pct);
-  const entry={name:playerName,score,pct,correct:correctCount,totalQ:TOTAL_Q,time:totalTime,mode:gameMode,grade:g,date:new Date().toLocaleDateString('fr-FR')};
-  const lb=getLb();
-  lb.push(entry);
-  lb.sort((a,b)=>b.score-a.score);
-  if(lb.length>50)lb.length=50;
-  saveLb(lb);
-  scoreSaved=true;
-  document.getElementById('save-form').innerHTML='<div style="color:var(--green);font-family:var(--mono);font-size:16px;font-weight:700">✓ Score enregistré !</div>';
+  const pct=Math.round(correctCount/TOTAL_Q*100),g=grade(pct);
+  const entry={name:playerName,score,pct,correct:correctCount,total:TOTAL_Q,time:totalTime,mode:gameMode,grade:g,date:new Date().toLocaleDateString('fr-FR')};
+  const lb=getLb();lb.push(entry);lb.sort((a,b)=>b.score-a.score);if(lb.length>100)lb.length=100;
+  saveLb(lb);scoreSaved=true;
+  document.getElementById('save-box').innerHTML='<div style="color:var(--green);font-family:var(--mono);font-size:15px;font-weight:700;padding:1rem">✓ Score enregistré dans le classement !</div>';
 }
 function clearLb(){if(confirm('Effacer tout le classement ?')){saveLb([]);renderLb('all')}}
-
-function renderLbPreview(){
-  const lb=getLb().slice(0,3);
-  const el=document.getElementById('lb-preview-list');
-  if(!lb.length){el.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:13px;padding:.5rem 0">Aucun score enregistré</div>';return}
-  el.innerHTML=lb.map((e,i)=>`
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
-      <span style="font-family:var(--mono);font-weight:700;color:${['var(--cyan)','var(--green)','var(--amber)'][i]||'var(--text3)'};width:28px">${['①','②','③'][i]||i+1}</span>
-      <span style="flex:1;font-weight:600">${e.name}</span>
-      <span style="font-family:var(--mono);font-size:13px;color:var(--text2)">${e.mode}</span>
-      <span style="font-family:var(--mono);font-weight:700;color:var(--cyan)">${e.score}pts</span>
-      <span style="font-family:var(--mono);font-size:13px;color:var(--${e.grade==='S'?'cyan':e.grade==='A'?'green':e.grade==='B'?'amber':'red'})">${e.grade}</span>
-    </div>
-  `).join('');
-}
-
-let currentLbFilter='all';
-function filterLb(mode,btn){
-  currentLbFilter=mode;
-  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-  renderLb(mode);
-}
-function renderLb(mode){
-  let lb=getLb();
-  if(mode!=='all')lb=lb.filter(e=>e.mode===mode);
+let lbFilter='all';
+function filterLb(m,btn){lbFilter=m;document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('act'));btn.classList.add('act');renderLb(m)}
+function renderLb(m){
+  let lb=getLb();if(m!=='all')lb=lb.filter(e=>e.mode===m);
   const el=document.getElementById('lb-list');
-  if(!lb.length){el.innerHTML='<div class="lb-empty">Aucun score pour ce mode</div>';return}
+  if(!lb.length){el.innerHTML='<div class="lb-empty">Aucun score pour ce mode<br><span style="font-size:10px">Joue une partie pour apparaître ici !</span></div>';return}
   el.innerHTML=lb.map((e,i)=>{
-    const rowCls=i===0?'top1':i===1?'top2':i===2?'top3':'';
-    const rankCls=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
-    const gCls=e.grade;
-    return`<div class="lb-row ${rowCls}" style="animation-delay:${i*0.04}s">
-      <div class="lb-rank ${rankCls}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
-      <div>
+    const rc=i===0?'t1':i===1?'t2':i===2?'t3':'';
+    const rn=i===0?'r1':i===1?'r2':i===2?'r3':'rn';
+    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
+    return`<div class="lb-row ${rc}" style="animation-delay:${i*.04}s">
+      <div class="lb-rank ${rn}">${medal}</div>
+      <div style="flex:1">
         <div class="lb-name">${e.name}</div>
-        <div style="margin-top:2px;display:flex;gap:6px;align-items:center">
-          <span class="lb-mode">${e.mode}</span>
-          <span style="font-size:11px;color:var(--text3);font-family:var(--mono)">${e.date}</span>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:2px">
+          <span class="lb-mode-tag">${e.mode}</span>
+          <span style="font-size:10px;color:var(--text3);font-family:var(--mono)">${e.date}</span>
         </div>
       </div>
-      <div class="lb-grade ${gCls}">${e.grade}</div>
-      <div class="lb-score-wrap">
-        <div class="lb-score">${e.score}pts</div>
-        <div class="lb-time">${e.pct}% · ${fmtTime(e.time)}</div>
-      </div>
+      <div class="lb-g ${e.grade}">${e.grade}</div>
+      <div><div class="lb-sc">${e.score}pts</div><div class="lb-meta">${e.pct}% · ${fmtTime(e.time)}</div></div>
     </div>`;
   }).join('');
 }
-function showLeaderboard(){
-  renderLb(currentLbFilter);
-  showScreen('leaderboard');
+function renderLbPreview(){
+  const lb=getLb().slice(0,5);
+  const el=document.getElementById('lb-preview');
+  if(!lb.length){el.innerHTML='<div style="color:var(--text3);font-family:var(--mono);font-size:12px;padding:.5rem 0">Aucun score — sois le premier !</div>';return}
+  el.innerHTML=lb.map((e,i)=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">
+    <span style="font-family:var(--mono);font-weight:700;color:${['var(--cyan)','var(--green)','var(--amber)','var(--text2)','var(--text3)'][i]};width:24px">${['①','②','③','④','⑤'][i]}</span>
+    <span style="flex:1;font-size:13px;font-weight:600">${e.name}</span>
+    <span class="lb-g ${e.grade}" style="font-size:12px">${e.grade}</span>
+    <span style="font-family:var(--mono);font-size:13px;color:var(--cyan)">${e.score}pts</span>
+  </div>`).join('');
 }
 
-// ===== MODE SELECT =====
-function selectMode(m){
-  gameMode=m;
-  document.querySelectorAll('.mode-card').forEach(c=>c.classList.toggle('selected',c.dataset.mode===m));
-}
+// ══════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════
+function goHome(){clearInterval(timerInt);document.getElementById('score-fl').style.display='none';document.getElementById('combo-pill').classList.remove('show');renderLbPreview();showScreen('landing')}
+function goToQCMSetup(){goHome()}
+function showLeaderboard(){renderLb(lbFilter);showScreen('leaderboard')}
+function showFlash(){renderFlashChapTabs();renderFlashGrid();showScreen('flash');updateFlashProgress()}
+function selMode(m){gameMode=m;document.querySelectorAll('.mode-card').forEach(c=>c.classList.toggle('sel',c.dataset.mode===m))}
 
-// ===== START =====
+// ══════════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════════
+const MODE_TIME={normal:90,speed:30,zen:0,exam:60};
+
 function startQuiz(){
-  const inp=document.getElementById('player-name').value.trim();
-  playerName=inp||'Joueur';
+  playerName=document.getElementById('player-name').value.trim()||'Joueur';
   answers={};score=0;combo=0;maxCombo=0;correctCount=0;totalTime=0;scoreSaved=false;
-  currentChap=0;currentQ=0;
-  document.getElementById('score-floater').style.display='flex';
-  updateFloater();
-  renderChapTabs();
-  renderQ();
-  showScreen('quiz');
+  curChap=0;curQ=0;
+  document.getElementById('score-fl').style.display='flex';
+  updateFloater();renderCtabs();renderQ();showScreen('quiz');
   if(MODE_TIME[gameMode]>0)startTimer();
 }
+function restartQuiz(){answers={};score=0;combo=0;maxCombo=0;correctCount=0;totalTime=0;scoreSaved=false;curChap=0;curQ=0;document.getElementById('score-fl').style.display='flex';updateFloater();renderCtabs();renderQ();showScreen('quiz');if(MODE_TIME[gameMode]>0)startTimer()}
 
-// ===== TIMER =====
 function startTimer(){
-  clearInterval(timerInterval);
-  timeLeft=MODE_TIME[gameMode];
-  updateTimerDisplay();
-  timerInterval=setInterval(()=>{
-    totalTime++;
-    timeLeft--;
-    updateTimerDisplay();
-    if(timeLeft<=0){clearInterval(timerInterval);timeOut()}
-  },1000);
+  clearInterval(timerInt);timeLeft=MODE_TIME[gameMode];updateTimerDisp();
+  timerInt=setInterval(()=>{totalTime++;timeLeft--;updateTimerDisp();if(timeLeft<=0){clearInterval(timerInt);autoSkip()}},1000);
 }
-function updateTimerDisplay(){
-  const el=document.getElementById('timer-display');
-  const m=gameMode;
-  if(m==='zen'){el.textContent='∞';el.className='timer-val';return}
+function updateTimerDisp(){
+  const el=document.getElementById('timer-disp');
+  if(gameMode==='zen'){el.textContent='∞';el.className='timer-val';return}
   el.textContent=fmtTime(timeLeft);
-  const pct=timeLeft/MODE_TIME[m];
-  el.className='timer-val'+(pct<0.25?' danger':pct<0.5?' warn':'');
+  const p=timeLeft/MODE_TIME[gameMode];
+  el.className='timer-val'+(p<0.2?' danger':p<0.4?' warn':'');
 }
-function timeOut(){
-  const k=key(currentChap,currentQ);
-  if(!answers[k]){answers[k]={chosen:-1,correct:false,time:0};combo=0;renderQ()}
-}
-function stopTimer(){clearInterval(timerInterval);if(gameMode!=='zen')totalTime+=MODE_TIME[gameMode]-timeLeft}
+function autoSkip(){const k=key(curChap,curQ);if(!answers[k]){answers[k]={chosen:-1,correct:false,pts:0};combo=0;updateFloater();renderQ()}}
+function stopTimer(){clearInterval(timerInt);if(gameMode!=='zen')totalTime+=MODE_TIME[gameMode]-timeLeft}
 
-// ===== CHAPTER TABS =====
-function renderChapTabs(){
-  document.getElementById('chap-tabs').innerHTML=CHAPTERS.map((c,i)=>{
-    const allDone=c.questions.every((_,qi)=>answers[key(i,qi)]!==undefined);
-    const active=i===currentChap?'active':'';
-    const done=allDone&&i!==currentChap?'done':'';
-    return`<button class="ctab ${active} ${done}" onclick="jumpChap(${i})">${c.icon} ${c.label}</button>`;
+function renderCtabs(){
+  document.getElementById('ctabs').innerHTML=CHAPTERS.map((c,i)=>{
+    const done=c.questions.every((_,qi)=>answers[key(i,qi)]!==undefined);
+    return`<button class="ctab ${i===curChap?'act':''} ${done&&i!==curChap?'done':''}" onclick="jumpChap(${i})">${c.icon} ${c.label}</button>`;
   }).join('');
 }
-function jumpChap(i){currentChap=i;currentQ=0;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
+function jumpChap(i){curChap=i;curQ=0;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
 
-// ===== RENDER QUESTION =====
 function renderQ(){
-  const chap=CHAPTERS[currentChap];
-  const q=chap.questions[currentQ];
-  const k=key(currentChap,currentQ);
-  const ans=answers[k];
-  const answered=ans!==undefined;
+  const chap=CHAPTERS[curChap],q=chap.questions[curQ],k=key(curChap,curQ),ans=answers[k],answered=ans!==undefined;
+  document.getElementById('quiz-chap-lbl').textContent=chap.icon+' '+chap.label+' · Q'+(curQ+1)+'/'+chap.questions.length;
+  const done=Object.keys(answers).length;
+  document.getElementById('qprog-fill').style.width=(done/TOTAL_Q*100)+'%';
+  const nb=document.getElementById('next-btn');
+  const isLast=curChap===CHAPTERS.length-1&&curQ===CHAPTERS[curChap].questions.length-1;
+  nb.textContent=Object.keys(answers).length>=TOTAL_Q?'Terminer ✓':'Suiv. →';
+  nb.className='nav-btn prim';
 
-  document.getElementById('quiz-chap-label').textContent=chap.icon+' '+chap.label+' · Q'+(currentQ+1)+'/'+chap.questions.length;
+  const choicesHtml=q.choices.map((ch,i)=>{
+    let cls='choice'+(answered?' answered':'');
+    if(answered){if(i===q.c)cls+=' c-ok';else if(ans.chosen===i)cls+=' c-ko';else if(i===q.c)cls+=' c-reveal'}
+    return`<button class="${cls}" onclick="doAnswer(${i})"><span class="cletter">${LETTERS[i]}</span>${ch}</button>`;
+  }).join('');
 
-  const total=TOTAL_Q,done=Object.keys(answers).length;
-  document.getElementById('qprog-fill').style.width=(done/total*100)+'%';
-
-  const nextBtn=document.getElementById('next-btn');
-  const isLast=currentChap===CHAPTERS.length-1&&currentQ===CHAPTERS[currentChap].questions.length-1;
-  nextBtn.textContent=isLast?'Terminer ✓':'Suiv. →';
-  nextBtn.className='nav-btn primary'+(isLast?' finish-btn':'');
-
-  const cardState=answered?(ans.correct?'correct-card':'wrong-card'):'answering';
-  const explOpen=answered&&gameMode!=='exam'?'open':'';
-  const explHead=answered?(ans.correct?'<span class="expl-head ok">✓ Correct !</span>':'<span class="expl-head ko">✗ Incorrect</span>'):'';
+  const explOpen=answered&&gameMode!=='exam';
+  const eHead=answered?(ans.correct?'<div class="expl-head ok">✓ Correct !</div>':'<div class="expl-head ko">✗ Incorrect</div>'):'';
 
   document.getElementById('q-area').innerHTML=`
-    <div class="q-card ${cardState}">
-      <div class="q-header">
-        <span class="q-num">Q${currentQ+1}</span>
-        <span class="q-pts" id="q-pts-disp">${gameMode==='speed'?'+rapidité':'+'+MODE_PTS[gameMode]+'pts'}</span>
-      </div>
+    <div class="q-card ${answered?(ans.correct?'ok-card':'ko-card'):'live'}">
+      <div class="q-header"><span class="q-num">Q${curQ+1}</span><span class="q-pts-tag">${gameMode==='speed'?'⚡ bonus rapidité':'+10 pts'}</span></div>
       <div class="q-text">${q.q}</div>
       ${q.f?`<div class="q-formula">${q.f}</div>`:''}
-      <div class="choices">
-        ${q.choices.map((ch,i)=>{
-          let cls='choice'+(answered?' answered':'');
-          if(answered){
-            if(i===q.c)cls+=' correct-ans';
-            else if(ans.chosen===i&&i!==q.c)cls+=' wrong-ans';
-            else if(ans.chosen!==i&&i===q.c&&!ans.correct)cls+=' reveal-ans';
-          }
-          return`<button class="${cls}" onclick="doAnswer(${i})"><span class="choice-letter">${LETTERS[i]}</span>${ch}</button>`;
-        }).join('')}
-      </div>
-      ${gameMode!=='exam'?`<div class="expl ${explOpen}">${explHead}<div class="expl-body">${q.expl}</div><span class="expl-formula">${q.f2}</span></div>`:''}
-    </div>
-  `;
-  renderDots();
-  renderChapTabs();
-  updateFloater();
+      <div class="choices">${choicesHtml}</div>
+      ${gameMode!=='exam'?`<div class="expl ${explOpen?'open':''}"><div class="expl-inner">${eHead}<div class="expl-body">${q.expl}</div><span class="expl-f">${q.f2}</span></div></div>`:''}
+    </div>`;
+  renderDots();renderCtabs();updateFloater();
 }
 
-// ===== ANSWER =====
 function doAnswer(i){
-  const k=key(currentChap,currentQ);
-  if(answers[k]!==undefined)return;
-  const q=CHAPTERS[currentChap].questions[currentQ];
-  const correct=i===q.c;
-  const timeUsed=MODE_TIME[gameMode]>0?MODE_TIME[gameMode]-timeLeft:0;
-
-  // Score calc
+  const k=key(curChap,curQ);if(answers[k]!==undefined)return;
+  const q=CHAPTERS[curChap].questions[curQ];const correct=i===q.c;
   let pts=0;
-  if(correct){
-    pts=MODE_PTS[gameMode];
-    if(gameMode==='speed'){const bonus=Math.floor((timeLeft/MODE_TIME[gameMode])*10);pts+=bonus}
-    combo++;maxCombo=Math.max(maxCombo,combo);
-    if(combo>=3)pts+=Math.floor(combo/3)*5;
-    score+=pts;correctCount++;
-    showStreakFlash(true,combo);
-  }else{
-    combo=0;
-    if(gameMode!=='zen')score=Math.max(0,score-2);
-    showStreakFlash(false,0);
-  }
-
-  answers[k]={chosen:i,correct,pts,time:timeUsed};
-  stopTimer();
-  if(MODE_TIME[gameMode]>0)startTimer();
-  showPtsPopup(pts,correct);
-  updateComboBar();
-  renderQ();
-  updateFloater();
+  if(correct){pts=10;if(gameMode==='speed'){pts+=Math.floor((timeLeft/30)*10)}combo++;maxCombo=Math.max(maxCombo,combo);if(combo>=3)pts+=Math.floor(combo/3)*5;score+=pts;correctCount++}
+  else{combo=0;if(gameMode!=='zen')score=Math.max(0,score-2);pts=-2}
+  answers[k]={chosen:i,correct,pts,choice_text:q.choices[i]};
+  stopTimer();if(MODE_TIME[gameMode]>0)startTimer();
+  showPtsPopup(pts,correct);updateCombo();flashStreak(correct,combo);
+  renderQ();updateFloater();
 }
 
 function showPtsPopup(pts,correct){
-  if(!correct&&pts===0)return;
-  const el=document.createElement('div');
-  el.className='pts-popup'+(correct?'':' negative');
-  el.textContent=correct?'+'+pts+'pts':'−2pts';
-  el.style.left=(window.innerWidth/2+Math.random()*100-50)+'px';
-  el.style.top=(window.innerHeight/2)+'px';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),1300);
+  const el=document.createElement('div');el.className='pts-pop'+(correct?'':' neg');
+  el.textContent=(pts>0?'+':'')+pts+'pts';
+  el.style.cssText=`left:${50+Math.random()*20-10}%;top:${50+Math.random()*10-5}%`;
+  document.body.appendChild(el);setTimeout(()=>el.remove(),1200);
 }
-
-function showStreakFlash(ok,combo){
-  const el=document.getElementById('streak-flash');
-  el.className='streak-flash';
-  void el.offsetWidth;
-  if(combo>=5&&ok){
-    el.innerHTML=`<div class="streak-text" style="color:var(--cyan)">🔥 COMBO ×${combo}!</div>`;
-    el.classList.add('green-flash');
-  }else if(ok&&combo===1){
-    el.innerHTML='';
-    el.classList.add('green-flash');
-  }else if(!ok){
-    el.innerHTML='';
-    el.classList.add('red-flash');
-  }
+function flashStreak(ok,combo){
+  const el=document.getElementById('streak-flash');el.className='streak-flash';void el.offsetWidth;
+  if(ok&&combo>=5){el.innerHTML=`<div class="streak-txt" style="color:var(--cyan)">🔥 COMBO ×${combo}!</div>`;el.classList.add('gf')}
+  else if(ok){el.innerHTML='';el.classList.add('gf')}
+  else{el.innerHTML='';el.classList.add('rf')}
 }
-
-function updateComboBar(){
-  const bar=document.getElementById('combo-bar');
-  document.getElementById('combo-num').textContent='×'+combo;
-  if(combo>=2){bar.classList.add('show');bar.style.borderColor='rgba(255,209,102,0.4)'}
-  else{bar.classList.remove('show')}
+function updateCombo(){
+  const p=document.getElementById('combo-pill');document.getElementById('combo-n').textContent='×'+combo;
+  combo>=2?p.classList.add('show'):p.classList.remove('show');
 }
+function updateFloater(){document.getElementById('sf-sc').textContent=score;document.getElementById('sf-ok').textContent=correctCount;document.getElementById('sf-combo').textContent=combo}
 
-function updateFloater(){
-  document.getElementById('sf-score').textContent=score;
-  document.getElementById('sf-correct').textContent=correctCount;
-  document.getElementById('sf-streak').textContent=combo;
-}
-
-// ===== DOTS =====
 function renderDots(){
-  const qs=CHAPTERS[currentChap].questions;
-  document.getElementById('q-dots').innerHTML=qs.map((_,i)=>{
-    const k=key(currentChap,i);
-    const a=answers[k];
-    let cls='qdot';
-    if(i===currentQ)cls+=' cur';
-    else if(a)cls+=a.correct?' ok':' ko';
-    return`<div class="${cls}" onclick="jumpQ(${i})" title="Q${i+1}"></div>`;
+  const qs=CHAPTERS[curChap].questions;
+  document.getElementById('qdots').innerHTML=qs.map((_,i)=>{
+    const k=key(curChap,i),a=answers[k];
+    let cls='qdot';if(i===curQ)cls+=' cur';else if(a)cls+=a.correct?' ok':' ko';
+    return`<div class="${cls}" onclick="jumpQ(${i})"></div>`;
   }).join('');
 }
-function jumpQ(i){currentQ=i;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
-function prevQ(){
-  if(currentQ>0){currentQ--;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
-  else if(currentChap>0){currentChap--;currentQ=CHAPTERS[currentChap].questions.length-1;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
-}
+function jumpQ(i){curQ=i;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
+function prevQ(){if(curQ>0){curQ--;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}else if(curChap>0){curChap--;curQ=CHAPTERS[curChap].questions.length-1;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}}
 function nextOrFinish(){
   const allDone=CHAPTERS.every((c,ci)=>c.questions.every((_,qi)=>answers[key(ci,qi)]!==undefined));
   if(allDone){finishQuiz();return}
-  const qs=CHAPTERS[currentChap].questions;
-  if(currentQ<qs.length-1){currentQ++;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
-  else if(currentChap<CHAPTERS.length-1){currentChap++;currentQ=0;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
-  else{
-    // find first unanswered
-    for(let ci=0;ci<CHAPTERS.length;ci++){
-      for(let qi=0;qi<CHAPTERS[ci].questions.length;qi++){
-        if(!answers[key(ci,qi)]){currentChap=ci;currentQ=qi;renderQ();if(MODE_TIME[gameMode]>0)startTimer();return}
-      }
-    }
-    finishQuiz();
-  }
+  if(curQ<CHAPTERS[curChap].questions.length-1){curQ++;renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
+  else if(curChap<CHAPTERS.length-1){curChap++;curQ=0;renderCtabs();renderQ();if(MODE_TIME[gameMode]>0)startTimer()}
+  else{for(let ci=0;ci<CHAPTERS.length;ci++)for(let qi=0;qi<CHAPTERS[ci].questions.length;qi++)if(!answers[key(ci,qi)]){curChap=ci;curQ=qi;renderCtabs();renderQ();if(MODE_TIME[gameMode]>0)startTimer();return}finishQuiz()}
 }
 
-// ===== FINISH =====
 function finishQuiz(){
-  clearInterval(timerInterval);
-  document.getElementById('score-floater').style.display='none';
-  document.getElementById('combo-bar').classList.remove('show');
-  const pct=Math.round(correctCount/TOTAL_Q*100);
-  const g=grade(pct);
-  const gradeEl=document.getElementById('result-grade');
-  gradeEl.textContent=g;gradeEl.className='result-grade '+g;
-  const labels={S:'EXCELLENT — MAÎTRE DES MATHS',A:'TRÈS BIEN — PRÊT POUR LE CCF',B:'BIEN — ENCORE UN PEU DE RÉVISION',C:'À RÉVISER — REPRENDS TES FICHES'};
-  document.getElementById('result-label').textContent=labels[g];
-  document.getElementById('result-stats').innerHTML=`
-    <div class="rstat"><div class="rstat-val green">${correctCount}/${TOTAL_Q}</div><div class="rstat-label">Bonnes rép.</div></div>
-    <div class="rstat"><div class="rstat-val cyan">${pct}%</div><div class="rstat-label">Réussite</div></div>
-    <div class="rstat"><div class="rstat-val" style="color:var(--amber)">${score}</div><div class="rstat-label">Score</div></div>
-    <div class="rstat"><div class="rstat-val">${fmtTime(totalTime)}</div><div class="rstat-label">Temps</div></div>
-    <div class="rstat"><div class="rstat-val" style="color:var(--purple)">×${maxCombo}</div><div class="rstat-label">Combo max</div></div>
-    <div class="rstat"><div class="rstat-val" style="color:var(--red)">${TOTAL_Q-correctCount}</div><div class="rstat-label">Erreurs</div></div>
-    <div class="rstat"><div class="rstat-val" style="font-size:1rem">${gameMode.toUpperCase()}</div><div class="rstat-label">Mode</div></div>
-    <div class="rstat"><div class="rstat-val" style="font-size:1.1rem">${playerName}</div><div class="rstat-label">Joueur</div></div>
-  `;
-  document.getElementById('save-sub-text').textContent=playerName+' · '+score+'pts · '+pct+'% · '+gameMode;
+  clearInterval(timerInt);document.getElementById('score-fl').style.display='none';document.getElementById('combo-pill').classList.remove('show');
+  const pct=Math.round(correctCount/TOTAL_Q*100),g=grade(pct);
+  const gr=document.getElementById('res-grade');gr.textContent=g;gr.className='result-grade '+g;
+  const labels={S:'EXCELLENT — MAÎTRE DES MATHS BTS CIEL',A:'TRÈS BIEN — PRÊT POUR LE CCF',B:'BIEN — QUELQUES LACUNES À COMBLER',C:'À RÉVISER — REPRENDS LES FLASHCARDS'};
+  document.getElementById('res-lbl').textContent=labels[g];
+  document.getElementById('res-stats').innerHTML=`
+    <div class="rstat"><div class="rstat-v g">${correctCount}/${TOTAL_Q}</div><div class="rstat-l">Bonnes rép.</div></div>
+    <div class="rstat"><div class="rstat-v c">${pct}%</div><div class="rstat-l">Réussite</div></div>
+    <div class="rstat"><div class="rstat-v a">${score}</div><div class="rstat-l">Score</div></div>
+    <div class="rstat"><div class="rstat-v">${fmtTime(totalTime)}</div><div class="rstat-l">Temps</div></div>
+    <div class="rstat"><div class="rstat-v p">×${maxCombo}</div><div class="rstat-l">Combo max</div></div>
+    <div class="rstat"><div class="rstat-v" style="color:var(--red)">${TOTAL_Q-correctCount}</div><div class="rstat-l">Erreurs</div></div>
+    <div class="rstat"><div class="rstat-v" style="font-size:1rem">${gameMode.toUpperCase()}</div><div class="rstat-l">Mode</div></div>
+    <div class="rstat"><div class="rstat-v" style="font-size:1rem">${playerName}</div><div class="rstat-l">Joueur</div></div>`;
+  document.getElementById('save-sub').textContent=playerName+' · '+score+'pts · '+pct+'% · mode '+gameMode;
+
+  // Wrong answers review
+  const wrong=[];
+  CHAPTERS.forEach((chap,ci)=>chap.questions.forEach((q,qi)=>{
+    const a=answers[key(ci,qi)];if(a&&!a.correct)wrong.push({q,a,chap:chap.label});
+  }));
+  const rev=document.getElementById('review-section');
+  if(wrong.length){rev.innerHTML=`<div class="review-title">❌ Questions ratées (${wrong.length})</div>`+wrong.map(({q,a,chap})=>`
+    <div class="review-item">
+      <div class="review-q"><strong>[${chap}]</strong> ${q.q}</div>
+      <div class="review-your">Votre réponse : ${a.chosen>=0?q.choices[a.chosen]:'(temps écoulé)'}</div>
+      <div class="review-correct">Bonne réponse : ${q.choices[q.c]}</div>
+      <div class="review-f">${q.f2}</div>
+    </div>`).join('');}
+  else rev.innerHTML='<div style="color:var(--green);font-family:var(--mono);font-size:14px;padding:1.5rem 0;text-align:center">🎉 Parfait ! Aucune erreur !</div>';
   showScreen('result');
 }
 
-function restartSameMode(){
-  answers={};score=0;combo=0;maxCombo=0;correctCount=0;totalTime=0;scoreSaved=false;
-  currentChap=0;currentQ=0;
-  document.getElementById('score-floater').style.display='flex';
-  updateFloater();
-  renderChapTabs();
-  renderQ();
-  showScreen('quiz');
-  if(MODE_TIME[gameMode]>0)startTimer();
+// ══════════════════════════════════════════════════════
+// FLASHCARDS
+// ══════════════════════════════════════════════════════
+function getFlashKnown(){try{return JSON.parse(localStorage.getItem('bts_flash_known')||'{}')}catch{return{}}}
+function saveFlashKnown(){localStorage.setItem('bts_flash_known',JSON.stringify(flashKnown))}
+
+function updateFlashProgress(){
+  flashKnown=getFlashKnown();
+  const all=FLASH_CHAPTERS.reduce((s,c)=>s+c.cards.length,0);
+  const known=Object.values(flashKnown).filter(v=>v).length;
+  document.getElementById('fp-fill').style.width=(all>0?known/all*100:0)+'%';
+  document.getElementById('fp-count').textContent=known+' / '+all;
 }
-function goHome(){
-  clearInterval(timerInterval);
-  document.getElementById('score-floater').style.display='none';
-  document.getElementById('combo-bar').classList.remove('show');
-  renderLbPreview();
-  showScreen('landing');
+function resetFlashProgress(){if(confirm('Réinitialiser toute la progression des flashcards ?')){localStorage.removeItem('bts_flash_known');flashKnown={};renderFlashGrid();updateFlashProgress()}}
+
+function renderFlashChapTabs(){
+  flashKnown=getFlashKnown();
+  document.getElementById('flash-ctabs').innerHTML=
+    [{id:'all',label:'Tout',color:'var(--text2)'},...FLASH_CHAPTERS].map((c,i)=>`<button class="flash-ctab ${(i===0&&flashChap===-1)||(i>0&&flashChap===i-1)?'act':''}" onclick="switchFlashChap(${i===0?-1:i-1})">${c.label}</button>`).join('');
+}
+function switchFlashChap(i){flashChap=i;renderFlashGrid();renderFlashChapTabs()}
+
+function cardKey(ci,ki){return ci+'-'+ki}
+function renderFlashGrid(){
+  flashKnown=getFlashKnown();
+  const chaps=flashChap===-1?FLASH_CHAPTERS:[FLASH_CHAPTERS[flashChap]];
+  const grid=document.getElementById('flash-grid');
+  grid.innerHTML='';
+  chaps.forEach((chap,chapOffset)=>{
+    const realCi=flashChap===-1?FLASH_CHAPTERS.indexOf(chap):flashChap;
+    chap.cards.forEach((card,ki)=>{
+      const k=cardKey(realCi,ki);const known=flashKnown[k];
+      const wrap=document.createElement('div');wrap.className='fc-wrap'+(known?' fc-known':'');
+      wrap.onclick=()=>flipCard(wrap);
+      wrap.innerHTML=`
+        <div class="fc-inner" id="fci-${k}">
+          <div class="fc-front" style="border-color:${known?'rgba(0,255,157,0.2)':'var(--border)'}">
+            <div class="fc-tag" style="color:${chap.color}"><div class="fc-tag-dot" style="background:${chap.color}"></div>${chap.label}${known?' · ✓ Mémorisée':''}</div>
+            <div class="fc-question">${card.q}</div>
+            ${card.formula_q?`<div class="fc-formula-front">${card.formula_q}</div>`:''}
+            <div class="fc-hint">💡 ${card.hint} — clique pour voir</div>
+          </div>
+          <div class="fc-back">
+            <div class="fc-tag" style="color:${chap.color}"><div class="fc-tag-dot" style="background:${chap.color}"></div>Réponse</div>
+            <div class="fc-answer">${card.answer}</div>
+            <div class="fc-formula-back">${card.formula_a}</div>
+            <div class="fc-actions">
+              <button class="fc-action-btn no" onclick="markCard(event,'${k}',false)">✗ À revoir</button>
+              <button class="fc-action-btn yes" onclick="markCard(event,'${k}',true)">✓ Mémorisée</button>
+            </div>
+          </div>
+        </div>`;
+      grid.appendChild(wrap);
+    });
+  });
+}
+function flipCard(wrap){const inner=wrap.querySelector('.fc-inner');inner.classList.toggle('flipped')}
+function markCard(e,k,known){
+  e.stopPropagation();
+  flashKnown=getFlashKnown();flashKnown[k]=known;saveFlashKnown();
+  updateFlashProgress();renderFlashGrid();
 }
 
-// ===== INIT =====
+// ── STUDY MODE ──
+function startStudyMode(){
+  flashKnown=getFlashKnown();
+  const chaps=flashChap===-1?FLASH_CHAPTERS:[FLASH_CHAPTERS[flashChap]];
+  flashStudyQueue=[];
+  chaps.forEach((chap,ci)=>{
+    const realCi=flashChap===-1?FLASH_CHAPTERS.indexOf(chap):flashChap;
+    chap.cards.forEach((card,ki)=>{
+      if(!flashKnown[cardKey(realCi,ki)])flashStudyQueue.push({card,ci:realCi,ki,chap});
+    });
+  });
+  if(!flashStudyQueue.length){flashStudyQueue=[];FLASH_CHAPTERS.forEach((chap,ci)=>chap.cards.forEach((card,ki)=>flashStudyQueue.push({card,ci,ki,chap})))}
+  // shuffle
+  for(let i=flashStudyQueue.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[flashStudyQueue[i],flashStudyQueue[j]]=[flashStudyQueue[j],flashStudyQueue[i]]}
+  flashStudyIdx=0;flashStudyFlipped=false;
+  document.getElementById('study-modal').classList.add('open');
+  renderStudyCard();
+}
+function closeStudy(){document.getElementById('study-modal').classList.remove('open')}
+function renderStudyCard(){
+  if(flashStudyIdx>=flashStudyQueue.length){closeStudy();alert('🎉 Session terminée ! Toutes les cartes ont été vues.');return}
+  const {card,chap}=flashStudyQueue[flashStudyIdx];
+  document.getElementById('study-prog').textContent=`Carte ${flashStudyIdx+1} / ${flashStudyQueue.length} · ${chap.label}`;
+  document.getElementById('study-front').innerHTML=`
+    <div class="fc-tag" style="color:${chap.color};margin-bottom:.75rem"><div class="fc-tag-dot" style="background:${chap.color}"></div>${chap.label}</div>
+    <div class="study-q">${card.q}</div>
+    ${card.formula_q?`<div class="study-ff">${card.formula_q}</div>`:''}
+    <div class="study-hint">💡 ${card.hint} — clique pour retourner</div>`;
+  document.getElementById('study-back').innerHTML=`
+    <div class="fc-tag" style="color:${chap.color};margin-bottom:.75rem"><div class="fc-tag-dot" style="background:${chap.color}"></div>Réponse</div>
+    <div class="study-ans">${card.answer}</div>
+    <div class="study-fb">${card.formula_a}</div>`;
+  const inner=document.getElementById('study-inner');inner.classList.remove('flipped');flashStudyFlipped=false;
+}
+function flipStudyCard(){document.getElementById('study-inner').classList.toggle('flipped');flashStudyFlipped=!flashStudyFlipped}
+function studyAnswer(known){
+  const {ci,ki}=flashStudyQueue[flashStudyIdx];
+  flashKnown=getFlashKnown();flashKnown[cardKey(ci,ki)]=known;saveFlashKnown();
+  updateFlashProgress();
+  flashStudyIdx++;renderStudyCard();
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
 renderLbPreview();
+renderFlashChapTabs();
 </script>
 </body>
 </html>
