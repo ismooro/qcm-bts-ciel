@@ -1,0 +1,2473 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BTS CIEL · Maths — CCF v2.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css"/>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js"
+></script>
+<style>
+/* ─── RESET & ROOT ─────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f7fa;
+  --bg2:#ffffff;
+  --bg3:#eef1f6;
+  --card:#ffffff;
+  --card2:#f0f4ff;
+  --blue:#3b82f6;
+  --blue-light:#eff6ff;
+  --blue-mid:#bfdbfe;
+  --green:#16a34a;
+  --green-light:#f0fdf4;
+  --green-mid:#bbf7d0;
+  --amber:#d97706;
+  --amber-light:#fffbeb;
+  --violet:#7c3aed;
+  --violet-light:#f5f3ff;
+  --rose:#e11d48;
+  --rose-light:#fff1f2;
+  --text:#1e293b;
+  --text2:#64748b;
+  --text3:#94a3b8;
+  --border:#e2e8f0;
+  --border2:#cbd5e1;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --font-title:'Syne',sans-serif;
+  --font-body:system-ui,-apple-system,sans-serif;
+  --nav-h:56px;
+  --radius:12px;
+  --radius2:16px;
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.6;
+  font-size:15px;
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg3)}
+::-webkit-scrollbar-thumb{background:var(--blue-mid);border-radius:3px}
+
+/* ─── TOPNAV ─────────────────────────────────────────────────────────────── */
+nav#topnav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  z-index:1000;
+  box-shadow:var(--shadow);
+}
+.nav-brand{
+  font-family:var(--font-title);font-size:1.05rem;font-weight:800;
+  color:var(--blue);letter-spacing:.02em;white-space:nowrap;
+}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-btn{
+  font-family:var(--font-body);font-size:.8rem;font-weight:500;
+  color:var(--text2);background:transparent;
+  border:none;border-radius:8px;
+  padding:7px 12px;cursor:pointer;
+  transition:all .15s;
+}
+.nav-btn:hover{color:var(--blue);background:var(--blue-light)}
+.nav-btn.active{color:var(--blue);background:var(--blue-light);font-weight:600}
+
+/* ─── SECTIONS ───────────────────────────────────────────────────────────── */
+.section{
+  display:none;min-height:100vh;
+  padding:calc(var(--nav-h) + 20px) 16px 80px;
+}
+.section.active{display:block}
+.container{max-width:720px;margin:0 auto}
+.container-lg{max-width:1100px;margin:0 auto}
+
+/* ─── CARDS ─────────────────────────────────────────────────────────────── */
+.glass{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius2);
+  box-shadow:var(--shadow);
+}
+.glass2{
+  background:var(--card2);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+}
+
+/* ─── BADGES & PILLS ─────────────────────────────────────────────────────── */
+.badge-live{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--green);border:1px solid var(--green-mid);
+  background:var(--green-light);border-radius:20px;
+  padding:5px 12px;
+}
+.dot-live{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--green);
+  animation:pulse-dot 1.4s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ─── HERO TITLE ─────────────────────────────────────────────────────────── */
+.hero-title{
+  font-family:var(--font-title);font-size:clamp(1.8rem,6vw,2.8rem);
+  font-weight:800;line-height:1.15;margin:16px 0 10px;color:var(--text);
+}
+.grad-text{color:var(--blue)}
+.hero-sub{color:var(--text2);font-size:.88rem;max-width:480px;margin-bottom:24px;line-height:1.6}
+
+/* ─── PSEUDO INPUT ───────────────────────────────────────────────────────── */
+.pseudo-wrap{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1.5px solid var(--border2);
+  border-radius:10px;padding:10px 14px;max-width:340px;
+  margin-bottom:24px;transition:border-color .15s;
+}
+.pseudo-wrap:focus-within{border-color:var(--blue)}
+.pseudo-label{color:var(--text2);font-size:.75rem;font-weight:600;white-space:nowrap}
+#pseudoInput{
+  background:transparent;border:none;outline:none;
+  font-family:var(--font-body);color:var(--text);font-size:.9rem;
+  flex:1;
+}
+
+/* ─── MODES GRID ─────────────────────────────────────────────────────────── */
+.modes-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;margin-bottom:24px;
+}
+@media(min-width:600px){.modes-grid{grid-template-columns:repeat(4,1fr)}}
+.mode-card{
+  padding:16px;border-radius:var(--radius);cursor:pointer;
+  border:2px solid var(--border);
+  background:var(--card);
+  transition:all .2s;
+}
+.mode-card:active{transform:scale(.97)}
+.mode-card.selected{border-color:currentColor;background:var(--blue-light)}
+.mode-card[data-color="cyan"]{color:var(--blue)}
+.mode-card[data-color="cyan"].selected{background:var(--blue-light)}
+.mode-card[data-color="green"]{color:var(--green)}
+.mode-card[data-color="green"].selected{background:var(--green-light)}
+.mode-card[data-color="violet"]{color:var(--violet)}
+.mode-card[data-color="violet"].selected{background:var(--violet-light)}
+.mode-card[data-color="amber"]{color:var(--amber)}
+.mode-card[data-color="amber"].selected{background:var(--amber-light)}
+.mode-icon{font-size:1.4rem;margin-bottom:6px;display:block}
+.mode-name{font-family:var(--font-title);font-size:.9rem;font-weight:700;margin-bottom:3px;color:var(--text)}
+.mode-desc{font-size:.7rem;color:var(--text2);line-height:1.45}
+.mode-badge{
+  display:inline-block;font-size:.62rem;margin-top:6px;
+  padding:2px 8px;border-radius:20px;
+  background:currentColor;
+}
+.mode-badge span{color:#fff;font-weight:700}
+
+/* ─── ACTION BUTTONS ─────────────────────────────────────────────────────── */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+  font-family:var(--font-body);font-size:.85rem;font-weight:600;
+  padding:12px 22px;border-radius:10px;cursor:pointer;
+  border:1.5px solid transparent;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.btn-primary{
+  background:var(--blue);
+  color:#fff;border-color:var(--blue);
+}
+.btn-primary:hover{background:#2563eb}
+.btn-primary:active{transform:scale(.97)}
+.btn-secondary{
+  background:transparent;color:var(--violet);
+  border-color:var(--violet);
+}
+.btn-secondary:hover{background:var(--violet-light)}
+.btn-ghost{
+  background:transparent;color:var(--text2);
+  border-color:var(--border2);
+}
+.btn-ghost:hover{background:var(--bg3);color:var(--text)}
+.btn-danger{background:transparent;color:var(--rose);border-color:var(--rose)}
+.btn-danger:hover{background:var(--rose-light)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none !important}
+
+/* ─── QCM LAYOUT ─────────────────────────────────────────────────────────── */
+#qcmSection .container{max-width:720px}
+.qcm-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;flex-wrap:wrap;gap:8px;
+}
+.qcm-info{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.info-chip{
+  display:flex;align-items:center;gap:5px;
+  font-size:.78rem;font-weight:500;color:var(--text2);
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:5px 10px;
+}
+.info-chip .val{color:var(--blue);font-weight:700}
+#streakBadge{
+  display:none;align-items:center;gap:5px;
+  background:var(--amber-light);
+  border:1.5px solid var(--amber);border-radius:20px;
+  padding:4px 12px;font-size:.8rem;color:var(--amber);font-weight:700;
+}
+@keyframes badge-glow{0%{box-shadow:0 0 0 rgba(217,119,6,0)}100%{box-shadow:0 0 10px rgba(217,119,6,.3)}}
+
+/* TIMER BAR */
+.timer-wrap{margin-bottom:14px}
+.timer-bar-bg{
+  height:5px;background:var(--bg3);
+  border-radius:3px;overflow:hidden;
+}
+.timer-bar{
+  height:100%;width:100%;
+  background:var(--blue);
+  transition:width .1s linear,background .5s;
+  border-radius:3px;
+}
+.timer-bar.warning{background:var(--rose)}
+
+/* QUESTION CARD */
+.q-card{padding:20px;margin-bottom:16px}
+.q-theme{
+  font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--violet);margin-bottom:8px;
+}
+.q-num{color:var(--text3);font-size:.75rem;margin-bottom:6px}
+.q-text{
+  font-size:.95rem;color:var(--text);margin-bottom:12px;line-height:1.6;
+}
+.q-formula{
+  display:block;
+  background:var(--blue-light);border-left:3px solid var(--blue);
+  border-radius:0 8px 8px 0;
+  padding:10px 14px;font-size:.88rem;color:var(--blue);
+  margin-bottom:16px;
+}
+
+/* OPTIONS */
+.options-grid{display:grid;gap:8px}
+.opt-btn{
+  width:100%;text-align:left;padding:13px 14px;
+  background:var(--bg3);border:1.5px solid var(--border);
+  border-radius:10px;cursor:pointer;
+  font-family:var(--font-body);font-size:.88rem;color:var(--text);
+  transition:all .15s;display:flex;align-items:center;gap:10px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  min-height:48px;
+}
+.opt-btn:hover:not(:disabled){
+  background:var(--blue-light);border-color:var(--blue-mid);color:var(--blue);
+}
+.opt-btn:disabled{cursor:default}
+.opt-btn.correct{
+  background:var(--green-light);border-color:var(--green-mid);color:var(--green);
+}
+.opt-btn.wrong{
+  background:var(--rose-light);border-color:#fca5a5;color:var(--rose);
+}
+.opt-letter{
+  display:flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:8px;font-size:.75rem;font-weight:700;
+  background:var(--border);flex-shrink:0;
+  transition:inherit;color:var(--text2);
+}
+.opt-btn.correct .opt-letter{background:var(--green);color:#fff}
+.opt-btn.wrong .opt-letter{background:var(--rose);color:#fff}
+
+/* EXPLANATION */
+#explanation{
+  display:none;padding:14px;margin-top:8px;
+  background:var(--violet-light);border:1px solid #ddd6fe;
+  border-radius:10px;
+}
+#explanation .expl-title{color:var(--violet);font-size:.72rem;font-weight:700;letter-spacing:.08em;margin-bottom:6px;text-transform:uppercase}
+#explanation .expl-text{font-size:.83rem;color:var(--text);line-height:1.6}
+#explanation .expl-formula{
+  display:block;margin-top:8px;color:var(--amber);
+  background:var(--amber-light);border-left:3px solid var(--amber);
+  padding:7px 12px;border-radius:0 6px 6px 0;font-size:.82rem;
+}
+
+.qcm-nav{display:flex;gap:10px;margin-top:16px;justify-content:flex-end;flex-wrap:wrap}
+
+/* POINTS POP */
+.pts-pop{
+  position:fixed;font-family:var(--font-title);font-weight:700;font-size:1.1rem;
+  pointer-events:none;z-index:9999;
+  animation:pts-fly 1.1s ease-out forwards;
+}
+@keyframes pts-fly{
+  0%{opacity:1;transform:translateY(0) scale(1)}
+  60%{opacity:1;transform:translateY(-50px) scale(1.2)}
+  100%{opacity:0;transform:translateY(-90px) scale(.8)}
+}
+
+/* ─── RESULTS SCREEN ─────────────────────────────────────────────────────── */
+#resultsScreen{
+  display:none;position:fixed;inset:0;
+  background:rgba(255,255,255,.97);
+  z-index:500;align-items:center;justify-content:center;
+  flex-direction:column;padding:24px;overflow-y:auto;
+}
+#resultsScreen.open{display:flex}
+.grade-ring{
+  width:110px;height:110px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-title);font-size:3rem;font-weight:800;
+  border:3px solid;margin-bottom:20px;
+  animation:grade-pop .5s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes grade-pop{0%{transform:scale(0) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.grade-S{color:var(--amber);border-color:var(--amber);background:var(--amber-light)}
+.grade-A{color:var(--green);border-color:var(--green);background:var(--green-light)}
+.grade-B{color:var(--blue);border-color:var(--blue);background:var(--blue-light)}
+.grade-C{color:var(--text2);border-color:var(--border2);background:var(--bg3)}
+.results-title{font-family:var(--font-title);font-size:1.7rem;font-weight:800;text-align:center;margin-bottom:6px;color:var(--text)}
+.results-stats{
+  display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+  margin:16px 0 24px;
+}
+.stat-pill{
+  padding:12px 20px;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;text-align:center;box-shadow:var(--shadow);min-width:80px;
+}
+.stat-pill .sval{
+  font-family:var(--font-title);font-size:1.5rem;font-weight:800;
+  display:block;
+}
+.stat-pill .slbl{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+
+/* ─── LEADERBOARD ────────────────────────────────────────────────────────── */
+.lb-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.filter-btn{
+  font-family:var(--font-body);font-size:.75rem;font-weight:500;
+  padding:6px 14px;border-radius:20px;cursor:pointer;
+  background:var(--card);border:1.5px solid var(--border);
+  color:var(--text2);transition:all .15s;
+}
+.filter-btn.active,.filter-btn:hover{
+  border-color:var(--blue);color:var(--blue);background:var(--blue-light);
+}
+.lb-table{width:100%;border-collapse:separate;border-spacing:0 5px}
+.lb-table th{
+  font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text3);text-align:left;padding:4px 12px;
+}
+.lb-table td{
+  padding:11px 12px;font-size:.82rem;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.lb-table td:first-child{border-left:1px solid var(--border);border-radius:10px 0 0 10px}
+.lb-table td:last-child{border-right:1px solid var(--border);border-radius:0 10px 10px 0}
+.lb-table tr.me td{background:var(--blue-light);border-color:var(--blue-mid)}
+.rank-medal{font-size:1rem}
+.lb-name{color:var(--text);font-weight:500}
+.lb-score{color:var(--amber);font-weight:700}
+.lb-mode{
+  display:inline-block;font-size:.66rem;font-weight:600;padding:2px 8px;
+  border-radius:20px;background:var(--violet-light);color:var(--violet);
+  border:1px solid #ddd6fe;
+}
+.lb-loading{text-align:center;color:var(--text3);padding:40px;font-size:.85rem}
+.lb-section-header{
+  margin-bottom:20px;display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+
+/* ─── FLASHCARDS ─────────────────────────────────────────────────────────── */
+.fc-dashboard{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:16px;margin-bottom:20px;
+  padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.fc-progress-wrap{flex:1;min-width:180px}
+.fc-progress-label{font-size:.7rem;font-weight:600;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.fc-progress-bar-bg{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.fc-progress-bar{
+  height:100%;background:var(--green);
+  border-radius:3px;transition:width .5s ease;
+}
+.fc-pct{
+  font-family:var(--font-title);font-size:1.5rem;font-weight:800;
+  color:var(--green);margin-top:4px;
+}
+.theme-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.theme-tab{
+  font-family:var(--font-body);font-size:.75rem;font-weight:500;
+  padding:6px 14px;border-radius:20px;cursor:pointer;
+  background:var(--card);border:1.5px solid var(--border);
+  color:var(--text2);transition:all .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.theme-tab.active,.theme-tab:hover{
+  border-color:var(--violet);color:var(--violet);background:var(--violet-light);
+}
+
+/* FLIP CARDS GRID */
+.cards-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;
+}
+@media(max-width:599px){.cards-grid{grid-template-columns:1fr}}
+.flip-card-outer{perspective:1200px;height:210px}
+.flip-card{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);
+  cursor:pointer;
+}
+.flip-card.flipped{transform:rotateY(180deg)}
+.flip-card-face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:var(--radius);padding:18px;
+  background:var(--card);border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.flip-card-back{
+  transform:rotateY(180deg);
+  background:var(--green-light);border-color:var(--green-mid);
+}
+.card-theme-tag{
+  font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--violet);margin-bottom:6px;
+}
+.card-question{font-size:.85rem;color:var(--text);line-height:1.5;flex:1}
+.card-hint{font-size:.68rem;color:var(--text3);margin-top:6px}
+.card-answer{font-size:.82rem;color:var(--green);line-height:1.5;flex:1;font-weight:500}
+.card-formula{
+  font-size:.75rem;color:var(--amber);margin-top:8px;
+  background:var(--amber-light);border-left:2px solid var(--amber);
+  padding:6px 10px;border-radius:0 6px 6px 0;
+}
+.card-actions{
+  display:flex;gap:8px;margin-top:10px;
+}
+.card-btn{
+  flex:1;padding:9px 0;border-radius:8px;font-family:var(--font-body);font-size:.75rem;
+  font-weight:600;cursor:pointer;border:1.5px solid;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.card-btn-review{
+  color:var(--rose);border-color:#fda4af;background:var(--rose-light);
+}
+.card-btn-review:hover{background:#ffe4e6}
+.card-btn-known{
+  color:var(--green);border-color:var(--green-mid);background:var(--green-light);
+}
+.card-btn-known:hover{background:#dcfce7}
+.card-known-badge{
+  position:absolute;top:10px;right:10px;
+  background:var(--green-light);border:1px solid var(--green-mid);
+  color:var(--green);font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;
+}
+
+/* ─── MODAL REVISION ─────────────────────────────────────────────────────── */
+#revisionModal{
+  display:none;position:fixed;inset:0;z-index:800;
+  background:rgba(245,247,250,.98);
+  align-items:center;justify-content:center;flex-direction:column;
+  padding:20px;overflow-y:auto;
+}
+#revisionModal.open{display:flex}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  font-family:var(--font-body);font-size:.8rem;font-weight:500;
+  color:var(--text2);background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:7px 14px;cursor:pointer;
+  transition:all .15s;
+}
+.modal-close:hover{color:var(--rose);border-color:#fca5a5}
+.revision-counter{
+  font-size:.78rem;color:var(--text3);margin-bottom:14px;text-align:center;
+}
+.revision-card-wrap{perspective:1200px;width:100%;max-width:520px;height:260px}
+.revision-flip{
+  position:relative;width:100%;height:100%;
+  transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);
+}
+.revision-flip.flipped{transform:rotateY(180deg)}
+.revision-face{
+  position:absolute;inset:0;backface-visibility:hidden;
+  border-radius:var(--radius2);padding:24px;
+  background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow-md);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.revision-face-back{
+  transform:rotateY(180deg);
+  background:var(--green-light);border-color:var(--green-mid);
+}
+.revision-actions{display:flex;gap:10px;margin-top:20px;justify-content:center;flex-wrap:wrap}
+
+/* ─── SECTION HEADERS ────────────────────────────────────────────────────── */
+.section-title{
+  font-family:var(--font-title);font-size:1.7rem;font-weight:800;
+  margin-bottom:4px;color:var(--text);
+}
+.section-sub{color:var(--text2);font-size:.83rem;margin-bottom:20px}
+.divider{
+  height:1px;background:var(--border);
+  margin:20px 0;
+}
+
+/* ─── TOAST ──────────────────────────────────────────────────────────────── */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--text);border-radius:10px;
+  padding:10px 20px;font-size:.82rem;font-weight:500;color:#fff;
+  z-index:9000;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  white-space:nowrap;box-shadow:var(--shadow-md);
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.success{background:var(--green)}
+#toast.error{background:var(--rose)}
+
+/* ─── THEME SECTION HEADINGS ─────────────────────────────────────────────── */
+.theme-heading{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-title);font-size:.95rem;font-weight:700;
+  color:var(--blue);margin:24px 0 10px;
+}
+.theme-heading::after{
+  content:'';flex:1;height:1px;
+  background:var(--border);
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────────────── */
+@media(max-width:480px){
+  .nav-brand{font-size:.95rem}
+  .nav-btn{padding:6px 8px;font-size:.72rem}
+  .section{padding:calc(var(--nav-h)+14px) 12px 80px}
+  .btn-row{flex-direction:column}
+  .btn-row .btn{width:100%}
+  .results-stats{gap:10px}
+  .lb-table th:last-child,.lb-table td:last-child{display:none}
+  .qcm-header{gap:6px}
+  .info-chip{font-size:.72rem;padding:4px 8px}
+  .q-card{padding:14px}
+}
+
+/* ─── TETRIS MODAL ───────────────────────────────────────────────────────── */
+#tetrisModal{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(15,15,25,.97);
+  align-items:center;justify-content:center;flex-direction:column;
+  padding:16px;
+}
+#tetrisModal.open{display:flex}
+.tetris-header{
+  display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap;justify-content:center;
+}
+.tetris-title{
+  font-family:var(--font-title);font-size:1.4rem;font-weight:800;
+  background:linear-gradient(90deg,#f59e0b,#3b82f6,#7c3aed);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:.04em;
+}
+.tetris-score-wrap{
+  display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;
+}
+.tetris-stat{
+  background:#1e1e2e;border:1px solid #333;border-radius:8px;
+  padding:7px 14px;text-align:center;min-width:65px;
+}
+.tetris-stat .tval{
+  font-family:var(--font-title);font-size:1.1rem;font-weight:800;color:#f59e0b;display:block;
+}
+.tetris-stat .tlbl{font-size:.6rem;color:#777;letter-spacing:.06em;text-transform:uppercase}
+#tetrisCanvas{
+  border:2px solid #334;border-radius:6px;
+  background:#0d0d1a;
+  display:block;
+}
+.tetris-controls{
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px;
+}
+.tetris-btn{
+  font-family:var(--font-body);font-size:.78rem;font-weight:600;
+  padding:9px 18px;border-radius:8px;cursor:pointer;border:1.5px solid;
+  transition:all .15s;-webkit-tap-highlight-color:transparent;
+}
+.tetris-btn-play{background:#3b82f6;color:#fff;border-color:#3b82f6}
+.tetris-btn-play:hover{background:#2563eb}
+.tetris-btn-close{background:transparent;color:#94a3b8;border-color:#334}
+.tetris-btn-close:hover{color:#fff;border-color:#94a3b8}
+.dpad{display:none;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:4px;margin-top:8px;justify-content:center}
+@media(max-width:540px){.dpad{display:grid}}
+.dpad-btn{
+  width:44px;height:44px;border-radius:8px;background:#1e1e2e;
+  border:1.5px solid #334;color:#94a3b8;font-size:1.1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;user-select:none;
+}
+.dpad-btn:active{background:#334;color:#fff}
+.unlock-banner{
+  background:linear-gradient(135deg,#f59e0b22,#7c3aed22);
+  border:1.5px solid #f59e0b55;border-radius:12px;
+  padding:12px 18px;margin:12px 0;text-align:center;
+  max-width:360px;
+}
+.unlock-banner .unlock-emoji{font-size:1.8rem;display:block;margin-bottom:4px}
+.unlock-banner .unlock-text{
+  font-family:var(--font-title);font-size:.95rem;font-weight:700;
+  color:#f59e0b;margin-bottom:3px;
+}
+.unlock-banner .unlock-sub{font-size:.76rem;color:#94a3b8}
+
+/* ─── KATEX OVERRIDES ────────────────────────────────────────────────────── */
+.katex{font-size:1em !important}
+.katex-display{overflow-x:auto;overflow-y:hidden;margin:.5em 0 !important}
+.q-formula .katex, .q-formula .katex *{color:var(--blue) !important}
+.expl-formula .katex, .expl-formula .katex *{color:var(--amber) !important}
+.card-formula .katex, .card-formula .katex *{color:var(--amber) !important}
+.revision-face-back .katex, .revision-face-back .katex *{color:var(--green) !important}
+.opt-btn .katex{font-size:.88em !important}
+
+/* ─── BOTTOM NAV MOBILE ──────────────────────────────────────────────────── */
+@media(max-width:540px){
+  nav#topnav .nav-links{display:none}
+  #bottomnav{display:flex}
+}
+#bottomnav{
+  display:none;
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.97);border-top:1px solid var(--border);
+  z-index:1000;box-shadow:0 -2px 10px rgba(0,0,0,.06);
+  padding:0 8px env(safe-area-inset-bottom,0);
+}
+.bnav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:8px 4px;border:none;background:transparent;cursor:pointer;
+  color:var(--text3);font-size:.62rem;font-weight:500;
+  -webkit-tap-highlight-color:transparent;transition:color .15s;
+}
+.bnav-btn .bnav-icon{font-size:1.3rem;line-height:1}
+.bnav-btn.active{color:var(--blue)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ TOPNAV ═══════════════════ -->
+<nav id="topnav">
+  <div class="nav-brand">BTS CIEL · Maths</div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showSection('home')">Accueil</button>
+    <button class="nav-btn" onclick="showSection('qcm')">QCM</button>
+    <button class="nav-btn" onclick="showSection('flashcards')">Flashcards</button>
+    <button class="nav-btn" onclick="showSection('classement')">Classement</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════ BOTTOM NAV (mobile) ═══════════════════ -->
+<nav id="bottomnav">
+  <button class="bnav-btn active" onclick="showSection('home')"><span class="bnav-icon">🏠</span>Accueil</button>
+  <button class="bnav-btn" onclick="showSection('qcm')"><span class="bnav-icon">❓</span>QCM</button>
+  <button class="bnav-btn" onclick="showSection('flashcards')"><span class="bnav-icon">🃏</span>Cartes</button>
+  <button class="bnav-btn" onclick="showSection('classement')"><span class="bnav-icon">🏆</span>Scores</button>
+</nav>
+
+<!-- ═══════════════════ SECTION ACCUEIL ═══════════════════ -->
+<section class="section active" id="homeSection">
+  <div class="container">
+    <span class="badge-live"><span class="dot-live"></span> CCF Mathématiques v2.0</span>
+    <h1 class="hero-title">Révise &amp; <span class="grad-text">Performe</span><br>en Maths BTS</h1>
+    <p class="hero-sub">QCM gamifié · Flashcards 3D · Classement live — Programme CIEL Électronique</p>
+    <div class="pseudo-wrap">
+      <span class="pseudo-label">// PSEUDO</span>
+      <input id="pseudoInput" type="text" value="" placeholder="Ton pseudo…" maxlength="20"/>
+    </div>
+    <h2 style="font-family:var(--font-title);font-size:1rem;font-weight:700;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px">⚡ Mode de jeu</h2>
+    <div class="modes-grid">
+      <div class="mode-card selected" data-mode="normal" data-color="cyan" onclick="selectMode('normal',this)">
+        <span class="mode-icon">🎯</span>
+        <div class="mode-name">Normal</div>
+        <div class="mode-desc">90 sec par question. Rythme équilibré idéal pour l'entraînement.</div>
+        <span class="mode-badge"><span>+10 pts / bonne réponse</span></span>
+      </div>
+      <div class="mode-card" data-mode="speed" data-color="green" onclick="selectMode('speed',this)">
+        <span class="mode-icon">⚡</span>
+        <div class="mode-name">Speed</div>
+        <div class="mode-desc">30 sec max. Bonus de vitesse : plus tu réponds vite, plus tu scores.</div>
+        <span class="mode-badge"><span>Bonus vitesse ×3</span></span>
+      </div>
+      <div class="mode-card" data-mode="zen" data-color="violet" onclick="selectMode('zen',this)">
+        <span class="mode-icon">🧘</span>
+        <div class="mode-name">Zen</div>
+        <div class="mode-desc">Sans limite de temps. Réfléchis sereinement à chaque concept.</div>
+        <span class="mode-badge"><span>Pas de chrono</span></span>
+      </div>
+      <div class="mode-card" data-mode="exam" data-color="amber" onclick="selectMode('exam',this)">
+        <span class="mode-icon">📋</span>
+        <div class="mode-name">Exam</div>
+        <div class="mode-desc">60 sec. Simulation réelle : pénalité sévère à chaque erreur.</div>
+        <span class="mode-badge"><span>−4 pts / erreur</span></span>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="startQCM()">▶ Démarrer le QCM</button>
+      <button class="btn btn-secondary" onclick="showSection('flashcards')">🃏 Ouvrir les Flashcards</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION QCM ═══════════════════ -->
+<section class="section" id="qcmSection">
+  <div class="container">
+    <div class="qcm-header">
+      <div class="qcm-info">
+        <div class="info-chip">Q <span class="val" id="qNum">1</span>/<span id="qTotal">0</span></div>
+        <div class="info-chip">Score <span class="val" id="scoreDisplay">0</span></div>
+        <div class="info-chip" id="modeDisplay" style="color:var(--cyan)">Mode: Normal</div>
+        <div id="streakBadge">🔥 Combo ×<span id="comboCount">0</span></div>
+      </div>
+      <button class="btn btn-ghost" onclick="endQCMEarly()">✕ Quitter</button>
+    </div>
+    <div class="timer-wrap">
+      <div class="timer-bar-bg"><div class="timer-bar" id="timerBar"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:.7rem;color:var(--text2)">
+        <span id="timerLabel">90 sec</span>
+        <span id="timerCount">90</span>
+      </div>
+    </div>
+    <div class="glass q-card">
+      <div class="q-theme" id="qTheme">Dérivées</div>
+      <div class="q-num" id="qNumLabel">Question 1 sur 15</div>
+      <div class="q-text" id="qText">Chargement…</div>
+      <div class="q-formula" id="qFormula"></div>
+      <div class="options-grid" id="optionsGrid"></div>
+      <div id="explanation">
+        <div class="expl-title">// EXPLICATION</div>
+        <div class="expl-text" id="explText"></div>
+        <div class="expl-formula" id="explFormula"></div>
+      </div>
+    </div>
+    <div class="qcm-nav">
+      <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display:none">Question suivante →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION FLASHCARDS ═══════════════════ -->
+<section class="section" id="flashcardsSection">
+  <div class="container-lg">
+    <div class="lb-section-header">
+      <div>
+        <div class="section-title">Flashcards <span class="grad-text">3D</span></div>
+        <div class="section-sub">Retourne les cartes · Valide ta maîtrise · Mode révision ciblée</div>
+      </div>
+      <button class="btn btn-primary" onclick="openRevision()" id="revisionBtn">🚀 Mode Révision Ciblée</button>
+    </div>
+    <div class="fc-dashboard glass2">
+      <div class="fc-progress-wrap">
+        <div class="fc-progress-label">// MÉMORISATION GLOBALE</div>
+        <div class="fc-progress-bar-bg"><div class="fc-progress-bar" id="fcProgressBar" style="width:0%"></div></div>
+        <div class="fc-pct" id="fcPct">0%</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:.72rem;color:var(--text2);margin-bottom:4px">Cartes maîtrisées</div>
+        <div style="font-family:var(--font-title);font-size:1.8rem;font-weight:800;color:var(--green)">
+          <span id="fcKnown">0</span>/<span id="fcTotal">0</span>
+        </div>
+        <button class="btn btn-ghost" style="margin-top:10px;font-size:.7rem;padding:6px 12px" onclick="resetCards()">↺ Réinitialiser</button>
+      </div>
+    </div>
+    <div class="theme-tabs" id="fcThemeTabs"></div>
+    <div class="cards-grid" id="cardsGrid"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SECTION CLASSEMENT ═══════════════════ -->
+<section class="section" id="classementSection">
+  <div class="container">
+    <div class="lb-section-header">
+      <div>
+        <div class="section-title">Classement <span class="grad-text">Live</span></div>
+        <div class="section-sub">Scores enregistrés en temps réel via SheetDB API</div>
+      </div>
+      <button class="btn btn-ghost" onclick="loadLeaderboard()" style="font-size:.75rem;padding:8px 16px">⟳ Rafraîchir</button>
+    </div>
+    <div class="lb-filters" id="lbFilters">
+      <button class="filter-btn active" data-filter="all" onclick="filterLB('all',this)">Tous les modes</button>
+      <button class="filter-btn" data-filter="normal" onclick="filterLB('normal',this)">Normal</button>
+      <button class="filter-btn" data-filter="speed" onclick="filterLB('speed',this)">Speed</button>
+      <button class="filter-btn" data-filter="zen" onclick="filterLB('zen',this)">Zen</button>
+      <button class="filter-btn" data-filter="exam" onclick="filterLB('exam',this)">Exam</button>
+    </div>
+    <div id="lbContainer"><div class="lb-loading">Chargement du classement…</div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ RESULTS OVERLAY ═══════════════════ -->
+<div id="resultsScreen">
+  <div class="grade-ring" id="gradeRing">S</div>
+  <div class="results-title" id="resultsTitle">Excellent !</div>
+  <div class="results-stats" id="resultsStats"></div>
+  <div id="tetrisUnlockBanner" style="display:none" class="unlock-banner">
+    <span class="unlock-emoji">🎮</span>
+    <div class="unlock-text">Mini Tetris débloqué !</div>
+    <div class="unlock-sub">Score &gt; 300 pts — Tu l'as mérité 🏆</div>
+  </div>
+  <div class="btn-row" style="justify-content:center;flex-wrap:wrap;gap:12px">
+    <button class="btn btn-primary" id="saveScoreBtn" onclick="saveScore()">💾 Enregistrer au classement</button>
+    <button class="btn" id="tetrisLaunchBtn" style="display:none;background:linear-gradient(135deg,#f59e0b,#7c3aed);color:#fff;border:none" onclick="openTetris()">🎮 Jouer au Tetris</button>
+    <button class="btn btn-secondary" onclick="closeResults()">↺ Rejouer</button>
+    <button class="btn btn-ghost" onclick="goHome()">⌂ Accueil</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ REVISION MODAL ═══════════════════ -->
+<div id="revisionModal">
+  <button class="modal-close" onclick="closeRevision()">✕ Fermer</button>
+  <div class="revision-counter" id="revCounter">Carte 1 / 0</div>
+  <div class="revision-card-wrap">
+    <div class="revision-flip" id="revFlip" onclick="flipRevCard()">
+      <div class="revision-face">
+        <div>
+          <div class="card-theme-tag" id="revTheme">Thème</div>
+          <div style="font-size:.95rem;color:var(--text);line-height:1.6;margin-bottom:10px" id="revQuestion">…</div>
+          <div style="font-size:.72rem;color:var(--text2)" id="revHint">Indice…</div>
+        </div>
+        <div style="text-align:center;font-size:.7rem;color:var(--text2);opacity:.6">↩ Cliquer pour retourner</div>
+      </div>
+      <div class="revision-face revision-face-back">
+        <div>
+          <div style="font-size:.75rem;color:var(--green);letter-spacing:.08em;margin-bottom:8px">// RÉPONSE</div>
+          <div style="font-size:.9rem;color:var(--green);line-height:1.6;margin-bottom:10px" id="revAnswer">…</div>
+          <div class="card-formula" id="revFormula">…</div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="revision-actions">
+    <button class="btn btn-danger" onclick="revAction('review')">↩ À revoir</button>
+    <button class="btn btn-primary" onclick="revAction('known')">✓ Maîtrisé</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ TETRIS MODAL ═══════════════════ -->
+<div id="tetrisModal">
+  <div class="tetris-header">
+    <div class="tetris-title">🎮 MINI TETRIS</div>
+  </div>
+  <div class="tetris-score-wrap">
+    <div class="tetris-stat"><span class="tval" id="tScore">0</span><span class="tlbl">Score</span></div>
+    <div class="tetris-stat"><span class="tval" id="tLines">0</span><span class="tlbl">Lignes</span></div>
+    <div class="tetris-stat"><span class="tval" id="tLevel">1</span><span class="tlbl">Niveau</span></div>
+  </div>
+  <canvas id="tetrisCanvas" width="200" height="400"></canvas>
+  <div class="dpad">
+    <div></div>
+    <button class="dpad-btn" onclick="tetrisInput('up')">▲</button>
+    <div></div>
+    <button class="dpad-btn" onclick="tetrisInput('left')">◀</button>
+    <button class="dpad-btn" onclick="tetrisInput('down')">▼</button>
+    <button class="dpad-btn" onclick="tetrisInput('right')">▶</button>
+  </div>
+  <div class="tetris-controls">
+    <button class="tetris-btn tetris-btn-play" id="tetrisPlayBtn" onclick="tetrisStartStop()">▶ Démarrer</button>
+    <button class="tetris-btn tetris-btn-close" onclick="closeTetris()">✕ Fermer</button>
+  </div>
+  <div style="margin-top:8px;font-size:.7rem;color:#555;text-align:center">Clavier: ←→ déplacer · ↑ pivoter · ↓ accélérer · Espace drop</div>
+</div>
+
+<!-- ═══════════════════ TOAST ═══════════════════ -->
+<div id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   CONSTANTE API
+═══════════════════════════════════════════════════════════ */
+const APIScriptURL = "https://sheetdb.io/api/v1/1ibged9735j1c";
+
+/* ═══════════════════════════════════════════════════════════
+   BASE DE DONNÉES QCM — 5 thèmes × 5 questions (LaTeX MathJax)
+═══════════════════════════════════════════════════════════ */
+const QCM_DATA = [
+  /* ── DÉRIVÉES ── */
+  {
+    theme:"Dérivées",
+    text:"Quelle est la dérivée de la fonction suivante ?",
+    formula:"$ f(x) = e^{3x} \\cdot \\ln(x) $",
+    opts:["$ 3e^{3x}\\ln(x) + \\dfrac{e^{3x}}{x} $","$ 3e^{3x}\\ln(x) - \\dfrac{e^{3x}}{x} $","$ \\dfrac{e^{3x}}{x} $","$ 3e^{3x} \\cdot \\dfrac{1}{x} $"],
+    correct:0,
+    expl:"On applique la règle du produit $(uv)' = u'v + uv'$. Avec $u = e^{3x}$ donc $u' = 3e^{3x}$, et $v = \\ln x$ donc $v' = \\tfrac{1}{x}$.",
+    eformula:"$$ f'(x) = 3e^{3x}\\ln(x) + \\frac{e^{3x}}{x} $$",
+    variants:[
+      {text:"Calculer $f'(x)$ en appliquant la règle du produit :", formula:"$ f(x) = e^{3x} \\cdot \\ln(x) $"},
+      {text:"Dériver le produit suivant (règle de Leibniz) :", formula:"$ f(x) = e^{3x} \\cdot \\ln(x) $"},
+      {text:"En utilisant $(uv)' = u'v + uv'$, trouver la dérivée de :", formula:"$ f(x) = e^{3x} \\cdot \\ln(x) $"}
+    ]
+  },
+  {
+    theme:"Dérivées",
+    text:"Calculer la dérivée de :",
+    formula:"$ f(x) = \\ln(2x^2 + 1) $",
+    opts:["$ \\dfrac{1}{2x^2+1} $","$ \\dfrac{4x}{2x^2+1} $","$ \\dfrac{2x}{2x^2+1} $","$ 4x\\ln(2x^2+1) $"],
+    correct:1,
+    expl:"Règle de la chaîne : $[\\ln g]' = g'/g$. Ici $g(x)=2x^2+1$ donc $g'(x)=4x$.",
+    eformula:"$$ f'(x) = \\frac{4x}{2x^2+1} $$",
+    variants:[
+      {text:"En utilisant la règle de la chaîne $[\\ln g]'=g'/g$, dériver :", formula:"$ f(x) = \\ln(2x^2 + 1) $"},
+      {text:"Quelle est la dérivée de cette fonction logarithmique composée ?", formula:"$ f(x) = \\ln(2x^2 + 1) $"},
+      {text:"Trouver $f'(x)$ pour :", formula:"$ f(x) = \\ln(2x^2 + 1) $"}
+    ]
+  },
+  {
+    theme:"Dérivées",
+    text:"Calculer $f'(x)$ pour :",
+    formula:"$ f(x) = x^3 e^{-x} $",
+    opts:["$ x^2(3-x)e^{-x} $","$ 3x^2 e^{-x} + x^3 e^{-x} $","$ -x^3 e^{-x} $","$ x^2(3+x)e^{-x} $"],
+    correct:0,
+    needsCalc:true,
+    expl:"Règle du produit : $u=x^3,\\; u'=3x^2,\\; v=e^{-x},\\; v'=-e^{-x}$. On factorise ensuite par $x^2 e^{-x}$.",
+    eformula:"$$ f'(x) = (3x^2 - x^3)e^{-x} = x^2(3-x)e^{-x} $$",
+    variants:[
+      {text:"Appliquer la règle du produit pour dériver :", formula:"$ f(x) = x^3 e^{-x} $"},
+      {text:"Calculer la dérivée puis factoriser le résultat :", formula:"$ f(x) = x^3 e^{-x} $"},
+      {text:"Dériver et simplifier en factorisant par $x^2 e^{-x}$ :", formula:"$ f(x) = x^3 e^{-x} $"}
+    ]
+  },
+  {
+    theme:"Dérivées",
+    text:"La règle de la chaîne pour $h = f \\circ g$ donne $h'(x) =$ :",
+    formula:"$ h(x) = f(g(x)) $",
+    opts:["$ f'(x)\\cdot g'(x) $","$ f'(g(x)) $","$ f'(g(x))\\cdot g'(x) $","$ f(g'(x)) $"],
+    correct:2,
+    expl:"On dérive la fonction extérieure $f$ évaluée en $g(x)$, puis on multiplie par la dérivée de la fonction intérieure $g'(x)$.",
+    eformula:"$$ (f\\circ g)'(x) = f'(g(x))\\cdot g'(x) $$",
+    variants:[
+      {text:"Compléter la formule de dérivation composée pour $h(x) = f(g(x))$ :", formula:"$ h(x) = f(g(x)) $"},
+      {text:"Comment s'exprime $h'(x)$ lorsque $h$ est une composition de fonctions ?", formula:"$ h(x) = f(g(x)) $"},
+      {text:"Quelle est la formule correcte pour dériver une fonction composée $f\\circ g$ ?", formula:"$ h(x) = f(g(x)) $"}
+    ]
+  },
+  {
+    theme:"Dérivées",
+    text:"Quelle est la dérivée de :",
+    formula:"$ f(x) = \\arctan(x) $",
+    opts:["$ \\dfrac{1}{1+x^2} $","$ \\dfrac{-1}{1+x^2} $","$ \\dfrac{1}{\\sqrt{1-x^2}} $","$ \\dfrac{1}{1-x^2} $"],
+    correct:0,
+    expl:"On pose $y = \\arctan x$, donc $\\tan y = x$. En dérivant implicitement : $(1+\\tan^2 y)\\,y' = 1$, d'où $y' = \\tfrac{1}{1+x^2}$.",
+    eformula:"$$ [\\arctan(x)]' = \\frac{1}{1+x^2} $$",
+    variants:[
+      {text:"Donner la dérivée de la fonction arc tangente :", formula:"$ f(x) = \\arctan(x) $"},
+      {text:"Calculer $f'(x)$ pour la fonction trigonométrique inverse :", formula:"$ f(x) = \\arctan(x) $"},
+      {text:"En dérivant implicitement $\\tan y = x$, retrouver $[\\arctan x]'$ :", formula:"$ f(x) = \\arctan(x) $"}
+    ]
+  },
+  /* ── PRIMITIVES ── */
+  {
+    theme:"Primitives",
+    text:"Calculer la primitive suivante :",
+    formula:"$ \\int x^n\\,dx \\quad (n \\neq -1) $",
+    opts:["$ \\dfrac{x^{n+1}}{n+1} + C $","$ nx^{n-1} + C $","$ \\dfrac{x^n}{n} + C $","$ x^{n+1} + C $"],
+    correct:0,
+    expl:"La primitive de $x^n$ s'obtient en ajoutant 1 à l'exposant et en divisant par ce nouvel exposant. C'est la règle duale de la dérivation $[x^n]'=nx^{n-1}$.",
+    eformula:"$$ \\int x^n\\,dx = \\frac{x^{n+1}}{n+1} + C $$",
+    variants:[
+      {text:"Quelle est la formule générale de la primitive de $x^n$ (avec $n\\neq -1$) ?", formula:"$ \\int x^n\\,dx \\quad (n \\neq -1) $"},
+      {text:"Intégrer $x^n$ en ajoutant 1 à l'exposant. Donner le résultat :", formula:"$ \\int x^n\\,dx \\quad (n \\neq -1) $"},
+      {text:"Quelle règle duale de la dérivation donne la primitive de $x^n$ ?", formula:"$ \\int x^n\\,dx \\quad (n \\neq -1) $"}
+    ]
+  },
+  {
+    theme:"Primitives",
+    text:"Calculer :",
+    formula:"$ \\int e^{2x}\\,dx $",
+    opts:["$ e^{2x} + C $","$ \\dfrac{e^{2x}}{2} + C $","$ 2e^{2x} + C $","$ \\dfrac{e^{2x}}{4} + C $"],
+    correct:1,
+    expl:"Par la règle de la chaîne inverse : $\\int e^{ax}dx = \\tfrac{1}{a}e^{ax}+C$. Ici $a=2$ donc on divise par 2.",
+    eformula:"$$ \\int e^{2x}\\,dx = \\frac{1}{2}e^{2x} + C $$",
+    variants:[
+      {text:"Appliquer la règle $\\int e^{ax}dx = \\frac{1}{a}e^{ax}+C$ pour :", formula:"$ \\int e^{2x}\\,dx $"},
+      {text:"Quelle est la primitive de l'exponentielle suivante ?", formula:"$ \\int e^{2x}\\,dx $"},
+      {text:"Calculer l'intégrale (penser à diviser par le coefficient) :", formula:"$ \\int e^{2x}\\,dx $"}
+    ]
+  },
+  {
+    theme:"Primitives",
+    text:"Calculer l'intégrale définie :",
+    formula:"$ \\int_0^1 (3x^2 + 2x)\\,dx $",
+    opts:["$ 2 $","$ 3 $","$ 1 $","$ 4 $"],
+    correct:0,
+    needsCalc:true,
+    expl:"On calcule $[x^3 + x^2]_0^1 = (1+1) - (0+0) = 2$. On intègre terme par terme : $\\int 3x^2\\,dx = x^3$ et $\\int 2x\\,dx = x^2$.",
+    eformula:"$$ \\left[x^3 + x^2\\right]_0^1 = 2 - 0 = 2 $$",
+    variants:[
+      {text:"Évaluer l'intégrale définie terme à terme :", formula:"$ \\int_0^1 (3x^2 + 2x)\\,dx $"},
+      {text:"Calculer l'aire sous la courbe entre 0 et 1 :", formula:"$ \\int_0^1 (3x^2 + 2x)\\,dx $"},
+      {text:"Intégrer puis appliquer la règle de Barrow $[F]_0^1$ :", formula:"$ \\int_0^1 (3x^2 + 2x)\\,dx $"}
+    ]
+  },
+  {
+    theme:"Primitives",
+    text:"Quelle est la primitive de :",
+    formula:"$ f(x) = \\frac{1}{x} \\quad (x > 0) $",
+    opts:["$ \\ln|x| + C $","$ -\\dfrac{1}{x^2} + C $","$ \\dfrac{1}{x^2} + C $","$ e^x + C $"],
+    correct:0,
+    expl:"On sait que $[\\ln x]' = \\tfrac{1}{x}$ pour $x>0$. La primitive est donc $\\ln|x|$. C'est le cas $n=-1$ exclu de la formule $\\int x^n dx$.",
+    eformula:"$$ \\int \\frac{1}{x}\\,dx = \\ln|x| + C $$",
+    variants:[
+      {text:"Quel est le cas exclu de la formule $\\int x^n dx$ — la primitive de $\\frac{1}{x}$ ?", formula:"$ f(x) = \\frac{1}{x} \\quad (x > 0) $"},
+      {text:"Donner la primitive de $x^{-1}$, le cas $n=-1$ :", formula:"$ f(x) = \\frac{1}{x} \\quad (x > 0) $"},
+      {text:"En vous rappelant que $[\\ln x]' = \\frac{1}{x}$, quelle est la primitive de :", formula:"$ f(x) = \\frac{1}{x} \\quad (x > 0) $"}
+    ]
+  },
+  {
+    theme:"Primitives",
+    text:"Calculer par intégration par parties :",
+    formula:"$ \\int x\\,e^x\\,dx $",
+    opts:["$ x e^x - e^x + C $","$ x e^x + e^x + C $","$ e^x + C $","$ \\dfrac{x^2}{2}e^x + C $"],
+    correct:0,
+    needsCalc:true,
+    expl:"IPP avec $u=x,\\;v'=e^x$ donc $u'=1,\\;v=e^x$. La formule $\\int uv'= uv - \\int u'v$ donne $xe^x - \\int e^x\\,dx = xe^x - e^x + C$.",
+    eformula:"$$ \\int x\\,e^x\\,dx = (x-1)e^x + C $$",
+    variants:[
+      {text:"Utiliser l'intégration par parties avec $u=x,\\;v'=e^x$ pour calculer :", formula:"$ \\int x\\,e^x\\,dx $"},
+      {text:"Appliquer $\\int uv' = uv - \\int u'v$ pour évaluer :", formula:"$ \\int x\\,e^x\\,dx $"},
+      {text:"Calculer par IPP cette intégrale (choisir $u=x$) :", formula:"$ \\int x\\,e^x\\,dx $"}
+    ]
+  },
+  /* ── ÉQUATIONS DIFFÉRENTIELLES ── */
+  {
+    theme:"Équations différentielles",
+    text:"On cherche les racines de l'équation caractéristique :",
+    formula:"$ r^2 + 5r + 6 = 0 $",
+    opts:["$ r_1=-2,\\; r_2=-3 $","$ r_1=2,\\; r_2=3 $","$ r = -1 \\pm j\\sqrt{5} $","$ r = -5 \\pm j $"],
+    correct:0,
+    needsCalc:true,
+    expl:"$\\Delta = 25-24=1 > 0$. Deux racines réelles distinctes : $r = \\frac{-5\\pm 1}{2}$. La solution générale est $y = Ae^{-2x}+Be^{-3x}$.",
+    eformula:"$$ \\Delta=1>0 \\Rightarrow r_1=-2,\\; r_2=-3 $$",
+    variants:[
+      {text:"Résoudre l'équation caractéristique suivante :", formula:"$ r^2 + 5r + 6 = 0 $"},
+      {text:"Trouver les racines (discriminant $\\Delta$) de :", formula:"$ r^2 + 5r + 6 = 0 $"},
+      {text:"Calculer $\\Delta$ puis les deux racines réelles de :", formula:"$ r^2 + 5r + 6 = 0 $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"La structure de la solution générale d'une EDO linéaire est :",
+    formula:"$ y = y_h + y_p $",
+    opts:["Uniquement $y_p$","$y_h + y_p$","Produit $y_h \\cdot y_p$","Uniquement $y_h$"],
+    correct:1,
+    expl:"La solution générale est la somme de la solution homogène (équation sans second membre) et d'une solution particulière (équation complète). Les constantes sont fixées par les CI.",
+    eformula:"$$ y_{\\text{gén}} = y_h + y_p $$",
+    variants:[
+      {text:"Comment s'écrit la solution générale d'une EDO linéaire complète ?", formula:"$ y = y_h + y_p $"},
+      {text:"Quelle est la décomposition correcte de la solution générale d'une EDO linéaire ?", formula:"$ y = y_h + y_p $"},
+      {text:"Quelle combinaison de $y_h$ et $y_p$ forme la solution générale ?", formula:"$ y = y_h + y_p $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"Résoudre avec condition initiale $y(0)=3$ :",
+    formula:"$ y' + 2y = 0 $",
+    opts:["$ y = 3e^{2t} $","$ y = 3e^{-2t} $","$ y = 2e^{-3t} $","$ y = e^{-2t}+3 $"],
+    correct:1,
+    needsCalc:true,
+    expl:"Équation homogène : équation caractéristique $r+2=0 \\Rightarrow r=-2$. Solution générale $y=Ce^{-2t}$. Condition initiale : $y(0)=C=3$.",
+    eformula:"$$ y(t) = 3e^{-2t} $$",
+    variants:[
+      {text:"Appliquer la condition initiale $y(0)=3$ pour résoudre :", formula:"$ y' + 2y = 0 $"},
+      {text:"Résoudre cette EDO homogène d'ordre 1 avec $y(0)=3$ :", formula:"$ y' + 2y = 0 $"},
+      {text:"Trouver la solution particulière vérifiant $y(0)=3$ de :", formula:"$ y' + 2y = 0 $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"Lorsque $\\Delta < 0$, les racines sont complexes conjuguées $r = \\alpha \\pm j\\omega$. La solution générale est :",
+    formula:"$ \\Delta = b^2 - 4ac < 0 $",
+    opts:["$ y = e^{\\alpha x}(A\\cos\\omega x + B\\sin\\omega x) $","$ y = Ae^{r_1 x}+Be^{r_2 x} $","$ y = (A+Bx)e^{rx} $","$ y = A\\cos\\omega x + B\\sin\\omega x $"],
+    correct:0,
+    expl:"Racines complexes $\\alpha \\pm j\\omega$ : la solution est une sinusoïde amortie (ou amplifiée si $\\alpha>0$). Le facteur $e^{\\alpha x}$ module l'amplitude.",
+    eformula:"$$ y = e^{\\alpha x}(A\\cos\\omega x + B\\sin\\omega x) $$",
+    variants:[
+      {text:"Quelle est la forme de la solution générale quand $\\Delta<0$ (racines complexes) ?", formula:"$ \\Delta = b^2 - 4ac < 0 $"},
+      {text:"Racines complexes conjuguées $\\alpha\\pm j\\omega$ : écrire la solution générale :", formula:"$ \\Delta = b^2 - 4ac < 0 $"},
+      {text:"Pour une EDO d'ordre 2 avec $\\Delta<0$, quelle est la solution correspondante ?", formula:"$ \\Delta = b^2 - 4ac < 0 $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"On cherche une solution particulière de la forme $y_p = k\\,e^{2x}$ pour :",
+    formula:"$ y'' - y = e^{2x} $",
+    opts:["$ k = \\dfrac{1}{2} $","$ k = \\dfrac{1}{3} $","$ k = 1 $","$ k = -\\dfrac{1}{3} $"],
+    correct:1,
+    needsCalc:true,
+    expl:"On substitue $y_p = ke^{2x}$ : $y_p'' = 4ke^{2x}$. L'équation donne $4k-k=1$ soit $3k=1$ donc $k=\\tfrac{1}{3}$.",
+    eformula:"$$ 4k - k = 1 \\Rightarrow k = \\frac{1}{3} $$",
+    variants:[
+      {text:"Substituer $y_p = ke^{2x}$ dans l'équation pour trouver $k$ :", formula:"$ y'' - y = e^{2x} $"},
+      {text:"Méthode des coefficients indéterminés : quelle valeur de $k$ convient pour $y_p=ke^{2x}$ ?", formula:"$ y'' - y = e^{2x} $"},
+      {text:"Injecter la forme $y_p=ke^{2x}$ et identifier $k$ dans :", formula:"$ y'' - y = e^{2x} $"}
+    ]
+  },
+  /* ── SUITES ── */
+  {
+    theme:"Suites",
+    text:"Le terme général d'une suite arithmétique de premier terme $u_0$ et de raison $r$ est :",
+    formula:"$ u_{n+1} - u_n = r $",
+    opts:["$ u_n = u_0 \\cdot r^n $","$ u_n = u_0 + nr $","$ u_n = u_0 \\cdot n + r $","$ u_n = r^{n+1} $"],
+    correct:1,
+    expl:"Chaque terme s'obtient en ajoutant la raison $r$. On peut aussi écrire $u_n = u_0 + nr$ en comptant $n$ additions successives depuis $u_0$.",
+    eformula:"$$ u_n = u_0 + n\\,r $$",
+    variants:[
+      {text:"Donner l'expression du terme général $u_n$ d'une suite arithmétique :", formula:"$ u_{n+1} - u_n = r $"},
+      {text:"Quelle formule donne le $n$-ième terme d'une suite arithmétique de premier terme $u_0$ et raison $r$ ?", formula:"$ u_{n+1} - u_n = r $"},
+      {text:"En comptant $n$ additions de raison $r$ depuis $u_0$, exprimer $u_n$ :", formula:"$ u_{n+1} - u_n = r $"}
+    ]
+  },
+  {
+    theme:"Suites",
+    text:"La limite de la suite géométrique $u_n = u_0 \\cdot q^n$ lorsque $|q|<1$ est :",
+    formula:"$ u_n = u_0 \\cdot q^n,\\quad |q|<1 $",
+    opts:["$ 0 $","$ u_0 $","$ +\\infty $","$ q $"],
+    correct:0,
+    expl:"Quand $|q|<1$, les puissances $q^n \\to 0$ donc $u_n \\to 0$ quelle que soit la valeur de $u_0$. Quand $|q|>1$ la suite diverge.",
+    eformula:"$$ |q|<1 \\Rightarrow \\lim_{n\\to\\infty} q^n = 0 $$",
+    variants:[
+      {text:"Quelle est la limite de $u_n = u_0 q^n$ quand $n\\to\\infty$ et $|q|<1$ ?", formula:"$ u_n = u_0 \\cdot q^n,\\quad |q|<1 $"},
+      {text:"Une suite géométrique de raison $|q|<1$ : vers quelle valeur converge-t-elle ?", formula:"$ u_n = u_0 \\cdot q^n,\\quad |q|<1 $"},
+      {text:"Que vaut $\\lim_{n\\to+\\infty} u_n$ pour une suite géométrique avec $|q|<1$ ?", formula:"$ u_n = u_0 \\cdot q^n,\\quad |q|<1 $"}
+    ]
+  },
+  {
+    theme:"Suites",
+    text:"La somme des $n$ premiers termes d'une suite géométrique de raison $q \\neq 1$ est :",
+    formula:"$ S_n = u_0 + u_1 + \\cdots + u_{n-1} $",
+    opts:["$ u_0\\,\\dfrac{1-q^n}{1-q} $","$ u_0 \\cdot q^n $","$ n\\,u_0\\,q $","$ \\dfrac{u_0}{1-q} $"],
+    correct:0,
+    expl:"On écrit $S_n - qS_n = u_0 - u_0 q^n$, d'où $S_n(1-q)=u_0(1-q^n)$. On divise par $(1-q)\\neq 0$.",
+    eformula:"$$ S_n = u_0\\,\\frac{1-q^n}{1-q} $$",
+    variants:[
+      {text:"Donner la formule de la somme des $n$ premiers termes d'une suite géométrique :", formula:"$ S_n = u_0 + u_1 + \\cdots + u_{n-1} $"},
+      {text:"Calculer $S_n = \\sum_{k=0}^{n-1} u_0 q^k$ en utilisant $S_n - qS_n$ :", formula:"$ S_n = u_0 + u_1 + \\cdots + u_{n-1} $"},
+      {text:"Quelle expression factorisée donne la somme géométrique partielle ?", formula:"$ S_n = u_0 + u_1 + \\cdots + u_{n-1} $"}
+    ]
+  },
+  {
+    theme:"Suites",
+    text:"La suite définie par $u_0=5$ et $u_{n+1} = u_n + 3$ est :",
+    formula:"$ u_{n+1} = u_n + 3 $",
+    opts:["Géométrique de raison 3","Arithmétique de raison 3","Géométrique de raison 5","Arithmétique de raison 5"],
+    correct:1,
+    expl:"La différence $u_{n+1}-u_n = 3$ est constante : définition d'une suite arithmétique de raison $r=3$. Son terme général est $u_n = 5+3n$.",
+    eformula:"$$ u_n = 5 + 3n $$",
+    variants:[
+      {text:"Identifier la nature de la suite définie par :", formula:"$ u_{n+1} = u_n + 3 $"},
+      {text:"La relation $u_{n+1} = u_n + 3$ avec $u_0=5$ définit quel type de suite ?", formula:"$ u_{n+1} = u_n + 3 $"},
+      {text:"Reconnaître la suite (arithmétique ou géométrique ?) définie par :", formula:"$ u_{n+1} = u_n + 3 $"}
+    ]
+  },
+  {
+    theme:"Suites",
+    text:"Calculer la somme :",
+    formula:"$ S = 1 + 2 + 3 + \\cdots + n $",
+    opts:["$ \\dfrac{n(n+1)}{2} $","$ n^2 $","$ \\dfrac{n(n-1)}{2} $","$ \\dfrac{(n+1)^2}{2} $"],
+    correct:0,
+    needsCalc:true,
+    expl:"Astuce de Gauss : on écrit $S$ dans les deux sens et on additionne. Chaque paire vaut $n+1$ et il y en a $n$ demi-paires, soit $S = \\tfrac{n(n+1)}{2}$.",
+    eformula:"$$ \\sum_{k=1}^{n} k = \\frac{n(n+1)}{2} $$",
+    variants:[
+      {text:"Calculer la somme des entiers de 1 à $n$ (formule de Gauss) :", formula:"$ S = 1 + 2 + 3 + \\cdots + n $"},
+      {text:"En appariant les termes extrêmes, trouver $\\sum_{k=1}^{n} k$ :", formula:"$ S = 1 + 2 + 3 + \\cdots + n $"},
+      {text:"Quelle est la valeur de la somme arithmétique $1+2+\\cdots+n$ ?", formula:"$ S = 1 + 2 + 3 + \\cdots + n $"}
+    ]
+  },
+  /* ── PROBABILITÉS ── */
+  {
+    theme:"Probabilités",
+    text:"La probabilité conditionnelle de $A$ sachant $B$ est définie par :",
+    formula:"$ P(A|B) = \\; ? $",
+    opts:["$ \\dfrac{P(A\\cap B)}{P(B)} $","$ P(A)\\cdot P(B) $","$ \\dfrac{P(A\\cup B)}{P(B)} $","$ P(B|A) $"],
+    correct:0,
+    expl:"$P(A|B)$ est la probabilité de $A$ restreinte à l'univers $B$. Si $A$ et $B$ sont indépendants, $P(A\\cap B)=P(A)P(B)$ donc $P(A|B)=P(A)$.",
+    eformula:"$$ P(A|B) = \\frac{P(A\\cap B)}{P(B)}, \\quad P(B)\\neq 0 $$",
+    variants:[
+      {text:"Écrire la définition de la probabilité conditionnelle de $A$ sachant $B$ :", formula:"$ P(A|B) = \\; ? $"},
+      {text:"Quelle formule définit $P(A|B)$, la probabilité de $A$ sachant $B$ réalisé ?", formula:"$ P(A|B) = \\; ? $"},
+      {text:"Exprimer $P(A|B)$ à l'aide de $P(A\\cap B)$ et $P(B)$ :", formula:"$ P(A|B) = \\; ? $"}
+    ]
+  },
+  {
+    theme:"Probabilités",
+    text:"La loi des probabilités totales pour une partition $\\{B_1,B_2,B_3\\}$ de $\\Omega$ donne :",
+    formula:"$ P(A) = \\sum_i P(A|B_i)\\,P(B_i) $",
+    opts:["$ P(A|B_1)+P(A|B_2)+P(A|B_3) $","$ P(A\\cap B_1)+P(A\\cap B_2)+P(A\\cap B_3) $","$ \\sum_i P(A|B_i)\\,P(B_i) $","$ P(B_1)\\cdot P(B_2)\\cdot P(B_3) $"],
+    correct:2,
+    expl:"On décompose $A = \\bigcup_i (A\\cap B_i)$ (union disjointe). On applique la définition de la probabilité conditionnelle à chaque terme.",
+    eformula:"$$ P(A) = \\sum_{i} P(A|B_i)\\,P(B_i) $$",
+    variants:[
+      {text:"La loi des probabilités totales pour une partition $\\{B_1,B_2,B_3\\}$ de $\\Omega$ donne :", formula:"$ P(A) = \\sum_i P(A|B_i)\\,P(B_i) $"},
+      {text:"Avec $\\{B_i\\}$ partition de $\\Omega$, comment exprimer $P(A)$ ?", formula:"$ P(A) = \\sum_i P(A|B_i)\\,P(B_i) $"},
+      {text:"Décomposer $P(A)$ selon une partition $\\{B_1,B_2,B_3\\}$ :", formula:"$ P(A) = \\sum_i P(A|B_i)\\,P(B_i) $"}
+    ]
+  },
+  {
+    theme:"Probabilités",
+    text:"Pour $X \\sim \\mathcal{B}(n,p)$, l'espérance et la variance sont :",
+    formula:"$ X \\sim \\mathcal{B}(n,p) $",
+    opts:["$ E=np,\\; V=np $","$ E=np,\\; V=np(1-p) $","$ E=p,\\; V=np $","$ E=1/p,\\; V=np $"],
+    correct:1,
+    expl:"$X$ est la somme de $n$ variables de Bernoulli indépendantes de paramètre $p$. Par linéarité : $E(X)=np$ et $V(X)=np(1-p)$.",
+    eformula:"$$ E(X)=np,\\quad V(X)=np(1-p) $$",
+    variants:[
+      {text:"Pour $X \\sim \\mathcal{B}(n,p)$, donner l'espérance et la variance :", formula:"$ X \\sim \\mathcal{B}(n,p) $"},
+      {text:"Quelles sont les valeurs de $E(X)$ et $V(X)$ pour une loi binomiale ?", formula:"$ X \\sim \\mathcal{B}(n,p) $"},
+      {text:"Une loi $\\mathcal{B}(n,p)$ : rappeler ses deux paramètres de dispersion :", formula:"$ X \\sim \\mathcal{B}(n,p) $"}
+    ]
+  },
+  {
+    theme:"Probabilités",
+    text:"On lance un dé équilibré à 6 faces. La probabilité d'obtenir un nombre pair est :",
+    formula:"$ \\Omega = \\{1,2,3,4,5,6\\} $",
+    opts:["$ \\dfrac{1}{6} $","$ \\dfrac{1}{3} $","$ \\dfrac{1}{2} $","$ \\dfrac{2}{3} $"],
+    correct:2,
+    needsCalc:true,
+    expl:"Les nombres pairs sont $\\{2,4,6\\}$ soit 3 issues favorables sur 6 équiprobables. Règle de Laplace : $P = \\tfrac{\\text{cas favorables}}{\\text{cas possibles}}$.",
+    eformula:"$$ P(\\text{pair}) = \\frac{|\\{2,4,6\\}|}{|\\Omega|} = \\frac{3}{6} = \\frac{1}{2} $$",
+    variants:[
+      {text:"On lance un dé équilibré à 6 faces. La probabilité d'obtenir un nombre pair est :", formula:"$ \\Omega = \\{1,2,3,4,5,6\\} $"},
+      {text:"Appliquer la règle de Laplace : probabilité d'un résultat pair au dé :", formula:"$ \\Omega = \\{1,2,3,4,5,6\\} $"},
+      {text:"Sur un dé à 6 faces équiprobables, quelle fraction des faces est paire ?", formula:"$ \\Omega = \\{1,2,3,4,5,6\\} $"}
+    ]
+  },
+  {
+    theme:"Probabilités",
+    text:"On tire une carte au hasard dans un jeu de 52 cartes. La probabilité d'obtenir un as est :",
+    formula:"$ \\Omega = 52 \\text{ cartes}, \\text{ dont } 4 \\text{ as} $",
+    opts:["$ \\dfrac{1}{52} $","$ \\dfrac{1}{13} $","$ \\dfrac{1}{4} $","$ \\dfrac{4}{52} $"],
+    correct:1,
+    needsCalc:false,
+    expl:"Règle de Laplace : $P = \\tfrac{\\text{cas favorables}}{\\text{cas possibles}} = \\tfrac{4}{52} = \\tfrac{1}{13}$. Les 4 as sont les cas favorables parmi 52 cartes équiprobables.",
+    eformula:"$$ P(\\text{as}) = \\frac{4}{52} = \\frac{1}{13} \\approx 0{,}077 $$",
+    variants:[
+      {text:"On pioche une carte au hasard dans 52 cartes. Quelle est la probabilité de tomber sur un as ?", formula:"$ \\Omega = 52 \\text{ cartes}, \\text{ dont } 4 \\text{ as} $"},
+      {text:"Dans un jeu de 52 cartes, on tire une carte. Calculer $P(\\text{as})$ :", formula:"$ 4 \\text{ as sur } 52 \\text{ cartes équiprobables} $"},
+      {text:"Règle de Laplace : un tirage dans 52 cartes. Quelle fraction représente la probabilité d'un as ?", formula:"$ P = \\dfrac{\\text{favorables}}{\\text{possibles}} $"}
+    ]
+  },
+  /* ── LOI EXPONENTIELLE ── */
+  {
+    theme:"Loi exponentielle",
+    text:"La fonction densité de la loi exponentielle de paramètre $\\lambda > 0$ est :",
+    formula:"$ X \\sim \\mathcal{E}(\\lambda) $",
+    opts:[
+      "$ f(x) = \\lambda e^{-\\lambda x} \\mathbf{1}_{x\\geq 0} $",
+      "$ f(x) = e^{-x} \\mathbf{1}_{x\\geq 0} $",
+      "$ f(x) = \\lambda e^{\\lambda x} \\mathbf{1}_{x\\geq 0} $",
+      "$ f(x) = \\dfrac{1}{\\lambda} e^{-x/\\lambda} \\mathbf{1}_{x\\geq 0} $"
+    ],
+    correct:0,
+    expl:"La loi exponentielle modélise des durées de vie ou des temps d'attente. Le paramètre $\\lambda$ est le taux (ou intensité). L'espérance vaut $1/\\lambda$.",
+    eformula:"$$ f(x) = \\lambda e^{-\\lambda x},\\quad x \\geq 0 $$",
+    variants:[
+      {text:"Donner la densité de probabilité de la loi exponentielle de paramètre $\\lambda$ :", formula:"$ X \\sim \\mathcal{E}(\\lambda) $"},
+      {text:"Parmi ces fonctions, laquelle est la densité d'une loi $\\mathcal{E}(\\lambda)$ ?", formula:"$ X \\sim \\mathcal{E}(\\lambda),\\; \\lambda > 0 $"}
+    ]
+  },
+  {
+    theme:"Loi exponentielle",
+    text:"L'espérance et la variance d'une loi $\\mathcal{E}(\\lambda)$ valent :",
+    formula:"$ X \\sim \\mathcal{E}(\\lambda) $",
+    opts:[
+      "$ E(X)=\\lambda,\\; V(X)=\\lambda^2 $",
+      "$ E(X)=\\dfrac{1}{\\lambda},\\; V(X)=\\dfrac{1}{\\lambda^2} $",
+      "$ E(X)=\\dfrac{1}{\\lambda},\\; V(X)=\\lambda $",
+      "$ E(X)=\\lambda^2,\\; V(X)=\\dfrac{1}{\\lambda} $"
+    ],
+    correct:1,
+    expl:"Pour $\\mathcal{E}(\\lambda)$ : $E(X)=1/\\lambda$ (durée moyenne entre deux événements) et $V(X)=1/\\lambda^2$. L'écart-type est donc égal à l'espérance.",
+    eformula:"$$ E(X) = \\frac{1}{\\lambda} \\qquad V(X) = \\frac{1}{\\lambda^2} $$",
+    variants:[
+      {text:"Rappeler l'espérance et la variance d'une loi exponentielle $\\mathcal{E}(\\lambda)$ :", formula:"$ X \\sim \\mathcal{E}(\\lambda) $"},
+      {text:"Pour $X\\sim\\mathcal{E}(\\lambda)$, calculer $E(X)$ et $V(X)$ :", formula:"$ X \\sim \\mathcal{E}(\\lambda) $"}
+    ]
+  },
+  {
+    theme:"Loi exponentielle",
+    text:"La propriété sans mémoire de la loi exponentielle s'écrit :",
+    formula:"$ P(X > s + t \\mid X > s) = \\; ? $",
+    opts:[
+      "$ P(X > s) $",
+      "$ P(X > s+t) $",
+      "$ P(X > t) $",
+      "$ P(X > s)\\cdot P(X>t) $"
+    ],
+    correct:2,
+    expl:"La loi exponentielle est la seule loi continue à mémoire nulle : connaissant que $X>s$, la durée restante a la même loi que $X$ depuis 0. C'est la contrepartie continue de la loi géométrique.",
+    eformula:"$$ P(X > s+t \\mid X > s) = P(X > t) $$",
+    variants:[
+      {text:"Quelle est la propriété caractéristique dite «sans mémoire» de la loi exponentielle ?", formula:"$ P(X > s+t \\mid X > s) = \\; ? $"},
+      {text:"Pour $X\\sim\\mathcal{E}(\\lambda)$, que vaut $P(X>s+t\\mid X>s)$ ?", formula:"$ X \\sim \\mathcal{E}(\\lambda) $"}
+    ]
+  },
+  {
+    theme:"Loi exponentielle",
+    text:"La fonction de répartition $F(x)=P(X\\leq x)$ de la loi $\\mathcal{E}(\\lambda)$ est :",
+    formula:"$ F(x) = P(X \\leq x),\\quad x \\geq 0 $",
+    opts:[
+      "$ 1 - e^{-\\lambda x} $",
+      "$ e^{-\\lambda x} $",
+      "$ 1 - e^{\\lambda x} $",
+      "$ \\lambda(1-e^{-\\lambda x}) $"
+    ],
+    correct:0,
+    needsCalc:true,
+    expl:"On intègre la densité : $F(x)=\\int_0^x \\lambda e^{-\\lambda t}dt = [-e^{-\\lambda t}]_0^x = 1-e^{-\\lambda x}$. On vérifie $F(0)=0$ et $F(+\\infty)=1$.",
+    eformula:"$$ F(x) = 1 - e^{-\\lambda x},\\quad x \\geq 0 $$",
+    variants:[
+      {text:"Calculer par intégration la fonction de répartition de $\\mathcal{E}(\\lambda)$ :", formula:"$ F(x) = \\int_0^x \\lambda e^{-\\lambda t}\\,dt $"},
+      {text:"Quelle est la CDF de la loi exponentielle $\\mathcal{E}(\\lambda)$ pour $x\\geq 0$ ?", formula:"$ F(x) = P(X \\leq x) $"}
+    ]
+  },
+  {
+    theme:"Loi exponentielle",
+    text:"Un composant a une durée de vie $X\\sim\\mathcal{E}(0{,}1)$ (en heures). La probabilité qu'il dure plus de 20 h est :",
+    formula:"$ \\lambda = 0{,}1\\text{ h}^{-1},\\quad P(X>20) = \\; ? $",
+    opts:[
+      "$ e^{-2} \\approx 0{,}135 $",
+      "$ e^{-0{,}2} \\approx 0{,}819 $",
+      "$ 1 - e^{-2} \\approx 0{,}865 $",
+      "$ e^{-20} \\approx 2\\times10^{-9} $"
+    ],
+    correct:0,
+    needsCalc:true,
+    expl:"$P(X>20)=1-F(20)=e^{-\\lambda\\cdot 20}=e^{-0{,}1\\times 20}=e^{-2}\\approx 0{,}135$. L'espérance est $1/0{,}1=10$ h donc 20 h correspond à deux fois l'espérance.",
+    eformula:"$$ P(X>20) = e^{-0{,}1\\times 20} = e^{-2} \\approx 0{,}135 $$",
+    variants:[
+      {text:"Calculer la probabilité de survie au-delà de 20 h pour $X\\sim\\mathcal{E}(0{,}1)$ :", formula:"$ P(X>20) = e^{-\\lambda\\cdot 20} $"},
+      {text:"Avec $\\lambda=0{,}1$, quelle est $P(X>20)$ ? (fiabilité)", formula:"$ X \\sim \\mathcal{E}(0{,}1) $"}
+    ]
+  },
+  {
+    theme:"Loi exponentielle",
+    text:"Pour $X\\sim\\mathcal{E}(\\lambda)$, la médiane $m$ vérifiant $P(X\\leq m)=0{,}5$ vaut :",
+    formula:"$ 1 - e^{-\\lambda m} = 0{,}5 $",
+    opts:[
+      "$ m = \\dfrac{\\ln 2}{\\lambda} $",
+      "$ m = \\dfrac{1}{\\lambda} $",
+      "$ m = \\dfrac{1}{2\\lambda} $",
+      "$ m = \\lambda\\ln 2 $"
+    ],
+    correct:0,
+    needsCalc:true,
+    expl:"De $1-e^{-\\lambda m}=\\tfrac{1}{2}$ on tire $e^{-\\lambda m}=\\tfrac{1}{2}$ puis $-\\lambda m = -\\ln 2$, soit $m=\\tfrac{\\ln 2}{\\lambda}$. La médiane est toujours inférieure à l'espérance $1/\\lambda$.",
+    eformula:"$$ m = \\frac{\\ln 2}{\\lambda} \\approx \\frac{0{,}693}{\\lambda} $$",
+    variants:[
+      {text:"Résoudre $F(m)=0{,}5$ pour trouver la médiane de $\\mathcal{E}(\\lambda)$ :", formula:"$ 1 - e^{-\\lambda m} = \\frac{1}{2} $"},
+      {text:"Exprimer la médiane de $X\\sim\\mathcal{E}(\\lambda)$ en fonction de $\\lambda$ :", formula:"$ P(X\\leq m) = 0{,}5 $"}
+    ]
+  },
+  /* ── ÉQUATIONS DIFFÉRENTIELLES RENFORCÉES ── */
+  {
+    theme:"Équations différentielles",
+    text:"La solution générale de l'équation homogène d'ordre 2 à racine double $r_0$ est :",
+    formula:"$ \\Delta = 0 \\Rightarrow r_0 = -\\dfrac{b}{2a} $",
+    opts:[
+      "$ y = (A+Bx)e^{r_0 x} $",
+      "$ y = Ae^{r_0 x}+Be^{r_0 x} $",
+      "$ y = e^{r_0 x}(A\\cos\\omega x+B\\sin\\omega x) $",
+      "$ y = Axe^{r_0 x} $"
+    ],
+    correct:0,
+    expl:"Quand $\\Delta=0$, les deux racines coïncident. La deuxième solution indépendante est $xe^{r_0 x}$ (multiplication par $x$). On vérifie que $Ae^{r_0 x}$ et $Bxe^{r_0 x}$ sont bien linéairement indépendantes.",
+    eformula:"$$ y_h = (A + Bx)\\,e^{r_0 x} $$",
+    variants:[
+      {text:"$\\Delta=0$ : écrire la solution homogène d'ordre 2 avec racine double $r_0$ :", formula:"$ \\Delta = b^2-4ac = 0 $"},
+      {text:"Quelle est la forme de $y_h$ lorsque l'équation caractéristique a une racine double ?", formula:"$ r^2+2r+1=0 \\Rightarrow r_0=-1 \\;(\\text{exemple}) $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"On cherche une solution particulière $y_p$ pour le second membre polynomial :",
+    formula:"$ y'' + 3y' + 2y = 4x + 1 $",
+    opts:[
+      "$ y_p = ax + b $",
+      "$ y_p = ax^2 + bx $",
+      "$ y_p = ae^x $",
+      "$ y_p = ax^2 + bx + c $"
+    ],
+    correct:0,
+    expl:"Lorsque le second membre est un polynôme de degré $n$ (ici $n=1$) et que 0 n'est pas racine de l'équation caractéristique, on cherche $y_p$ comme un polynôme de même degré $ax+b$.",
+    eformula:"$$ y_p = ax+b \\Rightarrow 3a + 2(ax+b) = 4x+1 $$",
+    variants:[
+      {text:"Quelle forme de $y_p$ choisir par la méthode des coefficients indéterminés ?", formula:"$ y'' + 3y' + 2y = 4x + 1 $"},
+      {text:"Second membre polynomial de degré 1 : quelle est la bonne forme de $y_p$ ?", formula:"$ f(x) = 4x+1,\\; 0 \\text{ non racine} $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"On résout $y'' - 4y = 0$ avec $y(0)=1,\\; y'(0)=2$. La solution est :",
+    formula:"$ r^2 - 4 = 0 $",
+    opts:[
+      "$ y = e^{2x} $",
+      "$ y = \\cosh(2x) + \\sinh(2x) $",
+      "$ y = \\dfrac{3}{4}e^{2x} + \\dfrac{1}{4}e^{-2x} $",
+      "$ y = e^{-2x} $"
+    ],
+    correct:0,
+    needsCalc:true,
+    expl:"Équation caractéristique $r^2-4=0 \\Rightarrow r=\\pm 2$. Solution générale $y=Ae^{2x}+Be^{-2x}$. CI : $y(0)=A+B=1$ et $y'(0)=2A-2B=2$, soit $A=1,B=0$.",
+    eformula:"$$ A=1,\\;B=0 \\Rightarrow y = e^{2x} $$",
+    variants:[
+      {text:"Résoudre $y''-4y=0$ avec les CI $y(0)=1,\\;y'(0)=2$ :", formula:"$ r^2-4=0 \\Rightarrow r=\\pm 2 $"},
+      {text:"Appliquer les conditions initiales pour déterminer $A$ et $B$ dans $Ae^{2x}+Be^{-2x}$ :", formula:"$ y(0)=1,\\;y'(0)=2 $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"Pour $y'' + \\omega_0^2\\,y = 0$ (oscillateur libre non amorti), la solution générale est :",
+    formula:"$ \\omega_0 > 0 $",
+    opts:[
+      "$ A\\cos(\\omega_0 x)+B\\sin(\\omega_0 x) $",
+      "$ e^{\\omega_0 x}(A\\cos\\omega_0 x+B\\sin\\omega_0 x) $",
+      "$ (A+Bx)e^{\\omega_0 x} $",
+      "$ Ae^{\\omega_0 x}+Be^{-\\omega_0 x} $"
+    ],
+    correct:0,
+    expl:"L'équation caractéristique $r^2+\\omega_0^2=0$ donne $r=\\pm j\\omega_0$ (racines purement imaginaires, $\\alpha=0$). Donc pas d'amortissement : oscillation pure à fréquence $\\omega_0/(2\\pi)$.",
+    eformula:"$$ y = A\\cos(\\omega_0 x)+B\\sin(\\omega_0 x) $$",
+    variants:[
+      {text:"Quelle est la solution de l'oscillateur non amorti $y''+\\omega_0^2 y=0$ ?", formula:"$ r^2+\\omega_0^2=0 \\Rightarrow r=\\pm j\\omega_0 $"},
+      {text:"Racines purement imaginaires $r=\\pm j\\omega_0$ : quelle forme prend $y_h$ ?", formula:"$ \\alpha=0 \\Rightarrow \\text{oscillation entretenue} $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"On cherche $y_p$ pour le second membre sinusoïdal (avec $j\\omega$ non racine) :",
+    formula:"$ y'' + 4y = \\sin(3x) $",
+    opts:[
+      "$ y_p = A\\cos(3x) + B\\sin(3x) $",
+      "$ y_p = A\\sin(3x) $",
+      "$ y_p = A\\cos(3x) $",
+      "$ y_p = Ae^{3x} $"
+    ],
+    correct:0,
+    needsCalc:true,
+    expl:"Second membre $\\sin(3x)$ : on pose $y_p = A\\cos 3x + B\\sin 3x$ (les deux termes car la dérivée de $\\sin$ est $\\cos$ et vice versa). On injecte et on identifie.",
+    eformula:"$$ y_p'' + 4y_p = \\sin 3x \\Rightarrow -9A\\cos 3x - 9B\\sin 3x + 4(\\ldots) $$",
+    variants:[
+      {text:"Quelle forme prend $y_p$ pour le second membre $\\sin(3x)$ ?", formula:"$ y'' + 4y = \\sin(3x) $"},
+      {text:"Méthode des CI : second membre trig $\\sin(3x)$, 3j non racine — forme de $y_p$ ?", formula:"$ r^2+4=0 \\Rightarrow r=\\pm 2j \\neq \\pm 3j $"}
+    ]
+  },
+  {
+    theme:"Équations différentielles",
+    text:"L'équation $y' = ky$ avec $k > 0$ décrit une croissance exponentielle. Sa solution avec $y(0)=y_0$ est :",
+    formula:"$ \\frac{dy}{dx} = k\\,y $",
+    opts:[
+      "$ y = y_0 e^{kx} $",
+      "$ y = y_0 + kx $",
+      "$ y = y_0 e^{-kx} $",
+      "$ y = ky_0 e^{x} $"
+    ],
+    correct:0,
+    expl:"Cette EDO à variables séparables donne $\\tfrac{dy}{y}=k\\,dx$, d'où $\\ln|y|=kx+C$, puis $y=Ce^{kx}$. CI $y(0)=y_0$ impose $C=y_0$. Pour $k<0$ c'est une décroissance.",
+    eformula:"$$ y(x) = y_0\\,e^{kx} $$",
+    variants:[
+      {text:"Résoudre par séparation des variables : $y'=ky$ avec $y(0)=y_0$ :", formula:"$ \\frac{dy}{y} = k\\,dx $"},
+      {text:"Quelle loi exponentielle satisfait $y'=ky,\\; y(0)=y_0$ ?", formula:"$ \\frac{dy}{dx} = k\\,y,\\; k>0 $"}
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   BASE DE DONNÉES FLASHCARDS — 5 thèmes × 5 cartes (LaTeX MathJax)
+═══════════════════════════════════════════════════════════ */
+const FLASHCARDS = [
+  /* DÉRIVÉES */
+  {
+    id:"d1", theme:"Dérivées",
+    question:"Donner la dérivée de $f(x)=x^n$.",
+    hint:"Règle de la puissance",
+    answer:"On abaisse l'exposant devant et on décrémente : $f'(x)=nx^{n-1}$. Exemple : $(x^5)'=5x^4$.",
+    formula:"$$ [x^n]' = n\\,x^{n-1} $$"
+  },
+  {
+    id:"d2", theme:"Dérivées",
+    question:"Énoncer la règle du produit pour $(uv)'$.",
+    hint:"Règle de Leibniz",
+    answer:"La dérivée du produit n'est pas le produit des dérivées ! Il faut bien garder les deux termes $u'v$ ET $uv'$.",
+    formula:"$$ (u\\cdot v)' = u'v + uv' $$"
+  },
+  {
+    id:"d3", theme:"Dérivées",
+    question:"Donner les dérivées de $\\ln x$ et $e^x$.",
+    hint:"Fonctions exponentielles et logarithme",
+    answer:"$e^x$ est l'unique fonction égale à sa propre dérivée. $\\ln x$ a pour dérivée $1/x$, définie pour $x>0$.",
+    formula:"$$ [e^x]' = e^x \\qquad [\\ln x]' = \\frac{1}{x} $$"
+  },
+  {
+    id:"d4", theme:"Dérivées",
+    question:"Énoncer la règle de la chaîne pour $h(x)=f(g(x))$.",
+    hint:"Dérivée composée",
+    answer:"On dérive d'abord la fonction extérieure en gardant $g(x)$ comme variable, puis on multiplie par $g'(x)$. Exemple : $[\\sin(x^2)]' = 2x\\cos(x^2)$.",
+    formula:"$$ (f\\circ g)'(x) = f'(g(x))\\cdot g'(x) $$"
+  },
+  {
+    id:"d5", theme:"Dérivées",
+    question:"Quelle est la dérivée du quotient $\\dfrac{u}{v}$ ?",
+    hint:"Règle du quotient",
+    answer:"Moyen mnémotechnique : « dérivée du haut fois bas, moins haut fois dérivée du bas, le tout sur bas au carré ».",
+    formula:"$$ \\left(\\frac{u}{v}\\right)' = \\frac{u'v - uv'}{v^2} $$"
+  },
+  /* PRIMITIVES */
+  {
+    id:"pr1", theme:"Primitives",
+    question:"Donner la primitive de $x^n$ pour $n\\neq -1$.",
+    hint:"Règle duale de la dérivation",
+    answer:"On ajoute 1 à l'exposant et on divise par ce nouvel exposant. Le cas $n=-1$ est traité séparément par $\\ln|x|$.",
+    formula:"$$ \\int x^n\\,dx = \\frac{x^{n+1}}{n+1} + C $$"
+  },
+  {
+    id:"pr2", theme:"Primitives",
+    question:"Comment calculer $\\int e^{ax}\\,dx$ ?",
+    hint:"Primitive d'une exponentielle",
+    answer:"La primitive de $e^{ax}$ est $\\tfrac{1}{a}e^{ax}$. On divise par $a$ (l'inverse de la multiplication par $a$ lors de la dérivation).",
+    formula:"$$ \\int e^{ax}\\,dx = \\frac{1}{a}e^{ax} + C $$"
+  },
+  {
+    id:"pr3", theme:"Primitives",
+    question:"Énoncer la formule d'intégration par parties.",
+    hint:"IPP — Inverse de la règle du produit",
+    answer:"On choisit $u$ et $v'$ de sorte que $u'$ et $v$ soient plus simples. Règle pratique : prendre $u$ = polynôme ou $\\ln$, et $v'$ = fonction facile à intégrer.",
+    formula:"$$ \\int u\\,v'\\,dx = [uv] - \\int u'v\\,dx $$"
+  },
+  {
+    id:"pr4", theme:"Primitives",
+    question:"Donner la primitive de $\\dfrac{1}{x}$.",
+    hint:"Cas $n = -1$ exclu de la formule puissance",
+    answer:"C'est le seul cas non couvert par $\\int x^n dx$. On a $[\\ln|x|]' = \\tfrac{1}{x}$, donc la primitive est $\\ln|x|$. Le $|\\cdot|$ est nécessaire si $x$ peut être négatif.",
+    formula:"$$ \\int \\frac{1}{x}\\,dx = \\ln|x| + C $$"
+  },
+  {
+    id:"pr5", theme:"Primitives",
+    question:"Comment calculer une intégrale par substitution $u=g(x)$ ?",
+    hint:"Changement de variable",
+    answer:"On pose $u=g(x)$, donc $du=g'(x)\\,dx$. On remplace dans l'intégrale, on intègre en $u$, puis on revient à la variable $x$.",
+    formula:"$$ \\int f(g(x))\\,g'(x)\\,dx = \\int f(u)\\,du $$"
+  },
+  /* ÉQUATIONS DIFFÉRENTIELLES */
+  {
+    id:"e1", theme:"Équations différentielles",
+    question:"Quelle est la structure de la solution générale d'une EDO linéaire ?",
+    hint:"Homogène + Particulière",
+    answer:"La solution générale se décompose toujours en $y_h$ (solution de l'équation sans second membre) et $y_p$ (une solution de l'équation complète). Les constantes sont fixées par les CI.",
+    formula:"$$ y_{\\text{gén}} = y_h + y_p $$"
+  },
+  {
+    id:"e2", theme:"Équations différentielles",
+    question:"Comment résoudre une EDO du 1er ordre $y' + ay = 0$ ?",
+    hint:"Équation homogène ordre 1",
+    answer:"L'équation caractéristique est $r+a=0$, soit $r=-a$. La solution générale homogène est $y_h = Ce^{-ax}$ avec $C$ une constante réelle.",
+    formula:"$$ y' + ay = 0 \\Rightarrow y_h = C\\,e^{-ax} $$"
+  },
+  {
+    id:"e3", theme:"Équations différentielles",
+    question:"Que signifie $\\Delta>0,\\;\\Delta=0,\\;\\Delta<0$ pour une EDO d'ordre 2 ?",
+    hint:"Discriminant de l'équation caractéristique",
+    answer:"$\\Delta>0$ : deux racines réelles distinctes, solution $Ae^{r_1 x}+Be^{r_2 x}$. $\\Delta=0$ : racine double, solution $(A+Bx)e^{rx}$. $\\Delta<0$ : racines complexes, solution sinusoïde amortie.",
+    formula:"$$ \\Delta = b^2 - 4ac $$"
+  },
+  {
+    id:"e4", theme:"Équations différentielles",
+    question:"Quelle est la solution lorsque les racines sont complexes $r=\\alpha\\pm j\\omega$ ?",
+    hint:"Régime pseudo-périodique",
+    answer:"La solution est une sinusoïde modulée par une exponentielle. Si $\\alpha<0$ elle est amortie, si $\\alpha=0$ elle est entretenue, si $\\alpha>0$ elle diverge.",
+    formula:"$$ y = e^{\\alpha x}(A\\cos\\omega x + B\\sin\\omega x) $$"
+  },
+  {
+    id:"e5", theme:"Équations différentielles",
+    question:"Comment trouver une solution particulière $y_p$ pour un second membre $ke^{\\lambda x}$ ?",
+    hint:"Méthode des coefficients indéterminés",
+    answer:"Si $\\lambda$ n'est pas racine de l'équation caractéristique, on essaie $y_p = A\\,e^{\\lambda x}$ et on injecte pour trouver $A$. Si $\\lambda$ est racine simple, on essaie $y_p = Ax\\,e^{\\lambda x}$.",
+    formula:"$$ y_p = A\\,e^{\\lambda x} \\text{ (si } \\lambda \\text{ non racine)} $$"
+  },
+  /* SUITES */
+  {
+    id:"s1", theme:"Suites",
+    question:"Donner le terme général d'une suite arithmétique.",
+    hint:"Addition constante",
+    answer:"La suite arithmétique ajoute la raison $r$ à chaque étape. On a effectué $n$ additions depuis $u_0$ pour atteindre $u_n$.",
+    formula:"$$ u_n = u_0 + n\\,r $$"
+  },
+  {
+    id:"s2", theme:"Suites",
+    question:"Donner le terme général et la somme d'une suite géométrique.",
+    hint:"Multiplication constante",
+    answer:"Terme général : $u_n=u_0\\,q^n$. La somme $S_n$ se calcule par $S_n - qS_n = u_0-u_0 q^n$. Si $|q|<1$, la série converge vers $u_0/(1-q)$.",
+    formula:"$$ u_n = u_0\\,q^n \\qquad S_n = u_0\\,\\frac{1-q^n}{1-q} $$"
+  },
+  {
+    id:"s3", theme:"Suites",
+    question:"Quelle est la condition de convergence d'une suite géométrique ?",
+    hint:"Condition sur $|q|$",
+    answer:"$|q|<1$ : converge vers 0. $|q|=1$ : constante ($q=1$) ou alternée ($q=-1$). $|q|>1$ : diverge vers $\\pm\\infty$.",
+    formula:"$$ |q|<1 \\Rightarrow \\lim_{n\\to\\infty} u_n = 0 $$"
+  },
+  {
+    id:"s4", theme:"Suites",
+    question:"Donner la somme des $n$ premiers entiers.",
+    hint:"Formule de Gauss",
+    answer:"Gauss a remarqué que les paires $(1+n), (2+n-1), \\ldots$ valent toutes $n+1$ et il y en a $n/2$. D'où $S=n(n+1)/2$.",
+    formula:"$$ \\sum_{k=1}^{n} k = \\frac{n(n+1)}{2} $$"
+  },
+  {
+    id:"s5", theme:"Suites",
+    question:"Comment distinguer suite arithmétique et suite géométrique ?",
+    hint:"Différence vs ratio",
+    answer:"Suite arithmétique : la différence $u_{n+1}-u_n$ est constante (raison $r$). Suite géométrique : le rapport $u_{n+1}/u_n$ est constant (raison $q$). Les deux peuvent coexister seulement si $u_n=0$.",
+    formula:"$$ \\text{Arith.}: u_{n+1}-u_n = r \\qquad \\text{Géom.}: \\frac{u_{n+1}}{u_n} = q $$"
+  },
+  /* PROBABILITÉS */
+  {
+    id:"p1", theme:"Probabilités",
+    question:"Énoncer la définition de la probabilité conditionnelle.",
+    hint:"Sachant que $B$ est réalisé",
+    answer:"On restreint l'univers à $B$ et on mesure la part de $A$ dans cet univers réduit. Si $A$ et $B$ sont indépendants, $P(A|B)=P(A)$.",
+    formula:"$$ P(A|B) = \\frac{P(A\\cap B)}{P(B)}, \\quad P(B)\\neq 0 $$"
+  },
+  {
+    id:"p2", theme:"Probabilités",
+    question:"Énoncer la loi des probabilités totales.",
+    hint:"Partition de $\\Omega$",
+    answer:"Si $\\{B_i\\}$ est une partition de $\\Omega$ (événements deux à deux incompatibles et d'union $\\Omega$), on décompose $A$ selon chaque $B_i$.",
+    formula:"$$ P(A) = \\sum_i P(A|B_i)\\,P(B_i) $$"
+  },
+  {
+    id:"p3", theme:"Probabilités",
+    question:"Donner la formule de la loi binomiale $\\mathcal{B}(n,p)$.",
+    hint:"Répétition de $n$ épreuves de Bernoulli",
+    answer:"$X$ compte le nombre de succès parmi $n$ épreuves indépendantes. $\\binom{n}{k}$ compte les façons d'obtenir $k$ succès parmi $n$ tirages.",
+    formula:"$$ P(X=k) = \\binom{n}{k}p^k(1-p)^{n-k} $$"
+  },
+  {
+    id:"p4", theme:"Probabilités",
+    question:"Donner la formule de la loi de Poisson et ses paramètres.",
+    hint:"Événements rares dans un intervalle",
+    answer:"La loi de Poisson est une approximation de la loi binomiale quand $n$ est grand et $p$ petit. Son espérance et sa variance valent toutes deux $\\lambda$.",
+    formula:"$$ P(X=k)=\\frac{e^{-\\lambda}\\lambda^k}{k!}, \\quad E=V=\\lambda $$"
+  },
+  {
+    id:"p5", theme:"Probabilités",
+    question:"Énoncer le théorème de Bayes.",
+    hint:"Inversion de la conditionnelle",
+    answer:"Bayes permet de «inverser» une probabilité conditionnelle : connaissant $P(A|B_i)$, on peut calculer $P(B_i|A)$. Très utilisé en diagnostic et en statistiques.",
+    formula:"$$ P(B_i|A) = \\frac{P(A|B_i)\\,P(B_i)}{\\sum_j P(A|B_j)\\,P(B_j)} $$"
+  }
+];
+
+/* ═══════════════════════════════════════════════════════════
+   ÉTAT GLOBAL
+═══════════════════════════════════════════════════════════ */
+let currentMode = "normal";
+let currentSection = "home";
+let qcmQuestions = [];
+let qIdx = 0;
+let score = 0;
+let streak = 0;
+let timerVal = 0;
+let timerInterval = null;
+let answered = false;
+let qStartTime = 0;
+let lbAllData = [];
+let currentLbFilter = "all";
+let cardStates = {};        // {id: "known"|"review"|""}
+let fcCurrentTheme = "all";
+let revQueue = [];
+let revIdx = 0;
+let revFlipped = false;
+let toastTimer = null;
+
+/* ═══════════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════════ */
+(function init(){
+  const saved = localStorage.getItem("bts_pseudo");
+  if(saved) document.getElementById("pseudoInput").value = saved;
+  document.getElementById("pseudoInput").addEventListener("input",function(){
+    localStorage.setItem("bts_pseudo",this.value.trim());
+  });
+  const savedStates = localStorage.getItem("bts_cardStates");
+  if(savedStates) cardStates = JSON.parse(savedStates);
+  renderFlashcards();
+  buildFcThemeTabs();
+  updateFcProgress();
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════════ */
+function showSection(name){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".bnav-btn").forEach(b=>b.classList.remove("active"));
+  const sectionMap = {home:"homeSection",qcm:"qcmSection",flashcards:"flashcardsSection",classement:"classementSection"};
+  const btnIdx = {home:0,qcm:1,flashcards:2,classement:3};
+  document.getElementById(sectionMap[name]).classList.add("active");
+  document.querySelectorAll(".nav-btn")[btnIdx[name]].classList.add("active");
+  document.querySelectorAll(".bnav-btn")[btnIdx[name]].classList.add("active");
+  currentSection = name;
+  if(name==="classement") loadLeaderboard();
+}
+
+function startQCM(){
+  showSection("qcm");
+  initQCM();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODE SELECTION
+═══════════════════════════════════════════════════════════ */
+function selectMode(mode, el){
+  currentMode = mode;
+  document.querySelectorAll(".mode-card").forEach(c=>c.classList.remove("selected"));
+  el.classList.add("selected");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   QCM ENGINE
+═══════════════════════════════════════════════════════════ */
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function getModeTime(needsCalc){
+  const base = {normal:90,speed:30,zen:0,exam:60}[currentMode];
+  if(base === 0) return 0;
+  return needsCalc ? base + 300 : base;
+}
+
+function initQCM(){
+  // Mélanger et limiter à 20 questions max
+  const shuffled = shuffle(QCM_DATA);
+  const MAX_Q = 20;
+  qcmQuestions = shuffled.slice(0, Math.min(MAX_Q, shuffled.length)).map(q => {
+    // Choisir aléatoirement une variante de formulation si disponible
+    if(q.variants && q.variants.length > 0){
+      const v = q.variants[Math.floor(Math.random() * q.variants.length)];
+      return Object.assign({}, q, {text: v.text, formula: v.formula});
+    }
+    return q;
+  });
+  qIdx = 0;score = 0;streak = 0;answered = false;
+  document.getElementById("qTotal").textContent = qcmQuestions.length;
+  document.getElementById("scoreDisplay").textContent = 0;
+  document.getElementById("modeDisplay").textContent = "Mode: " + currentMode.charAt(0).toUpperCase()+currentMode.slice(1);
+  hideStreak();
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = qcmQuestions[qIdx];
+  answered = false;
+  document.getElementById("qNum").textContent = qIdx+1;
+  document.getElementById("qNumLabel").textContent = `Question ${qIdx+1} sur ${qcmQuestions.length}`;
+  document.getElementById("qTheme").textContent = q.theme;
+  document.getElementById("qText").innerHTML = q.text;
+  document.getElementById("qFormula").innerHTML = q.formula;
+  document.getElementById("explanation").style.display = "none";
+  document.getElementById("nextBtn").style.display = "none";
+
+  const grid = document.getElementById("optionsGrid");
+  grid.innerHTML = "";
+  const letters = ["A","B","C","D"];
+  q.opts.forEach((opt,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.innerHTML = `<span class="opt-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = (e)=>selectAnswer(i,btn,e);
+    grid.appendChild(btn);
+  });
+
+  startTimer(q.needsCalc || false);
+  qStartTime = Date.now();
+  renderMath(document.getElementById("qcmSection"));
+}
+
+function startTimer(needsCalc){
+  clearInterval(timerInterval);
+  const t = getModeTime(needsCalc);
+  const bar = document.getElementById("timerBar");
+  const lbl = document.getElementById("timerLabel");
+  const cnt = document.getElementById("timerCount");
+  if(t===0){
+    bar.style.width="100%";
+    lbl.textContent="Zen — ∞";
+    cnt.textContent="∞";
+    return;
+  }
+  timerVal = t;
+  const baseLabel = needsCalc ? "🧮 +5 min calcul — " + t + " sec" : t + " sec";
+  lbl.textContent = baseLabel;
+  cnt.textContent = t;
+  bar.style.width="100%";
+  bar.classList.remove("warning");
+  timerInterval = setInterval(()=>{
+    timerVal--;
+    const pct = (timerVal/t)*100;
+    bar.style.width = pct + "%";
+    cnt.textContent = timerVal;
+    if(pct < 30) bar.classList.add("warning");
+    if(timerVal <= 0){
+      clearInterval(timerInterval);
+      if(!answered) timeOut();
+    }
+  },1000);
+}
+
+function timeOut(){
+  answered = true;
+  const q = qcmQuestions[qIdx];
+  const btns = document.querySelectorAll(".opt-btn");
+  btns.forEach(b=>b.disabled=true);
+  btns[q.correct].classList.add("correct");
+  streak = 0;
+  hideStreak();
+  showExplanation(q);
+  document.getElementById("nextBtn").style.display="inline-flex";
+  showToast("⏱ Temps écoulé !","error");
+}
+
+function selectAnswer(i, btn, e){
+  if(answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  const q = qcmQuestions[qIdx];
+  const btns = document.querySelectorAll(".opt-btn");
+  btns.forEach(b=>b.disabled=true);
+
+  const elapsed = (Date.now()-qStartTime)/1000;
+  let pts = 0;
+
+  if(i===q.correct){
+    btn.classList.add("correct");
+    streak++;
+    if(currentMode==="speed"){
+      const t = getModeTime();
+      const bonus = Math.max(1, Math.round((1 - elapsed/t)*20));
+      pts = 10 + bonus;
+    } else {
+      pts = 10;
+    }
+    score += pts;
+    showPtsPop(e.clientX, e.clientY, "+"+pts+"pts", true);
+    updateStreakBadge();
+  } else {
+    btn.classList.add("wrong");
+    btns[q.correct].classList.add("correct");
+    streak = 0;
+    const penalty = currentMode==="exam" ? -4 : -2;
+    score = Math.max(0, score + penalty);
+    pts = penalty;
+    showPtsPop(e.clientX, e.clientY, pts+"pts", false);
+    hideStreak();
+  }
+  document.getElementById("scoreDisplay").textContent = score;
+  showExplanation(q);
+  document.getElementById("nextBtn").style.display="inline-flex";
+}
+
+function showExplanation(q){
+  document.getElementById("explText").innerHTML = q.expl;
+  document.getElementById("explFormula").innerHTML = q.eformula;
+  document.getElementById("explanation").style.display="block";
+  renderMath(document.getElementById("explanation"));
+}
+
+function updateStreakBadge(){
+  const badge = document.getElementById("streakBadge");
+  document.getElementById("comboCount").textContent = streak;
+  if(streak>=3){
+    badge.style.display="flex";
+  } else {
+    badge.style.display="none";
+  }
+}
+function hideStreak(){document.getElementById("streakBadge").style.display="none";}
+
+function nextQuestion(){
+  qIdx++;
+  if(qIdx >= qcmQuestions.length){
+    endQCM();
+  } else {
+    renderQuestion();
+  }
+}
+
+function endQCMEarly(){
+  clearInterval(timerInterval);
+  endQCM();
+}
+
+function endQCM(){
+  clearInterval(timerInterval);
+  const total = qcmQuestions.length;
+  const maxScore = total * 10;
+  const pct = Math.round((score/maxScore)*100);
+  let grade = "C";
+  if(pct>=90) grade="S";
+  else if(pct>=75) grade="A";
+  else if(pct>=55) grade="B";
+  showResults(grade,pct,total);
+}
+
+function showResults(grade,pct,total){
+  const ring = document.getElementById("gradeRing");
+  ring.textContent = grade;
+  ring.className = "grade-ring grade-"+grade;
+  const titles = {S:"Score Parfait ! 🏆",A:"Excellent ! ✨",B:"Bien joué ! 👍",C:"Continue à réviser ! 💪"};
+  document.getElementById("resultsTitle").textContent = titles[grade];
+  const maxScore = total*10;
+  document.getElementById("resultsStats").innerHTML = `
+    <div class="stat-pill"><span class="sval" style="color:var(--amber)">${score}</span><span class="slbl">Points</span></div>
+    <div class="stat-pill"><span class="sval" style="color:var(--cyan)">${pct}%</span><span class="slbl">Réussite</span></div>
+    <div class="stat-pill"><span class="sval" style="color:var(--green)">${grade}</span><span class="slbl">Grade</span></div>
+    <div class="stat-pill"><span class="sval" style="color:var(--violet)">${currentMode.toUpperCase()}</span><span class="slbl">Mode</span></div>
+  `;
+  // Tetris unlock if score > 300
+  const tetrisBanner = document.getElementById("tetrisUnlockBanner");
+  const tetrisBtn = document.getElementById("tetrisLaunchBtn");
+  if(score > 300){
+    tetrisBanner.style.display = "block";
+    tetrisBtn.style.display = "inline-flex";
+    setTimeout(()=>showToast("🎮 Tetris débloqué ! Score > 300 pts","success"),600);
+  } else {
+    tetrisBanner.style.display = "none";
+    tetrisBtn.style.display = "none";
+  }
+  document.getElementById("saveScoreBtn").disabled=false;
+  document.getElementById("resultsScreen").classList.add("open");
+}
+
+function closeResults(){
+  document.getElementById("resultsScreen").classList.remove("open");
+  startQCM();
+}
+
+function goHome(){
+  document.getElementById("resultsScreen").classList.remove("open");
+  showSection("home");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   POINTS POP ANIMATION
+═══════════════════════════════════════════════════════════ */
+function showPtsPop(x, y, txt, positive){
+  const el = document.createElement("div");
+  el.className="pts-pop";
+  el.textContent = txt;
+  el.style.left = x + "px";
+  el.style.top = y + "px";
+  el.style.color = positive ? "var(--green)" : "var(--rose)";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1200);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHEETDB — SAVE SCORE
+═══════════════════════════════════════════════════════════ */
+async function saveScore(){
+  const pseudo = document.getElementById("pseudoInput").value.trim() || "Anonyme";
+  const btn = document.getElementById("saveScoreBtn");
+  btn.disabled=true;
+  btn.textContent="Envoi en cours…";
+  const total = qcmQuestions.length;
+  const maxScore = total*10;
+  const pct = Math.round((score/maxScore)*100);
+  const now = new Date();
+  const date = String(now.getDate()).padStart(2,"0")+"/"+String(now.getMonth()+1).padStart(2,"0")+"/"+now.getFullYear();
+  try{
+    const res = await fetch(APIScriptURL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({data:[{name:pseudo,score:score,mode:currentMode,pct:pct,date:date}]})
+    });
+    if(res.ok){
+      showToast("✓ Score enregistré !","success");
+      btn.textContent="✓ Enregistré";
+    } else {
+      throw new Error("HTTP "+res.status);
+    }
+  }catch(err){
+    showToast("⚠ Erreur réseau : "+err.message,"error");
+    btn.textContent="⚠ Réessayer";
+    btn.disabled=false;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SHEETDB — LOAD LEADERBOARD
+═══════════════════════════════════════════════════════════ */
+async function loadLeaderboard(){
+  document.getElementById("lbContainer").innerHTML="<div class='lb-loading'>Chargement…</div>";
+  try{
+    const res = await fetch(APIScriptURL);
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const data = await res.json();
+    lbAllData = data.sort((a,b)=>Number(b.score)-Number(a.score));
+    renderLB();
+  }catch(err){
+    document.getElementById("lbContainer").innerHTML=`<div class='lb-loading' style='color:var(--rose)'>Erreur : ${err.message}<br><small>Vérifiez votre connexion ou l'URL SheetDB.</small></div>`;
+  }
+}
+
+function filterLB(mode, el){
+  currentLbFilter = mode;
+  document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  renderLB();
+}
+
+function renderLB(){
+  const pseudo = (document.getElementById("pseudoInput").value.trim()||"").toLowerCase();
+  let rows = currentLbFilter==="all" ? lbAllData : lbAllData.filter(r=>r.mode===currentLbFilter);
+  const modeColors = {normal:"var(--cyan)",speed:"var(--green)",zen:"var(--violet)",exam:"var(--amber)"};
+  if(rows.length===0){
+    document.getElementById("lbContainer").innerHTML="<div class='lb-loading'>Aucun score pour ce mode.</div>";
+    return;
+  }
+  const medals = ["🥇","🥈","🥉"];
+  let html = `<table class='lb-table'><thead><tr>
+    <th>#</th><th>Joueur</th><th>Score</th><th>Réussite</th><th>Mode</th><th>Date</th>
+  </tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    const isMe = r.name && r.name.toLowerCase()===pseudo;
+    const medal = medals[i] || (i+1);
+    html += `<tr class='${isMe?"me":""}'>
+      <td><span class='rank-medal'>${medal}</span></td>
+      <td><span class='lb-name'>${escHtml(r.name||"?")}${isMe?" 👈":""}</span></td>
+      <td><span class='lb-score'>${r.score}</span></td>
+      <td style='color:var(--cyan)'>${r.pct||"?"}%</td>
+      <td><span class='lb-mode' style='color:${modeColors[r.mode]||"var(--text2)"};background:${(modeColors[r.mode]||"var(--text2)").replace(")",",0.1)").replace("var","rgba").replace("#","#")}'>${r.mode||"?"}</span></td>
+      <td style='color:var(--text2);font-size:.75rem'>${r.date||"?"}</td>
+    </tr>`;
+  });
+  html += "</tbody></table>";
+  document.getElementById("lbContainer").innerHTML = html;
+}
+
+function escHtml(str){
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FLASHCARDS
+═══════════════════════════════════════════════════════════ */
+const FC_THEMES = ["Toutes",
+  "Dérivées","Équations différentielles",
+  "Primitives","Suites","Probabilités"
+];
+
+function buildFcThemeTabs(){
+  const wrap = document.getElementById("fcThemeTabs");
+  FC_THEMES.forEach((t,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "theme-tab" + (i===0?" active":"");
+    btn.textContent = t;
+    btn.onclick = ()=>{
+      document.querySelectorAll(".theme-tab").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      fcCurrentTheme = i===0?"all":t;
+      renderFlashcards();
+    };
+    wrap.appendChild(btn);
+  });
+}
+
+function renderFlashcards(){
+  const grid = document.getElementById("cardsGrid");
+  grid.innerHTML = "";
+  const cards = fcCurrentTheme==="all" ? FLASHCARDS : FLASHCARDS.filter(c=>c.theme===fcCurrentTheme);
+  cards.forEach(c=>{
+    const state = cardStates[c.id] || "";
+    const isKnown = state==="known";
+    const outer = document.createElement("div");
+    outer.className = "flip-card-outer";
+    outer.innerHTML = `
+      <div class="flip-card" id="fc_${c.id}" onclick="flipCard('${c.id}',event)">
+        ${isKnown?`<span class='card-known-badge'>✓ Maîtrisé</span>`:""}
+        <div class="flip-card-face">
+          <div>
+            <div class="card-theme-tag">${c.theme}</div>
+            <div class="card-question">${c.question}</div>
+          </div>
+          <div class="card-hint" style="color:var(--text2)">💡 ${c.hint}</div>
+        </div>
+        <div class="flip-card-face flip-card-back">
+          <div>
+            <div class="card-theme-tag" style="color:var(--green)">// RÉPONSE</div>
+            <div class="card-answer">${c.answer}</div>
+            <div class="card-formula">${c.formula}</div>
+          </div>
+          <div class="card-actions" onclick="event.stopPropagation()">
+            <button class="card-btn card-btn-review" onclick="setCardState('${c.id}','review')">↩ À revoir</button>
+            <button class="card-btn card-btn-known" onclick="setCardState('${c.id}','known')">✓ Connu</button>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(outer);
+  });
+  updateFcProgress();
+  setTimeout(()=>renderMath(grid), 50);
+}
+
+function flipCard(id, e){
+  const fc = document.getElementById("fc_"+id);
+  fc.classList.toggle("flipped");
+}
+
+function setCardState(id, state){
+  cardStates[id] = state;
+  localStorage.setItem("bts_cardStates",JSON.stringify(cardStates));
+  renderFlashcards();
+  updateFcProgress();
+}
+
+function updateFcProgress(){
+  const total = FLASHCARDS.length;
+  const known = FLASHCARDS.filter(c=>cardStates[c.id]==="known").length;
+  const pct = Math.round((known/total)*100);
+  document.getElementById("fcProgressBar").style.width = pct+"%";
+  document.getElementById("fcPct").textContent = pct+"%";
+  document.getElementById("fcKnown").textContent = known;
+  document.getElementById("fcTotal").textContent = total;
+  const nb = FLASHCARDS.filter(c=>cardStates[c.id]!=="known").length;
+  document.getElementById("revisionBtn").textContent = `🚀 Mode Révision Ciblée (${nb} cartes)`;
+}
+
+function resetCards(){
+  if(!confirm("Réinitialiser toutes les cartes ?")) return;
+  cardStates = {};
+  localStorage.removeItem("bts_cardStates");
+  renderFlashcards();
+  updateFcProgress();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MODE RÉVISION CIBLÉE
+═══════════════════════════════════════════════════════════ */
+function openRevision(){
+  revQueue = shuffle(FLASHCARDS.filter(c=>cardStates[c.id]!=="known"));
+  if(revQueue.length===0){
+    showToast("🎉 Toutes les cartes sont maîtrisées !","success");
+    return;
+  }
+  revIdx = 0;
+  revFlipped = false;
+  document.getElementById("revisionModal").classList.add("open");
+  showRevCard();
+}
+
+function closeRevision(){
+  document.getElementById("revisionModal").classList.remove("open");
+}
+
+function showRevCard(){
+  if(revIdx >= revQueue.length){
+    closeRevision();
+    showToast("Session terminée ! Bien joué 🎉","success");
+    renderFlashcards();
+    return;
+  }
+  const c = revQueue[revIdx];
+  revFlipped = false;
+  const flip = document.getElementById("revFlip");
+  flip.classList.remove("flipped");
+  document.getElementById("revTheme").textContent = c.theme;
+  document.getElementById("revQuestion").innerHTML = c.question;
+  document.getElementById("revHint").innerHTML = "💡 "+c.hint;
+  document.getElementById("revAnswer").innerHTML = c.answer;
+  document.getElementById("revFormula").innerHTML = c.formula;
+  document.getElementById("revCounter").textContent = `Carte ${revIdx+1} / ${revQueue.length}`;
+  renderMath(document.getElementById("revisionModal"));
+}
+
+function flipRevCard(){
+  revFlipped = !revFlipped;
+  document.getElementById("revFlip").classList.toggle("flipped", revFlipped);
+}
+
+function revAction(action){
+  const c = revQueue[revIdx];
+  if(action==="known"){
+    setCardState(c.id,"known");
+  } else {
+    setCardState(c.id,"review");
+  }
+  revIdx++;
+  showRevCard();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MATHJAX RENDER
+═══════════════════════════════════════════════════════════ */
+function renderMath(el){
+  const opts = {
+    delimiters:[
+      {left:"$$",right:"$$",display:true},
+      {left:"$",right:"$",display:false}
+    ],
+    throwOnError:false,
+    output:"html"
+  };
+  if(typeof renderMathInElement !== "undefined"){
+    try{ renderMathInElement(el, opts); }
+    catch(e){ console.warn("KaTeX:", e); }
+  } else {
+    setTimeout(()=>renderMath(el), 150);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════════════════ */
+function showToast(msg, type=""){
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "show " + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.className="",3000);
+}
+/* ═══════════════════════════════════════════════════════════
+   TETRIS ENGINE
+═══════════════════════════════════════════════════════════ */
+const TETRIS_COLS = 10, TETRIS_ROWS = 20, CELL = 20;
+const TETROMINOES = {
+  I:{shape:[[1,1,1,1]],color:"#22d3ee"},
+  O:{shape:[[1,1],[1,1]],color:"#f59e0b"},
+  T:{shape:[[0,1,0],[1,1,1]],color:"#a855f7"},
+  S:{shape:[[0,1,1],[1,1,0]],color:"#22c55e"},
+  Z:{shape:[[1,1,0],[0,1,1]],color:"#ef4444"},
+  J:{shape:[[1,0,0],[1,1,1]],color:"#3b82f6"},
+  L:{shape:[[0,0,1],[1,1,1]],color:"#fb923c"}
+};
+const PIECE_KEYS = Object.keys(TETROMINOES);
+
+let tetrisRunning = false;
+let tetrisOver = false;
+let tetrisBoard = [];
+let tetrisPiece = null;
+let tetrisNext = null;
+let tetrisScoreVal = 0;
+let tetrisLinesVal = 0;
+let tetrisLevelVal = 1;
+let tetrisRAF = null;
+let tetrisLastTime = 0;
+let tetrisDropAccum = 0;
+
+function tetrisDropInterval(){ return Math.max(80, 600 - (tetrisLevelVal-1)*55); }
+
+function initBoard(){
+  tetrisBoard = Array.from({length:TETRIS_ROWS},()=>Array(TETRIS_COLS).fill(0));
+}
+
+function randPiece(){
+  const k = PIECE_KEYS[Math.floor(Math.random()*PIECE_KEYS.length)];
+  const t = TETROMINOES[k];
+  return {shape:t.shape.map(r=>[...r]),color:t.color,x:Math.floor(TETRIS_COLS/2)-Math.floor(t.shape[0].length/2),y:0};
+}
+
+function rotatePiece(shape){
+  const rows=shape.length,cols=shape[0].length;
+  const r=Array.from({length:cols},()=>Array(rows).fill(0));
+  for(let y=0;y<rows;y++) for(let x=0;x<cols;x++) r[x][rows-1-y]=shape[y][x];
+  return r;
+}
+
+function validPos(shape,ox,oy){
+  for(let y=0;y<shape.length;y++) for(let x=0;x<shape[y].length;x++){
+    if(!shape[y][x]) continue;
+    const nx=ox+x, ny=oy+y;
+    if(nx<0||nx>=TETRIS_COLS||ny>=TETRIS_ROWS) return false;
+    if(ny>=0 && tetrisBoard[ny][nx]) return false;
+  }
+  return true;
+}
+
+function lockPiece(){
+  const {shape,color,x,y}=tetrisPiece;
+  shape.forEach((row,dy)=>row.forEach((v,dx)=>{if(v) tetrisBoard[y+dy][x+dx]=color;}));
+  clearLines();
+  tetrisPiece = tetrisNext;
+  tetrisNext = randPiece();
+  if(!validPos(tetrisPiece.shape,tetrisPiece.x,tetrisPiece.y)){
+    tetrisOver=true;tetrisRunning=false;
+    drawBoard();
+    const ctx=document.getElementById("tetrisCanvas").getContext("2d");
+    ctx.fillStyle="rgba(0,0,0,.7)";ctx.fillRect(0,80,TETRIS_COLS*CELL,60);
+    ctx.fillStyle="#ef4444";ctx.font="bold 22px 'Syne',sans-serif";ctx.textAlign="center";
+    ctx.fillText("GAME OVER",TETRIS_COLS*CELL/2,118);
+    document.getElementById("tetrisPlayBtn").textContent="↺ Rejouer";
+    showToast("Game Over ! Score Tetris : "+tetrisScoreVal,"error");
+  }
+}
+
+function clearLines(){
+  let cleared=0;
+  for(let y=TETRIS_ROWS-1;y>=0;y--){
+    if(tetrisBoard[y].every(c=>c)){
+      tetrisBoard.splice(y,1);
+      tetrisBoard.unshift(Array(TETRIS_COLS).fill(0));
+      cleared++;y++;
+    }
+  }
+  if(cleared){
+    const pts=[0,100,300,500,800];
+    tetrisScoreVal+=pts[cleared]*tetrisLevelVal;
+    tetrisLinesVal+=cleared;
+    tetrisLevelVal=Math.floor(tetrisLinesVal/10)+1;
+    document.getElementById("tScore").textContent=tetrisScoreVal;
+    document.getElementById("tLines").textContent=tetrisLinesVal;
+    document.getElementById("tLevel").textContent=tetrisLevelVal;
+  }
+}
+
+function drawBoard(){
+  const canvas=document.getElementById("tetrisCanvas");
+  const ctx=canvas.getContext("2d");
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  // grid bg
+  ctx.strokeStyle="#1a1a2e";ctx.lineWidth=0.5;
+  for(let r=0;r<TETRIS_ROWS;r++) for(let c=0;c<TETRIS_COLS;c++){
+    ctx.strokeRect(c*CELL,r*CELL,CELL,CELL);
+  }
+  // board
+  tetrisBoard.forEach((row,r)=>row.forEach((color,c)=>{
+    if(color){
+      ctx.fillStyle=color;ctx.fillRect(c*CELL+1,r*CELL+1,CELL-2,CELL-2);
+      ctx.fillStyle="rgba(255,255,255,.2)";ctx.fillRect(c*CELL+1,r*CELL+1,CELL-2,4);
+    }
+  }));
+  // ghost
+  if(tetrisPiece){
+    let ghost={...tetrisPiece,y:tetrisPiece.y};
+    while(validPos(tetrisPiece.shape,ghost.x,ghost.y+1)) ghost.y++;
+    tetrisPiece.shape.forEach((row,dy)=>row.forEach((v,dx)=>{
+      if(v){
+        ctx.fillStyle="rgba(255,255,255,.08)";
+        ctx.fillRect((ghost.x+dx)*CELL+1,(ghost.y+dy)*CELL+1,CELL-2,CELL-2);
+      }
+    }));
+    // active piece
+    tetrisPiece.shape.forEach((row,dy)=>row.forEach((v,dx)=>{
+      if(v){
+        ctx.fillStyle=tetrisPiece.color;
+        ctx.fillRect((tetrisPiece.x+dx)*CELL+1,(tetrisPiece.y+dy)*CELL+1,CELL-2,CELL-2);
+        ctx.fillStyle="rgba(255,255,255,.25)";
+        ctx.fillRect((tetrisPiece.x+dx)*CELL+1,(tetrisPiece.y+dy)*CELL+1,CELL-2,4);
+      }
+    }));
+  }
+}
+
+function tetrisLoop(timestamp){
+  if(!tetrisRunning) return;
+  const dt=timestamp-tetrisLastTime;
+  tetrisLastTime=timestamp;
+  tetrisDropAccum+=dt;
+  if(tetrisDropAccum>=tetrisDropInterval()){
+    tetrisDropAccum=0;
+    if(validPos(tetrisPiece.shape,tetrisPiece.x,tetrisPiece.y+1)){
+      tetrisPiece.y++;
+    } else {
+      lockPiece();
+    }
+  }
+  drawBoard();
+  if(tetrisRunning) tetrisRAF=requestAnimationFrame(tetrisLoop);
+}
+
+function tetrisStartStop(){
+  if(tetrisOver){
+    tetrisOver=false;tetrisScoreVal=0;tetrisLinesVal=0;tetrisLevelVal=1;
+    document.getElementById("tScore").textContent=0;
+    document.getElementById("tLines").textContent=0;
+    document.getElementById("tLevel").textContent=1;
+    initBoard();tetrisPiece=randPiece();tetrisNext=randPiece();
+  }
+  if(!tetrisRunning){
+    tetrisRunning=true;
+    tetrisLastTime=performance.now();tetrisDropAccum=0;
+    document.getElementById("tetrisPlayBtn").textContent="⏸ Pause";
+    tetrisRAF=requestAnimationFrame(tetrisLoop);
+  } else {
+    tetrisRunning=false;
+    cancelAnimationFrame(tetrisRAF);
+    document.getElementById("tetrisPlayBtn").textContent="▶ Reprendre";
+  }
+}
+
+function tetrisInput(dir){
+  if(!tetrisRunning||tetrisOver) return;
+  if(dir==="left"&&validPos(tetrisPiece.shape,tetrisPiece.x-1,tetrisPiece.y)) tetrisPiece.x--;
+  if(dir==="right"&&validPos(tetrisPiece.shape,tetrisPiece.x+1,tetrisPiece.y)) tetrisPiece.x++;
+  if(dir==="down"){
+    if(validPos(tetrisPiece.shape,tetrisPiece.x,tetrisPiece.y+1)) tetrisPiece.y++;
+    else lockPiece();
+  }
+  if(dir==="up"){
+    const rot=rotatePiece(tetrisPiece.shape);
+    if(validPos(rot,tetrisPiece.x,tetrisPiece.y)) tetrisPiece.shape=rot;
+    else if(validPos(rot,tetrisPiece.x-1,tetrisPiece.y)){tetrisPiece.shape=rot;tetrisPiece.x--;}
+    else if(validPos(rot,tetrisPiece.x+1,tetrisPiece.y)){tetrisPiece.shape=rot;tetrisPiece.x++;}
+  }
+  if(dir==="drop"){
+    while(validPos(tetrisPiece.shape,tetrisPiece.x,tetrisPiece.y+1)) tetrisPiece.y++;
+    lockPiece();
+  }
+  drawBoard();
+}
+
+document.addEventListener("keydown",function(e){
+  if(!document.getElementById("tetrisModal").classList.contains("open")) return;
+  const map={ArrowLeft:"left",ArrowRight:"right",ArrowDown:"down",ArrowUp:"up"," ":"drop"};
+  if(map[e.key]){e.preventDefault();tetrisInput(map[e.key]);}
+});
+
+function openTetris(){
+  document.getElementById("resultsScreen").classList.remove("open");
+  initBoard();
+  tetrisScoreVal=0;tetrisLinesVal=0;tetrisLevelVal=1;tetrisOver=false;tetrisRunning=false;
+  document.getElementById("tScore").textContent=0;
+  document.getElementById("tLines").textContent=0;
+  document.getElementById("tLevel").textContent=1;
+  tetrisPiece=randPiece();tetrisNext=randPiece();
+  document.getElementById("tetrisPlayBtn").textContent="▶ Démarrer";
+  document.getElementById("tetrisModal").classList.add("open");
+  drawBoard();
+}
+
+function closeTetris(){
+  tetrisRunning=false;
+  cancelAnimationFrame(tetrisRAF);
+  document.getElementById("tetrisModal").classList.remove("open");
+}
+
+</script>
+</html>
